@@ -139,7 +139,7 @@
     box-shadow:0 0 40px 4px rgba(230,237,247,0.2);
   }
   .hero-bg.has-photo{
-    background-image:var(--shared-photo);
+    background-image:url("public/img1.jpg");
     background-attachment:fixed;
     background-size:cover;
     background-position:center;
@@ -238,7 +238,7 @@
   @media (max-width:880px){ .feature-split{grid-template-columns:1fr;} }
   .feature-split-img{
     position:relative; min-height:420px; overflow:hidden;
-    background-image:var(--shared-photo);
+    background-image:url("public/img2.jpg");
     background-attachment:fixed;
     background-size:cover;
     background-position:center;
