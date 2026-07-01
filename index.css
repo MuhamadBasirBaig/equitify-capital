@@ -59,8 +59,9 @@
   nav.links a:hover{opacity:1;}
   .has-submenu{position:relative; display:flex; align-items:center;}
   .has-submenu > a{display:inline-flex; align-items:center; gap:6px;}
-  .has-submenu > a::after{content:"\25BE"; font-size:10px; opacity:0.6; transition:transform .2s;}
+  .has-submenu > a::after{content:"\25BE"; font-size:14px; opacity:0.6; transition:transform .2s;}
   .has-submenu:hover > a::after{transform:rotate(180deg);}
+  .has-submenu.open > a::after{transform:rotate(180deg);}
   .submenu{
     position:absolute; top:100%; left:-14px; min-width:210px; padding:10px 0;
     background:#ffffff; border:1px solid var(--hairline); border-radius:3px;
@@ -101,11 +102,15 @@
     }
     header.nav-open nav.links a{padding:14px 0; font-size:17px; opacity:1;}
     header.nav-open nav.links .has-submenu{flex-direction:column; align-items:flex-start; width:100%;}
+    header.nav-open nav.links .has-submenu > a{padding:14px 0;}
     header.nav-open nav.links .submenu{
+      display:none; flex-direction:column;
       position:static; opacity:1; visibility:visible; transform:none;
-      background:none; border:none; box-shadow:none; padding:0 0 0 18px; min-width:0;
+      background:none; box-shadow:none; border:none; border-left:2px solid var(--hairline);
+      border-radius:0; min-width:0; margin:0 0 6px 8px; padding:2px 0 2px 16px;
     }
-    header.nav-open nav.links .submenu a{padding:10px 0; font-size:15px; opacity:0.8;}
+    header.nav-open nav.links .has-submenu.open .submenu{display:flex;}
+    header.nav-open nav.links .submenu a{padding:9px 0; font-size:15px; opacity:0.7;}
     header.nav-open nav.links .cta-btn{margin-top:20px; font-size:14px; padding:14px 28px; align-self:flex-start;}
   }
 

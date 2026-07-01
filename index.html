@@ -378,7 +378,21 @@
     toggle.addEventListener('click', function(){
       setOpen(!header.classList.contains('nav-open'));
     });
+
+    var isMobile = function(){ return window.matchMedia('(max-width:900px)').matches; };
+    var subParents = document.querySelectorAll('.has-submenu > a');
+    subParents.forEach(function(a){
+      a.addEventListener('click', function(e){
+        if(isMobile()){
+          e.preventDefault();
+          e.stopPropagation();
+          a.parentElement.classList.toggle('open');
+        }
+      });
+    });
+
     links.addEventListener('click', function(e){
+      if(e.target.closest('.has-submenu > a')) return;
       if(e.target.tagName === 'A') setOpen(false);
     });
   })();
