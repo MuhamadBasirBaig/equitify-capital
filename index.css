@@ -149,8 +149,8 @@
     background-attachment:scroll;
     background-size:cover;
     background-position:center;
-    filter:blur(3px);
-    transform:scale(1.04);
+    filter:blur(2.2px);
+    transform:scale(1.03);
   }
   .hero-bg.has-photo::before, .hero-bg.has-photo::after{display:none;}
   .hero-overlay{
