@@ -8,6 +8,11 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="index.css">
+<style>
+  .form-privacy-note{margin-top:14px; font-size:12.5px; line-height:1.6; color:var(--stone);}
+  .form-privacy-note a{color:var(--amber); text-decoration:underline; text-underline-offset:2px;}
+  .form-privacy-note a:hover{opacity:0.8;}
+</style>
 </head>
 <body>
 
@@ -330,6 +335,7 @@
           <textarea id="message" required></textarea>
         </div>
         <button class="submit-btn" type="submit">Send Message</button>
+        <p class="form-privacy-note">By submitting, you agree that the information you provide is handled in accordance with our <a href="privacy/">Privacy Policy</a>.</p>
       </form>
     </div>
   </div>
@@ -340,7 +346,7 @@
     <div class="foot-grid">
       <div class="foot-brand">
         <div class="brand">
-          <span class="brand-name">Equitify Capital</span>
+          <span class="brand-name">Equitify Capital, LLC</span>
         </div>
         <p style="color:#ffffff;">Capital for the corners America runs on — financing and acquisition for gas station and QSR real estate nationwide.</p>
       </div>
@@ -351,6 +357,9 @@
         <a href="#principles">Principles</a>
         <a href="#news">News &amp; Insights</a>
         <a href="#contact">Get in Touch</a>
+        <a href="disclaimer/">Legal Disclaimer</a>
+        <a href="disclosures/">Disclosures</a>
+        <a href="privacy/">Privacy Policy</a>
       </div>
       <div class="foot-col">
         <h4>Office</h4>
@@ -360,7 +369,12 @@
       </div>
     </div>
     <div class="foot-bottom">
-      <div style="color:#fff;">&copy; 2026 Equitify Capital. All rights reserved.</div>
+      <div style="color:#fff;">&copy; 2026 Equitify Capital, LLC. All rights reserved.</div>
+      <div style="display:flex; gap:20px;">
+        <a href="disclaimer/" style="color:#fff;">Legal Disclaimer</a>
+        <a href="disclosures/" style="color:#fff;">Disclosures</a>
+        <a href="privacy/" style="color:#fff;">Privacy Policy</a>
+      </div>
     </div>
   </div>
 </footer>
