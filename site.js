@@ -2,7 +2,7 @@
    Usage:
      <site-header base="../" active="team"></site-header>
      <site-footer base="../"></site-footer>
-   - base:   "" for root pages (index2.html, team.html), "../" for sub-pages (privacy/, etc.)
+   - base:   "" for root pages (index.html, team.html), "../" for sub-pages (privacy/, etc.)
    - active: which nav item to highlight — "story" | "approach" | "team" | "news" (optional)
    Styling lives in site.css (load it in <head>). Classes are `ec-` prefixed
    to avoid colliding with any page's own stylesheet. */
@@ -17,10 +17,10 @@
     return ''
       + '<header class="ec-nav">'
       +   '<div class="ec-nav-inner">'
-      +     '<a href="' + base + 'index2.html" class="ec-logo">' + BRAND + '</a>'
+      +     '<a href="' + base + 'index.html" class="ec-logo">' + BRAND + '</a>'
       +     '<nav class="ec-links">'
-      +       '<a href="' + base + 'index2.html"' + on('story') + '>Our Story</a>'
-      +       '<a href="' + base + 'index2.html#approach"' + on('approach') + '>Our Approach</a>'
+      +       '<a href="' + base + 'index.html"' + on('story') + '>Our Story</a>'
+      +       '<a href="' + base + 'index.html#approach"' + on('approach') + '>Our Approach</a>'
       +       '<a href="' + base + 'team.html"' + on('team') + '>Our Team</a>'
       +       '<div class="ec-has-sub">'
       +         '<a href="#">Portfolio ' + CHEVRON + '</a>'
@@ -29,10 +29,10 @@
       +           '<a href="#">Development Portfolio</a>'
       +         '</div>'
       +       '</div>'
-      +       '<a href="' + base + 'index2.html"' + on('news') + '>News &amp; Insights</a>'
-      +       '<a href="' + base + 'index2.html#contact" class="btn btn-solid ec-cta-m">Get in touch</a>'
+      +       '<a href="' + base + 'index.html"' + on('news') + '>News &amp; Insights</a>'
+      +       '<a href="' + base + 'index.html#contact" class="btn btn-solid ec-cta-m">Get in touch</a>'
       +     '</nav>'
-      +     '<a href="' + base + 'index2.html#contact" class="btn btn-solid ec-cta-d">Get in touch</a>'
+      +     '<a href="' + base + 'index.html#contact" class="btn btn-solid ec-cta-d">Get in touch</a>'
       +     '<button class="ec-toggle" aria-label="Toggle menu" aria-expanded="false"><span></span><span></span><span></span></button>'
       +   '</div>'
       + '</header>';
@@ -48,11 +48,11 @@
       +         '<p>Capital for the corners America runs on — financing and acquisition for gas station and QSR real estate nationwide.</p>'
       +       '</div>'
       +       '<div><h4>Sitemap</h4><ul>'
-      +         '<li><a href="' + base + 'index2.html">Our Story</a></li>'
-      +         '<li><a href="' + base + 'index2.html#approach">Our Approach</a></li>'
+      +         '<li><a href="' + base + 'index.html">Our Story</a></li>'
+      +         '<li><a href="' + base + 'index.html#approach">Our Approach</a></li>'
       +         '<li><a href="' + base + 'team.html">Our Team</a></li>'
-      +         '<li><a href="' + base + 'index2.html">News &amp; Insights</a></li>'
-      +         '<li><a href="' + base + 'index2.html#contact">Get in Touch</a></li>'
+      +         '<li><a href="' + base + 'index.html">News &amp; Insights</a></li>'
+      +         '<li><a href="' + base + 'index.html#contact">Get in Touch</a></li>'
       +       '</ul></div>'
       +       '<div><h4>Office</h4><ul>'
       +         '<li><span>555 Republic Dr, Suite #525</span></li>'
