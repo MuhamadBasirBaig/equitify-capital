@@ -77,27 +77,39 @@
   /* ===== HERO ===== */
   .hero{background:var(--navy-deep);position:relative;overflow:hidden;}
   .hero::before{
-    content:"";position:absolute;left:0;right:0;top:-25%;height:150%;z-index:0;
-    background:url("public/gas-blue4.png") center/cover no-repeat;
-    filter:blur(2.5px);
+    content:"";position:absolute;left:0;right:0;height:100%;z-index:0;
+    background:url("public/mountain_6.jpg") center/cover no-repeat;
+    /* filter:blur(1px);s */
     transform:translate3d(0,var(--hero-parallax,0),0) scale(1.03);will-change:transform;
   }
   .hero::after{
     content:"";position:absolute;inset:0;z-index:0;
-    background:linear-gradient(90deg, rgba(20,31,44,.96) 0%, rgba(20,31,44,.82) 52%, rgba(20,31,44,.55) 100%);
+    background:linear-gradient(90deg, rgba(20,31,44,.5) 0%, rgba(20,31,44,.32) 52%, rgba(20,31,44,.12) 100%);
   }
-  .hero-inner{max-width:1140px;margin:0 auto;padding:52px 40px;position:relative;z-index:1;}
+  .hero-inner{max-width:1140px;margin:0 auto;padding:130px 40px 130px;position:relative;z-index:1;}
   .hero h1{
-    font-weight:400;font-size:3.62em;line-height:1.16;letter-spacing:-0.015em;
-    color:#fff;max-width:670px;margin-bottom:24px;
+    font-weight:800;font-size:3.62em;line-height:1.40;letter-spacing:-0.015em;
+    color:#fff;max-width:655px;margin:0 auto 24px;text-align:center;text-transform:uppercase;
   }
   .hero h1 .accent-word{color:var(--accent);}
-  .hero-sub{font-size:16px;line-height:1.75;color:#C7D0DA;max-width:480px;margin-bottom:36px;}
+  .hero-sub{font-size:16px;line-height:1.75;color:#fff;max-width:480px;margin:0 auto 60px;text-align:center;}
   .hero-actions{display:flex;gap:14px;margin-bottom:50px;}
   .hero-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding-top:36px;border-top:1px solid rgba(255,255,255,.16);}
   .hero-meta-item{display:flex;align-items:center;gap:14px;}
   .hero-meta-item .num{font-weight:700;font-size:22px;color:#fff;}
   .hero-meta-item .cap{font-size:12px;color:var(--ink-on-navy);margin-top:2px;}
+  .hero-scroll{
+    position:absolute;left:50%;bottom:34px;z-index:2;
+    width:64px;height:64px;border-radius:50%;
+    border:1px solid rgba(255,255,255,.6);color:#fff;background:transparent;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .25s ease,border-color .25s ease;
+    animation:heroScrollBob 2s ease-in-out infinite;
+  }
+  .hero-scroll:hover{background:rgba(255,255,255,.14);border-color:#fff;}
+  .hero-scroll svg{width:22px;height:22px;}
+  @keyframes heroScrollBob{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,7px);}}
+  @media (prefers-reduced-motion: reduce){.hero-scroll{animation:none;transform:translateX(-50%);}}
 
   /* ===== WHO WE ARE / STRATEGIC CAPITAL ===== */
   .intro{padding:110px 0;}
@@ -187,8 +199,9 @@
   }
 
   @media (max-width: 900px){
-    .hero::after{background:linear-gradient(180deg, rgba(20,31,44,.9), rgba(20,31,44,.86));}
-    .hero h1{font-size:2.8em;}
+    .hero-inner{padding:120px 28px 96px;}
+    .hero h1{font-size:2.2em;line-height:1.18;}
+    .hero-sub{margin-bottom:0;}
     .hero-actions{flex-direction:column;align-items:stretch;}
     .hero-actions .btn{width:100%;justify-content:center;}
     .approach h2,.standards h2,.insights h2,.contact h2{font-size:2.1em;}
@@ -200,13 +213,17 @@
   }
   @media (max-width: 560px){
     .insight-card{flex-basis:100%;}
+    .hero-inner{padding:110px 22px 90px;}
+    .hero h1{font-size:1.85em;}
+    .hero-sub{font-size:15px;}
+    .hero-scroll{width:54px;height:54px;bottom:26px;}
   }
 </style>
 </head>
 <body>
 
 <!-- ===== NAV (shared component) ===== -->
-<site-header base="" active="story"></site-header>
+<site-header base="" active="story" overlay></site-header>
 
 <!-- ===== HERO ===== -->
 <section class="hero">
@@ -215,11 +232,12 @@
     <!-- <h1>Specialized capital for <span class="accent-word">fuel &amp; QSR</span> real estate.</h1> -->
     <h1>Specialized capital for fuel &amp; QSR real estate.</h1>
     <p class="hero-sub">We finance and acquire gas station and quick-service restaurant real estate — backing operators and owners with the capital and site-level expertise these assets demand.</p>
-    <div class="hero-actions">
+    
+    <!-- <div class="hero-actions">
       <a href="#contact" class="btn btn-solid">Get in touch</a>
       <a href="#approach" class="btn btn-on-dark">See our approach</a>
-    </div>
-    <div class="hero-meta">
+    </div> -->
+    <!-- <div class="hero-meta">
       <div class="hero-meta-item">
         <div class="icon-chip on-dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5.5H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H6"/></svg></div>
         <div><div class="num">$185M+</div><div class="cap">Capital deployed</div></div>
@@ -236,8 +254,11 @@
         <div class="icon-chip on-dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
         <div><div class="num">15+ yrs</div><div class="cap">Site experience</div></div>
       </div>
-    </div>
+    </div> -->
   </div>
+  <a href="#approach" class="hero-scroll" aria-label="Scroll to content">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+  </a>
 </section>
 
 <!-- ===== WHO WE ARE / STRATEGIC CAPITAL ===== -->

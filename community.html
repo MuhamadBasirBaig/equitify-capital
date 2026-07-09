@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Community — Equitify Capital</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<script src="site.js" defer></script>
+<style>
+  :root{
+    --ink:#33465C;
+    --ink-soft:#6C7C8D;
+    --navy:#1B2A3B;
+    --navy-deep:#141F2C;
+    --accent:#51BAFF;
+    --accent-deep:#2A93E6;
+    --accent-on-dark:#6FC5FF;
+    --accent-tint:#EAF4FF;
+    --line:#E1E5EA;
+    --line-on-dark:#2B3B4E;
+    --bg:#FFFFFF;
+    --bg-tint:#F5F7F9;
+    --ink-on-navy:#AEB9C6;
+    --radius:4px;
+    --radius-chip:6px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Libre Franklin',sans-serif;background:var(--bg);color:var(--ink);}
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  svg{display:block;}
+
+  .container{max-width:1140px;margin:0 auto;padding:0 40px;}
+
+  .eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-deep);margin-bottom:16px;}
+  .eyebrow.on-dark{color:var(--accent-on-dark);}
+
+  .icon-chip{width:44px;height:44px;border-radius:var(--radius-chip);background:var(--accent-tint);display:flex;align-items:center;justify-content:center;color:var(--accent-deep);flex-shrink:0;}
+  .icon-chip svg{width:22px;height:22px;}
+
+  .btn{display:inline-flex;align-items:center;gap:8px;font-size:14px;font-weight:600;padding:14px 28px;border-radius:var(--radius);border:1px solid var(--navy);background:transparent;color:var(--navy);cursor:pointer;transition:all .15s ease;}
+  .btn:hover{background:var(--navy);color:#fff;}
+  .btn-solid{background:var(--accent-deep);color:#fff;border-color:var(--accent-deep);}
+  .btn-solid:hover{background:#1F7FCB;border-color:#1F7FCB;}
+
+  /* ===== PAGE HERO (legal-band style) ===== */
+  .hero{background:var(--navy-deep,#141f2c);position:relative;overflow:hidden;}
+  .hero::before{content:"";position:absolute;left:0;right:0;top:-25%;height:150%;z-index:0;background:url("public/mountain_8.jpg") center/cover no-repeat;transform:scale(1.03);}
+  .hero::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(90deg, rgba(20,31,44,.76) 0%, rgba(20,31,44,.82) 52%, rgba(20,31,44,.55) 100%);}
+  .hero-inner{max-width:1140px;margin:0 auto;padding:72px 40px;position:relative;z-index:1;}
+  .hero h1{font-weight:400;font-size:3.62em;line-height:1.16;letter-spacing:-0.015em;color:#fff;margin-bottom:22px;}
+  .hero-sub{font-size:16px;line-height:1.75;color:#C7D0DA;max-width:760px;}
+
+  /* ===== PAGE SECTION ===== */
+  .page-sec{padding:72px 0 110px;}
+  .sec-head{max-width:640px;margin-bottom:48px;}
+  .sec-head h2{font-size:2.4em;font-weight:400;color:var(--navy);line-height:1.18;letter-spacing:-0.015em;margin-bottom:16px;}
+  .sec-head p{font-size:15px;line-height:1.8;color:var(--ink-soft);}
+
+  .card-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease;}
+  .card:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 14px 30px -16px rgba(20,31,44,.3);}
+  .card .icon-chip{margin-bottom:18px;}
+  .card h3{font-size:17px;font-weight:700;color:var(--navy);margin-bottom:10px;}
+  .card p{font-size:13.5px;line-height:1.7;color:var(--ink-soft);}
+
+  /* stats band */
+  .stats-band{background:var(--bg-tint);border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:64px 0;}
+  .stats-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;text-align:center;}
+  .stat .num{font-size:2.6em;font-weight:700;color:var(--navy);letter-spacing:-0.02em;}
+  .stat .cap{font-size:13px;color:var(--ink-soft);margin-top:6px;}
+
+  @media (prefers-reduced-motion: reduce){.card:hover{transform:none;}}
+  @media (max-width: 900px){
+    .hero h1{font-size:2.1em;}
+    .sec-head h2{font-size:1.9em;}
+    .card-grid{grid-template-columns:1fr;}
+    .stats-grid{grid-template-columns:1fr 1fr;gap:32px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV (shared component) ===== -->
+<site-header base="" active="community"></site-header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow on-dark">Community</div>
+    <h1>Invested in the corners America runs on.</h1>
+    <p class="hero-sub">Placeholder copy — Equitify Capital backs the operators and neighborhoods behind the fuel and QSR sites we finance. This page is temporary and will be updated with real community content.</p>
+  </div>
+</section>
+
+<!-- ===== INITIATIVES ===== -->
+<section class="page-sec">
+  <div class="container">
+    <div class="sec-head">
+      <div class="eyebrow">Our Commitment</div>
+      <h2>How we show up beyond the balance sheet</h2>
+      <p>Placeholder text introducing the ways Equitify Capital engages with operators, employees, and the communities its portfolio serves. To be replaced with final content.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4.5"/></svg></div>
+        <h3>Operator Partnerships</h3>
+        <p>We work alongside local operators, sharing site-level expertise to help their businesses grow.</p>
+      </div>
+      <div class="card">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V9l6-4 6 4v12M10 21v-6h4v6"/></svg></div>
+        <h3>Local Investment</h3>
+        <p>Capital that keeps essential retail sites open and staffed in the communities that rely on them.</p>
+      </div>
+      <div class="card">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22Z"/><circle cx="12" cy="9.5" r="2.4"/></svg></div>
+        <h3>Responsible Stewardship</h3>
+        <p>Environmental and safety standards built into how we underwrite and manage every site.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STATS ===== -->
+<section class="stats-band">
+  <div class="container">
+    <div class="stats-grid">
+      <div class="stat"><div class="num">60+</div><div class="cap">Sites supported</div></div>
+      <div class="stat"><div class="num">12</div><div class="cap">States</div></div>
+      <div class="stat"><div class="num">1,200+</div><div class="cap">Jobs sustained</div></div>
+      <div class="stat"><div class="num">15+ yrs</div><div class="cap">Operator relationships</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER (shared component) ===== -->
+<site-footer base=""></site-footer>
+
+</body>
+</html>

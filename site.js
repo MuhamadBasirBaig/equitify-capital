@@ -12,15 +12,13 @@
   var BRAND = "Equitify Capital";
   var CHEVRON = '<svg class="ec-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
 
-  function headerHTML(base, active){
+  function headerHTML(base, active, overlay){
     function on(name){ return active === name ? ' class="ec-active"' : ''; }
     return ''
-      + '<header class="ec-nav">'
+      + '<header class="ec-nav' + (overlay ? ' ec-nav--overlay' : '') + '">'
       +   '<div class="ec-nav-inner">'
       +     '<a href="' + base + 'index.html" class="ec-logo">' + BRAND + '</a>'
       +     '<nav class="ec-links">'
-      +       '<a href="' + base + 'index.html"' + on('story') + '>Our Story</a>'
-      +       '<a href="' + base + 'index.html#approach"' + on('approach') + '>Our Approach</a>'
       +       '<a href="' + base + 'team.html"' + on('team') + '>Our Team</a>'
       +       '<div class="ec-has-sub">'
       +         '<a href="#">Portfolio ' + CHEVRON + '</a>'
@@ -30,6 +28,9 @@
       +         '</div>'
       +       '</div>'
       +       '<a href="' + base + 'index.html"' + on('news') + '>News &amp; Insights</a>'
+      +       '<a href="' + base + 'investor-portal.html"' + on('investor') + '>Investor Portal</a>'
+      +       '<a href="' + base + 'community.html"' + on('community') + '>Community</a>'
+      +       '<a href="' + base + 'media.html"' + on('media') + '>Media</a>'
       +       '<a href="' + base + 'index.html#contact" class="btn btn-solid ec-cta-m">Get in touch</a>'
       +     '</nav>'
       +     '<a href="' + base + 'index.html#contact" class="btn btn-solid ec-cta-d">Get in touch</a>'
@@ -108,10 +109,29 @@
     });
   }
 
+  /* Overlay nav: transparent over the hero, solid white once scrolled. */
+  function wireScroll(root){
+    var header = root.querySelector(".ec-nav");
+    if(!header) return;
+    var THRESHOLD = 40;
+    var ticking = false;
+    function update(){
+      var y = window.pageYOffset || document.documentElement.scrollTop || 0;
+      header.classList.toggle("ec-scrolled", y > THRESHOLD);
+      ticking = false;
+    }
+    window.addEventListener("scroll", function(){
+      if(!ticking){ window.requestAnimationFrame(update); ticking = true; }
+    }, {passive:true});
+    update();
+  }
+
   class SiteHeader extends HTMLElement{
     connectedCallback(){
-      this.innerHTML = headerHTML(this.getAttribute("base") || "", this.getAttribute("active") || "");
+      var overlay = this.hasAttribute("overlay");
+      this.innerHTML = headerHTML(this.getAttribute("base") || "", this.getAttribute("active") || "", overlay);
       wireNav(this);
+      if(overlay) wireScroll(this);
     }
   }
   class SiteFooter extends HTMLElement{

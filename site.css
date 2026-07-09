@@ -14,8 +14,26 @@ site-header,site-footer{display:block;}
 .btn-solid:hover{background:#1F7FCB;border-color:#1F7FCB;}
 
 /* ===== NAV ===== */
-.ec-nav{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #E1E5EA;}
-.ec-nav-inner{max-width:1140px;margin:0 auto;padding:0 40px;height:80px;display:flex;align-items:center;justify-content:space-between;}
+.ec-nav{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid #E1E5EA;transition:background .3s ease,border-color .3s ease,box-shadow .3s ease;}
+
+/* Overlay mode: transparent over the hero, turns solid white on scroll. */
+.ec-nav--overlay{position:fixed;left:0;right:0;background:transparent;border-bottom-color:transparent;}
+.ec-nav--overlay .ec-logo{color:#fff;}
+.ec-nav--overlay .ec-links a{color:#fff;}
+.ec-nav--overlay .ec-links a:hover,.ec-nav--overlay .ec-links a.ec-active{color:#6FC5FF;}
+.ec-nav--overlay .ec-toggle span{background:#fff;}
+/* Dropdown panel is always white — keep its links dark in overlay mode. */
+.ec-nav--overlay .ec-sub a{color:#33465C;}
+.ec-nav--overlay .ec-sub a:hover{color:#2A93E6;}
+.ec-nav--overlay.ec-scrolled{background:#fff;border-bottom-color:#E1E5EA;box-shadow:0 2px 20px rgba(0,0,0,.06);}
+.ec-nav--overlay.ec-scrolled .ec-logo{color:#1B2A3B;}
+.ec-nav--overlay.ec-scrolled .ec-links a{color:#33465C;}
+.ec-nav--overlay.ec-scrolled .ec-links a:hover,.ec-nav--overlay.ec-scrolled .ec-links a.ec-active{color:#2A93E6;}
+.ec-nav--overlay.ec-scrolled .ec-toggle span{background:#1B2A3B;}
+/* When the mobile menu is open, keep controls dark against the white panel. */
+.ec-nav--overlay.is-open .ec-toggle span{background:#1B2A3B;}
+.ec-nav--overlay.is-open .ec-logo{color:#1B2A3B;}
+.ec-nav-inner{max-width:1140px;margin:0 auto;padding:0 40px;height:65px;display:flex;align-items:center;justify-content:space-between;}
 .ec-logo{font-weight:700;font-size:18px;color:#1B2A3B;letter-spacing:-0.01em;text-decoration:none;}
 .ec-links{display:flex;align-items:center;gap:34px;}
 .ec-links a{font-size:14px;font-weight:500;color:#33465C;text-decoration:none;opacity:1;}
