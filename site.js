@@ -9,7 +9,7 @@
 (function(){
   "use strict";
 
-  var BRAND = "Equitify Capital";
+  var BRAND = "EquitiFy Capital";
   var CHEVRON = '<svg class="ec-caret" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>';
 
   function headerHTML(base, active, overlay){
@@ -45,7 +45,7 @@
       +   '<div class="container">'
       +     '<div class="ec-footer-grid">'
       +       '<div class="ec-footer-brand">'
-      +         '<div class="ec-flogo">Equitify Capital, LLC</div>'
+      +         '<div class="ec-flogo">EquitiFy Capital, LLC</div>'
       +         '<p>Capital for the corners America runs on — financing and acquisition for gas station and QSR real estate nationwide.</p>'
       +       '</div>'
       +       '<div><h4>Sitemap</h4><ul>'
@@ -67,7 +67,7 @@
       +       '</ul></div>'
       +     '</div>'
       +     '<div class="ec-footer-bottom">'
-      +       '<p>&copy; 2026 Equitify Capital, LLC. All rights reserved.</p>'
+      +       '<p>&copy; 2026 EquitiFy Capital, LLC. All rights reserved.</p>'
       +       '<div class="ec-footer-legal">'
       +         '<a href="' + base + 'disclaimer/">Legal Disclaimer</a>'
       +         '<a href="' + base + 'disclosures/">Disclosures</a>'
