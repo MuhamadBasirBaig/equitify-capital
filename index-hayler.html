@@ -38,7 +38,7 @@
   html{scroll-behavior:auto;}   /* Lenis owns scrolling */
   body{
     font-family:'Libre Franklin',sans-serif;background:var(--navy-deep);color:var(--ink);
-    overflow-x:hidden;
+    overflow-x:clip;   /* clip (not hidden) so position:sticky still anchors to the viewport */
   }
   img{max-width:100%;display:block;}
   a{color:inherit;text-decoration:none;}
@@ -57,7 +57,7 @@
   .preloader{
     position:fixed;inset:0;z-index:9999;background:var(--navy-deep);
     display:flex;align-items:flex-end;justify-content:space-between;
-    padding:48px 40px;overflow:hidden;
+    padding:48px 40px;overflow:hidden;pointer-events:none;
   }
   .pre-word{
     font-size:clamp(40px,9vw,120px);font-weight:800;letter-spacing:-0.03em;
@@ -141,7 +141,7 @@
   /* ===================================================================
      HERO
      =================================================================== */
-  .hero{position:relative;height:100vh;min-height:660px;overflow:hidden;background:var(--navy-deep);z-index:0;}
+  .hero{position:sticky;top:0;height:100vh;min-height:660px;overflow:hidden;background:var(--navy-deep);z-index:0;}
   .hero-bg{position:absolute;inset:-8% 0;z-index:0;will-change:transform;}
   .hero-bg img{width:100%;height:116%;object-fit:cover;}
   .hero::after{
@@ -149,7 +149,7 @@
     background:linear-gradient(180deg,rgba(20,31,44,.62) 0%,rgba(20,31,44,.38) 40%,rgba(20,31,44,.72) 100%);
   }
   .hero-inner{
-    position:relative;z-index:2;height:100%;max-width:1240px;margin:0 auto;padding:0 40px;
+    position:relative;z-index:2;height:100%;max-width:1240px;margin:0 auto;padding:110px 40px 0;
     display:flex;flex-direction:column;justify-content:center;
   }
   .hero-tag{
@@ -157,7 +157,7 @@
     margin-bottom:30px;
   }
   .hero h1{
-    font-weight:800;font-size:clamp(2.6rem,8.2vw,7.4rem);line-height:.98;letter-spacing:-0.035em;
+    font-weight:800;font-size:clamp(2.4rem,7vw,6.3rem);line-height:.98;letter-spacing:-0.035em;
     text-transform:uppercase;color:#fff;margin-bottom:34px;max-width:12ch;
   }
   .hero h1 .accent-word{color:var(--accent);}
@@ -236,19 +236,28 @@
   .h-progress-bar span{position:absolute;left:0;top:0;height:100%;width:0;background:var(--accent);}
   .h-hint{margin-top:18px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-on-navy);}
 
+  /* News panels — same horizontal showcase, text cards instead of photos */
+  .panel--news{background:var(--navy);display:flex;flex-direction:column;justify-content:space-between;padding:40px;}
+  .panel--news::after{display:none;}
+  .panel--news .news-tag{display:inline-flex;align-items:center;gap:8px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-on-dark);}
+  .panel--news .news-tag svg{width:15px;height:15px;}
+  .panel--news .panel-num{margin-bottom:14px;}
+  .panel--news .panel-title{position:static;text-transform:none;font-weight:600;font-size:clamp(1.25rem,1.9vw,1.6rem);letter-spacing:-0.01em;line-height:1.28;color:#fff;margin-bottom:14px;}
+  .panel--news .panel-desc{max-width:none;margin-bottom:24px;}
+
   /* ===================================================================
      STRATEGY PILLARS
      =================================================================== */
   .strategy{background:var(--bg);padding:150px 0;}
-  .strategy-head{max-width:640px;margin-bottom:64px;}
-  .strategy-head h2{font-size:clamp(2rem,4.6vw,3.6rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.02;color:var(--navy);margin-bottom:20px;}
-  .strategy-head p{font-size:15px;line-height:1.85;color:var(--ink-soft);}
+  .strategy-head{max-width:640px;margin-bottom:40px;}
+  .strategy-head h2{font-size:clamp(2rem,4.6vw,3.6rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.02;color:var(--navy);margin-bottom:16px;}
+  .strategy-head p{font-size:15px;line-height:1.8;color:var(--ink-soft);}
   .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);}
-  .pillar{padding:40px 30px 40px 0;border-bottom:1px solid var(--line);position:relative;transition:padding-left .35s var(--ease);}
-  .pillar + .pillar{border-left:1px solid var(--line);padding-left:30px;}
-  .pillar-idx{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--accent-deep);margin-bottom:26px;}
-  .pillar-title{font-size:18px;font-weight:700;color:var(--navy);line-height:1.25;margin:18px 0 12px;}
-  .pillar-desc{font-size:13.5px;line-height:1.75;color:var(--ink-soft);}
+  .pillar{padding:28px 26px 28px 0;border-bottom:1px solid var(--line);position:relative;transition:padding-left .35s var(--ease);}
+  .pillar + .pillar{border-left:1px solid var(--line);padding-left:26px;}
+  .pillar-idx{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--accent-deep);margin-bottom:16px;}
+  .pillar-title{font-size:17px;font-weight:700;color:var(--navy);line-height:1.25;margin:14px 0 8px;}
+  .pillar-desc{font-size:13.5px;line-height:1.7;color:var(--ink-soft);}
   .pillar::before{content:"";position:absolute;left:0;bottom:-1px;width:0;height:2px;background:var(--accent);transition:width .4s var(--ease);}
   .pillar:hover::before{width:100%;}
 
@@ -294,22 +303,38 @@
   .prow:last-child{border-bottom:1px solid var(--line);}
   .prow:hover{padding-left:22px;}
   .prow-idx{font-size:13px;font-weight:800;color:var(--accent-deep);}
-  .prow-title{font-size:clamp(1.5rem,3vw,2.4rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.02em;color:var(--navy);line-height:1;transition:color .3s var(--ease);}
+  .prow-title{font-size:clamp(1.5rem,3vw,2.4rem);font-weight:500;text-transform:uppercase;letter-spacing:-0.02em;color:var(--navy);line-height:1;transition:color .3s var(--ease);}
   .prow:hover .prow-title{color:var(--accent-deep);}
   .prow-desc{font-size:14.5px;line-height:1.8;color:var(--ink-soft);}
 
   /* ===================================================================
      CONTACT / CTA
      =================================================================== */
-  .cta{background:var(--navy-deep);padding:150px 0;text-align:center;position:relative;overflow:hidden;}
-  .cta h2{font-size:clamp(2.4rem,7vw,6rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.035em;line-height:.98;color:#fff;margin-bottom:36px;}
-  .cta h2 .accent-word{color:var(--accent);}
-  .cta p{font-size:16px;line-height:1.8;color:var(--ink-on-navy);max-width:480px;margin:0 auto 44px;}
-  .cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
-  .cta-meta{margin-top:70px;display:flex;gap:60px;justify-content:center;flex-wrap:wrap;}
-  .cta-meta .lab{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-on-navy);margin-bottom:10px;}
-  .cta-meta .val{font-size:15px;color:#fff;line-height:1.6;}
-  .cta-meta a.val:hover{color:var(--accent);}
+  .cta{background:var(--bg);padding:150px 0;position:relative;overflow:hidden;}
+  .cta-grid{display:grid;grid-template-columns:0.9fr 1.1fr;gap:70px;align-items:start;}
+  .cta h2{font-size:clamp(2rem,4.4vw,3.6rem);font-weight:500;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.02;color:var(--navy);margin-bottom:24px;}
+  .cta h2 .accent-word{color:var(--accent-deep);}
+  .cta-lede{font-size:15px;line-height:1.8;color:var(--ink-soft);max-width:400px;margin-bottom:0;}
+  .cta-records{margin-top:44px;display:flex;flex-direction:column;gap:24px;}
+  .cta-record{display:flex;gap:16px;align-items:flex-start;}
+  .cta-record .lab{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:6px;}
+  .cta-record .val{font-size:15px;color:var(--ink);line-height:1.6;padding-top:6px;}
+  .cta-record a.val:hover{color:var(--accent-deep);}
+
+  /* Contact form — tinted card on the white section */
+  .cta-form{background:var(--bg-tint);border:1px solid var(--line);border-radius:12px;padding:40px;}
+  .cta-form .field-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+  .cta-form label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:9px;}
+  .cta-form input,.cta-form textarea{
+    width:100%;background:#fff;border:1px solid var(--line);border-radius:6px;
+    padding:13px 15px;font-family:'Libre Franklin',sans-serif;font-size:14px;color:var(--navy);
+    outline:none;transition:border-color .2s ease,background .2s ease;
+  }
+  .cta-form input::placeholder,.cta-form textarea::placeholder{color:var(--ink-soft);opacity:.7;}
+  .cta-form input:focus,.cta-form textarea:focus{border-color:var(--accent);background:var(--bg-tint);}
+  .cta-form textarea{min-height:120px;resize:vertical;margin-bottom:22px;}
+  .cta-form .form-note{font-size:11.5px;color:var(--ink-soft);margin-top:16px;line-height:1.6;}
+  .cta-form .form-note a{color:var(--accent-deep);text-decoration:underline;}
 
   /* ===================================================================
      RESPONSIVE
@@ -323,79 +348,136 @@
     .stages{grid-template-columns:1fr;}
     .prow{grid-template-columns:40px 1fr;gap:16px;}
     .prow-desc{grid-column:1 / -1;padding-left:56px;}
+    .cta-grid{grid-template-columns:1fr;gap:48px;}
   }
   @media (max-width:640px){
     .container{padding:0 24px;}
     .statement,.strategy,.track,.approach,.principles-sec,.cta{padding:96px 0;}
-    .pillars{grid-template-columns:1fr;}
     .track-stats{grid-template-columns:1fr;}
     .hero-index{display:none;}
     .h-track{gap:20px;}
     .panel{height:56vh;}
+    .cta-form{padding:26px;}
+    .cta-form .field-row{grid-template-columns:1fr;}
   }
   @media (prefers-reduced-motion:reduce){
     .hero-scroll .line::after{animation:none;}
   }
 
   /* ===================================================================
-     VERTICAL RIGHT-SIDE NAV — overrides the shared <site-header> for
-     THIS page only (site.css/site.js stay untouched → other pages keep
-     their top bar). Desktop only; mobile falls back to the hamburger.
+     HAMBURGER + FULL-SCREEN MENU — overrides the shared <site-header>
+     for THIS page only. A minimal top bar (menu icon + wordmark on the
+     left); clicking opens a full white page with centered links and morphs
+     the icon into an X. site.js/site.css already wire the toggle, the X
+     morph, and the panel — we just restyle for desktop and center links.
      =================================================================== */
   @media (min-width:901px){
-    /* Fixed rail pinned to the right edge, full height */
+    /* Minimal fixed top bar, transparent over the page */
     .ec-nav.ec-nav--overlay,
     .ec-nav.ec-nav--overlay.ec-scrolled{
-      position:fixed;top:0;right:0;left:auto;bottom:0;width:auto;height:100vh;
+      position:fixed;top:0;left:0;right:0;bottom:auto;width:auto;height:auto;
       background:transparent!important;border:none!important;box-shadow:none!important;
     }
     .ec-nav--overlay .ec-nav-inner{
-      max-width:none;height:100%;padding:38px 40px;
-      flex-direction:column;justify-content:center;align-items:flex-end;
+      max-width:none;height:74px;padding:0 44px;
+      flex-direction:row;align-items:center;justify-content:flex-end;gap:22px;
+      position:relative;z-index:60;
     }
+    /* Right-aligned: wordmark then the menu icon, so from the right edge the
+       menu icon comes first, then the logo. */
+    .ec-nav--overlay .ec-toggle{display:block;order:1;position:relative;z-index:60;}
+    .ec-nav--overlay .ec-logo{position:relative;z-index:60;order:0;}
+    /* No inline desktop CTA; links stay hidden until the menu opens */
+    .ec-nav--overlay .ec-cta-d{display:none;}
+    .ec-nav--overlay .ec-links{display:none;}
 
-    /* Logo anchored top-right, CTA anchored bottom-right */
-    .ec-nav--overlay .ec-logo{position:absolute;top:30px;right:40px;}
-    .ec-nav--overlay .ec-cta-d{position:absolute;bottom:34px;right:40px;}
+    /* Per-section theming of the CLOSED bar (wordmark + hamburger lines) */
+    .ec-nav--overlay .ec-logo{transition:color .35s var(--ease);}
+    .ec-nav--overlay .ec-toggle span{transition:background .35s var(--ease),transform .3s ease,opacity .2s ease,top .3s ease,bottom .3s ease;}
+    body.nav-light .ec-nav--overlay .ec-logo{color:#fff!important;}
+    body.nav-light .ec-nav--overlay .ec-toggle span{background:#fff!important;}
+    body.nav-dark .ec-nav--overlay .ec-logo{color:var(--navy)!important;}
+    body.nav-dark .ec-nav--overlay .ec-toggle span{background:var(--navy)!important;}
 
-    /* Links stacked vertically, right-aligned */
-    .ec-nav--overlay .ec-links{
-      flex-direction:column;align-items:flex-end;gap:22px;
+    /* --- OPENED: full white page, links centered on both axes --- */
+    .ec-nav--overlay.is-open .ec-links{
+      display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;
+      position:fixed;inset:0;width:100vw;height:100vh;height:100dvh;
+      background:#fff;padding:130px 40px;z-index:40;
     }
-    .ec-nav--overlay .ec-links > a,
-    .ec-nav--overlay .ec-has-sub{align-self:flex-end;}
-    .ec-nav--overlay .ec-links a{
-      font-size:14px;font-weight:600;letter-spacing:.02em;
+    .ec-nav--overlay.is-open .ec-links a:not(.btn){
+      font-size:clamp(20px,2.4vw,30px);font-weight:600;letter-spacing:-0.015em;
+      color:var(--navy)!important;padding:8px 0;
     }
-
-    /* Legibility over alternating dark/light bands is handled by swapping
-       the text color per section (JS toggles body.nav-light / .nav-dark).
-       No mix-blend-mode here on purpose: a blend mode on a fixed element
-       makes it jitter/lag while scrolling. Only color transitions. */
-    .ec-nav--overlay .ec-logo,
-    .ec-nav--overlay .ec-links a:not(.btn),
-    .ec-nav--overlay .ec-has-sub > a .ec-caret{
-      transition:color .35s var(--ease);
+    .ec-nav--overlay.is-open .ec-links a:not(.btn):hover{color:var(--accent-deep)!important;}
+    /* Portfolio submenu shown inline + centered inside the overlay */
+    .ec-nav--overlay.is-open .ec-has-sub{flex-direction:column;align-items:center;}
+    .ec-nav--overlay.is-open .ec-has-sub > a .ec-caret{display:none;}
+    .ec-nav--overlay.is-open .ec-sub{
+      position:static;opacity:1;visibility:visible;transform:none;
+      background:none;border:none;box-shadow:none;min-width:0;padding:0;
     }
-    body.nav-light .ec-nav--overlay .ec-logo,
-    body.nav-light .ec-nav--overlay .ec-links a:not(.btn){color:#fff!important;}
-    body.nav-light .ec-nav--overlay .ec-has-sub > a .ec-caret{color:#fff;}
-    body.nav-dark .ec-nav--overlay .ec-logo,
-    body.nav-dark .ec-nav--overlay .ec-links a:not(.btn){color:var(--navy)!important;}
-    body.nav-dark .ec-nav--overlay .ec-has-sub > a .ec-caret{color:var(--navy);}
-    .ec-nav--overlay .ec-links a:not(.btn):hover{color:var(--accent)!important;}
+    .ec-nav--overlay.is-open .ec-sub a{font-size:16px;color:var(--ink-soft)!important;padding:6px 0;text-align:center;}
+    .ec-nav--overlay.is-open .ec-sub a:hover{color:var(--accent-deep)!important;}
+    /* CTA shown as a button inside the open menu */
+    .ec-nav--overlay .ec-cta-m{display:none;}
+    .ec-nav--overlay.is-open .ec-cta-m{display:inline-flex;margin-top:26px;}
 
-    /* Portfolio dropdown opens to the LEFT of the rail */
-    .ec-nav--overlay .ec-sub{
-      top:-8px;left:auto;right:calc(100% + 16px);mix-blend-mode:normal;
+    /* Over the white page, force the bar's icon + wordmark dark (beats theming) */
+    .ec-nav--overlay.is-open .ec-logo{color:var(--navy)!important;}
+    .ec-nav--overlay.is-open .ec-toggle span{background:var(--navy)!important;}
+
+    /* --- ON THE HERO: hide the menu icon, show the links bottom-right --- */
+    body.on-hero .ec-nav--overlay .ec-toggle{display:none;}
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-links{
+      display:flex;flex-direction:column;align-items:flex-end;gap:14px;
+      position:fixed;right:44px;bottom:40px;top:auto;left:auto;width:auto;height:auto;
+      background:transparent;padding:0;z-index:5;
     }
-    .ec-has-sub:hover .ec-sub{transform:translateX(0);}
-    .ec-nav--overlay .ec-sub{transform:translateX(6px);}
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-links a:not(.btn){
+      font-size:14px;font-weight:600;letter-spacing:.02em;color:#fff!important;padding:0;
+    }
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-links a:not(.btn):hover{color:var(--accent)!important;}
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-has-sub{align-items:flex-end;}
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-has-sub > a .ec-caret{color:#fff;}
+    /* Portfolio submenu opens to the LEFT so it doesn't drop off the bottom */
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-sub{
+      top:auto;bottom:-8px;left:auto;right:calc(100% + 14px);
+    }
+  }
 
-    /* Give page content breathing room from the rail + move the hero
-       index marker to the left so it doesn't sit under the nav. */
-    .hero-inner,.showcase-head,.h-progress{padding-right:150px;}
-    .hero-index{right:auto;left:40px;}
+  /* Stacked "curtain" panels — each section is a rounded panel that
+     rises over the previous one. z-index is assigned in JS by order so
+     every section paints above the one before it. */
+  .statement,.showcase,.strategy,.track,.approach,.principles-sec,.cta{
+    position:relative;border-radius:30px 30px 0 0;
+    box-shadow:0 -30px 70px -24px rgba(20,31,44,.5);
+  }
+  /* Curtain content panels fill the viewport with vertically-centered
+     content — this also makes the pin range exactly one screen, which
+     stops taller sections from reappearing after they're covered. */
+  .statement,.strategy,.track,.approach,.principles-sec,.cta{
+    position:sticky;top:0;
+    min-height:100vh;display:flex;flex-direction:column;justify-content:center;
+    padding-top:85px;padding-bottom:110px;
+  }
+  /* Footer must paint over the last sticky panel as it scrolls up, and fill
+     the whole screen so the bottom reads as a full-page footer (not a strip
+     sharing the screen with the stuck Contact panel). */
+  .ec-footer{position:relative;z-index:40;min-height:100vh;display:flex;flex-direction:column;justify-content:center;}
+  @media (max-width:640px){
+    .statement,.strategy,.track,.approach,.principles-sec,.cta{min-height:auto;}
+  }
+  /* Guiding Principles is taller than one screen so it "holds": the content
+     stays centered in the first screen (sticky) while the extra height gives
+     scroll room to reveal all rows BEFORE the News section rises over it. */
+  @media (min-width:641px){
+    .principles-sec{min-height:175vh;justify-content:flex-start;padding-top:0;padding-bottom:0;}
+    .principles-sec > .container{min-height:100vh;display:flex;flex-direction:column;justify-content:center;}
+  }
+  /* No stacked motion for reduced-motion users — plain document flow */
+  @media (prefers-reduced-motion:reduce){
+    .hero,.statement,.strategy,.track,.approach,.principles-sec,.cta{position:static;min-height:0;}
   }
 
   /* Section headings (everything except the hero h1) use weight 500 */
@@ -404,6 +486,44 @@
   .track h2,
   .approach-head h2,
   .cta h2{font-weight:500;}
+
+  /* ===================================================================
+     MOBILE: turn OFF the sticky "curtain". Every section flows normally
+     (full height, one after another) so nothing is half-cut or covered
+     before you can read it. (JS also skips the sticky scrubs ≤900px.)
+     Placed last so it overrides the sticky/tall-panel rules above.
+     =================================================================== */
+  @media (max-width:900px){
+    /* position:relative (NOT static) keeps sticky OFF while still giving each
+       section a positioning context, so absolutely-positioned backgrounds
+       (.hero-bg, .track-bg) stay clipped inside their section's overflow:hidden
+       instead of bleeding over the next section. */
+    .hero{position:relative;height:auto;min-height:100vh;}
+    .statement,.showcase,.strategy,.track,.approach,.principles-sec,.cta,.ec-footer{
+      position:relative;min-height:0;z-index:auto!important;
+      border-radius:0;box-shadow:none;
+    }
+    .statement,.strategy,.track,.approach,.principles-sec,.cta{
+      display:block;justify-content:normal;
+    }
+    .principles-sec,.principles-sec > .container{min-height:0;display:block;}
+    .ec-footer{min-height:0;display:block;}
+    /* rows are always visible on mobile (desktop reveals them one-by-one) */
+    .prow{opacity:1!important;transform:none!important;}
+    /* Strategy pillars stack in a single column, all four visible */
+    .pillars{display:block;border-top:1px solid var(--line);}
+    .pillar,.pillar + .pillar{border-left:none;padding:24px 0 24px 0;}
+    .pillar::before{display:none;}
+    /* Render the masked-reveal headings as plain inline text — the per-word
+       masks clip/overlap when the text wraps at small sizes. */
+    .mask{display:inline;overflow:visible;}
+    .mask > span{transform:none!important;opacity:1!important;}
+    /* Hero headline: looser line-height on mobile */
+    .hero h1{
+      font-weight:800;font-size:clamp(2.6rem,8.2vw,7.4rem);line-height:1.48;
+      letter-spacing:-0.035em;text-transform:uppercase;color:#fff;margin-bottom:34px;max-width:12ch;
+    }
+  }
 </style>
 </head>
 <body>
@@ -427,12 +547,12 @@
   <div class="hero-bg" id="heroBg"><img src="public/mountain_6.jpg" alt=""></div>
   <div class="hero-inner">
     <div class="hero-tag" data-hero="tag">EquitiFy Capital — Fuel &amp; QSR Real Estate</div>
-    <h1 data-split>Specialized capital for the corners America runs on</h1>
+    <h1 data-split>Capital for the corners America runs on</h1>
     <p class="hero-sub" data-hero="sub">We finance and acquire gas station and quick-service restaurant real estate — backing operators and owners with the capital and site-level expertise these assets demand.</p>
-    <div class="hero-actions" data-hero="actions">
+    <!-- <div class="hero-actions" data-hero="actions">
       <a href="#contact" class="btn btn-solid" data-cursor>Get in touch</a>
       <a href="#approach" class="btn btn-ghost-dark" data-cursor>See our approach</a>
-    </div>
+    </div> -->
   </div>
   <div class="hero-index">EST. 2026 — DFW, TX</div>
   <div class="hero-scroll"><span>Scroll</span><span class="line"></span></div>
@@ -621,22 +741,22 @@
 <section class="principles-sec">
   <div class="container">
     <div class="eyebrow">Guiding Principles</div>
-    <div class="prow" data-reveal>
+    <div class="prow">
       <div class="prow-idx">01</div>
       <div class="prow-title">Site Expertise</div>
       <div class="prow-desc">Deep knowledge of how a site actually performs — traffic, fuel volumes, and the unit-level economics generic lenders overlook.</div>
     </div>
-    <div class="prow" data-reveal>
+    <div class="prow">
       <div class="prow-idx">02</div>
       <div class="prow-title">Speed</div>
       <div class="prow-desc">Timelines that match how operators move, so a good site doesn't slip away while capital waits on committee.</div>
     </div>
-    <div class="prow" data-reveal>
+    <div class="prow">
       <div class="prow-idx">03</div>
       <div class="prow-title">Discipline</div>
       <div class="prow-desc">Consistent structure in how we deploy capital — conservative leverage, clear terms, and risk managed at the asset.</div>
     </div>
-    <div class="prow" data-reveal>
+    <div class="prow">
       <div class="prow-idx">04</div>
       <div class="prow-title">Integrity</div>
       <div class="prow-desc">Following through on exactly what we commit to, from first conversation through closing and beyond.</div>
@@ -644,19 +764,101 @@
   </div>
 </section>
 
+<!-- ===== NEWS & INSIGHTS (horizontal showcase) ===== -->
+<section class="showcase news-showcase">
+  <div class="showcase-head">
+    <div class="eyebrow on-dark">News &amp; Insights</div>
+    <h2 data-split>From the EquitiFy desk</h2>
+    <p data-reveal>Announcements, market insight, and press from across our fuel &amp; QSR real estate platform.</p>
+  </div>
+  <div class="h-pin">
+    <div class="h-track">
+      <article class="panel panel--news" data-cursor data-cursor-label="Read">
+        <div class="news-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-6v14L3 15v-4Z"/><path d="M7 15v5a2 2 0 0 0 2 2h1"/></svg> Announcement</div>
+        <div>
+          <div class="panel-num">01</div>
+          <h3 class="panel-title">EquitiFy Capital launches dedicated QSR acquisition program</h3>
+          <p class="panel-desc">Placeholder summary — to be replaced once the client confirms real press content for this section.</p>
+          <a href="#" class="text-link on-dark">Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="panel panel--news" data-cursor data-cursor-label="Read">
+        <div class="news-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.5.5.9 1.2 1 2h6c.1-.8.5-1.5 1-2A6 6 0 0 0 12 3Z"/></svg> Insight</div>
+        <div>
+          <div class="panel-num">02</div>
+          <h3 class="panel-title">What lenders miss when underwriting fuel real estate</h3>
+          <p class="panel-desc">Placeholder summary — to be replaced once the client confirms real press content for this section.</p>
+          <a href="#" class="text-link on-dark">Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="panel panel--news" data-cursor data-cursor-label="Read">
+        <div class="news-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v14H8l-4 4V4Z"/><path d="M8 9h8M8 12h5"/></svg> Press</div>
+        <div>
+          <div class="panel-num">03</div>
+          <h3 class="panel-title">EquitiFy closes financing on multi-site QSR portfolio</h3>
+          <p class="panel-desc">Placeholder summary — to be replaced once the client confirms real press content for this section.</p>
+          <a href="#" class="text-link on-dark">Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="panel panel--news" data-cursor data-cursor-label="Read">
+        <div class="news-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.5.5.9 1.2 1 2h6c.1-.8.5-1.5 1-2A6 6 0 0 0 12 3Z"/></svg> Insight</div>
+        <div>
+          <div class="panel-num">04</div>
+          <h3 class="panel-title">Reading fuel volumes: the metric generic lenders overlook</h3>
+          <p class="panel-desc">Placeholder summary — to be replaced once the client confirms real press content for this section.</p>
+          <a href="#" class="text-link on-dark">Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+      <article class="panel panel--news" data-cursor data-cursor-label="Read">
+        <div class="news-tag"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l18-6v14L3 15v-4Z"/><path d="M7 15v5a2 2 0 0 0 2 2h1"/></svg> Announcement</div>
+        <div>
+          <div class="panel-num">05</div>
+          <h3 class="panel-title">Expanding capital solutions for owner-operators nationwide</h3>
+          <p class="panel-desc">Placeholder summary — to be replaced once the client confirms real press content for this section.</p>
+          <a href="#" class="text-link on-dark">Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </article>
+    </div>
+  </div>
+  <div class="h-progress">
+    <div class="h-progress-bar"><span></span></div>
+    <div class="h-hint">Drag / Scroll to explore</div>
+  </div>
+</section>
+
 <!-- ===== CTA / CONTACT ===== -->
 <section class="cta" id="contact">
-  <div class="container">
-    <div class="eyebrow on-dark" style="justify-content:center;">Get in Touch</div>
-    <h2 data-split>Let's talk about your next <span class="accent-word">site</span></h2>
-    <p data-reveal>Whether you're acquiring a single location or financing a multi-site portfolio, we'd like to hear from you.</p>
-    <div class="cta-actions" data-reveal>
-      <a href="mailto:info@equitifycap.com" class="btn btn-solid" data-cursor>Start a conversation</a>
-      <a href="index.html#contact" class="btn btn-ghost-dark" data-cursor>Full contact form</a>
+  <div class="container cta-grid">
+    <div class="cta-intro">
+      <div class="eyebrow">Get in Touch</div>
+      <h2 data-split>Let's talk about your next <span class="accent-word">site</span></h2>
+      <p class="cta-lede" data-reveal>Whether you're acquiring a single location or financing a multi-site portfolio, we'd like to hear from you.</p>
+      <div class="cta-records" data-reveal>
+        <div class="cta-record">
+          <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22Z"/><circle cx="12" cy="9.5" r="2.4"/></svg></div>
+          <div><div class="lab">Office</div><div class="val">555 Republic Dr, Suite #525<br>Plano, TX 75074</div></div>
+        </div>
+        <div class="cta-record">
+          <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 6l8 7 8-7"/></svg></div>
+          <div><div class="lab">Email</div><a class="val" href="mailto:info@equitifycap.com">info@equitifycap.com</a></div>
+        </div>
+      </div>
     </div>
-    <div class="cta-meta" data-reveal>
-      <div><div class="lab">Office</div><div class="val">555 Republic Dr, Suite #525<br>Plano, TX 75074</div></div>
-      <div><div class="lab">Email</div><a class="val" href="mailto:info@equitifycap.com">info@equitifycap.com</a></div>
+    <div class="cta-form" data-reveal>
+      <form>
+        <div class="field-row">
+          <div><label>First Name</label><input type="text" placeholder="Jane"></div>
+          <div><label>Last Name</label><input type="text" placeholder="Doe"></div>
+        </div>
+        <div class="field-row">
+          <div><label>Email</label><input type="email" placeholder="jane@company.com"></div>
+          <div><label>Phone</label><input type="tel" placeholder="(555) 000-0000"></div>
+        </div>
+        <label>Message</label>
+        <textarea placeholder="Tell us about the site or portfolio you have in mind."></textarea>
+        <button type="button" class="btn btn-solid" data-cursor style="width:100%;justify-content:center;">Send message</button>
+        <p class="form-note">By submitting, you agree that EquitiFy Capital may contact you about this inquiry in accordance with our <a href="privacy/">Privacy Policy</a>.</p>
+      </form>
     </div>
   </div>
 </section>
@@ -698,16 +900,21 @@
     return el.querySelectorAll('.w');
   }
 
+  /* Only split headings into masked words on desktop. On mobile the masks
+     clip/overlap when text wraps, so leave the markup as plain text. */
+  var isDesktop = !!(window.matchMedia && window.matchMedia('(min-width:901px)').matches);
   var splitTargets = [];
-  document.querySelectorAll('[data-split]').forEach(function(el){
-    splitTargets.push({ el: el, words: splitWords(el) });
-    if(reduce){ el.querySelectorAll('.w').forEach(function(w){ w.style.transform='none'; }); }
-  });
-  // starting position (before reveal)
-  if(!reduce){
-    splitTargets.forEach(function(t){
-      window.gsap && gsap.set(t.words, {yPercent:110});
+  if(isDesktop){
+    document.querySelectorAll('[data-split]').forEach(function(el){
+      splitTargets.push({ el: el, words: splitWords(el) });
+      if(reduce){ el.querySelectorAll('.w').forEach(function(w){ w.style.transform='none'; }); }
     });
+    // starting position (before reveal)
+    if(!reduce){
+      splitTargets.forEach(function(t){
+        window.gsap && gsap.set(t.words, {yPercent:110});
+      });
+    }
   }
 
   /* --------------------------------------------------------------
@@ -763,13 +970,89 @@
        pinSpacing:false keeps the hero fixed with NO extra space, so the
        statement panel scrolls straight up and covers it. The hero scales
        up + darkens as it's covered, for depth. */
-    if(!reduce){
-      ScrollTrigger.create({ trigger:'.hero', start:'top top', end:'bottom top', pin:true, pinSpacing:false, anticipatePin:1 });
+    /* The sticky "curtain" stacking is a DESKTOP effect only. On mobile the
+       sections flow normally (see the max-width:900 CSS), so skip all the
+       sticky-dependent scrubs there — otherwise tall content gets clipped. */
+    var big = window.matchMedia('(min-width:901px)').matches;
+    if(!reduce && big){
       gsap.timeline({scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}})
         .to('#heroBg', {yPercent:12, scale:1.14, filter:'brightness(.5)', ease:'none'}, 0)
         .to('.hero-inner', {yPercent:-14, opacity:.15, ease:'none'}, 0)
         .to('.hero-scroll', {opacity:0, ease:'none'}, 0);
     }
+    /* ---- Stacked "curtain" via CSS position:sticky ----
+       The holding/overlap is pure CSS (each section sticks at the top and
+       the next scrolls over it) — no JS pinning, so nothing can miscalc or
+       duplicate. Here we only (a) assign z-index by DOM order so each panel
+       paints above the previous, (b) scrub a scale/fade on a panel as it's
+       covered, and (c) reveal the Principles rows one by one while it's held.
+       The horizontal showcases are skipped (they run their own pin). */
+    if(!reduce){
+      var panels = ['.statement','.showcase','.strategy','.track','.approach','.principles-sec','.news-showcase','.cta'];
+      panels.forEach(function(sel, i){
+        var sec = document.querySelector(sel);
+        if(!sec) return;
+        sec.style.zIndex = (i + 1);
+        if(!big) return;                                    // mobile: normal flow, no curtain effects
+        if(sel === '.showcase' || sel === '.news-showcase' || sel === '.cta') return;
+
+        if(sel === '.principles-sec'){
+          /* Reveal the rows one by one, driven by a VIEWPORT-relative measure
+             (the next section's on-screen position) rather than scrollY —
+             sticky freezes the section and Lenis can decouple scrollY, but
+             getBoundingClientRect always reflects what's actually on screen.
+             The next section (News) sits one screen below and rises up as we
+             scroll through the stuck Principles panel: its top goes from the
+             viewport bottom (p=0, just stuck) to the top (p=1, fully covered). */
+          var prows = gsap.utils.toArray('.prow', sec);
+          var n = prows.length;
+          var nextSec = sec.nextElementSibling;            // the News section
+          gsap.set(prows, {opacity:0, y:64});
+          var pTick = false;
+          var updateP = function(){
+            pTick = false;
+            var vh = window.innerHeight;
+            /* scrolledPast = how far we've scrolled since the panel stuck.
+               It's 0 the moment it sticks (News top == panel height) and grows
+               as we scroll through the tall hold. News only ENTERS the viewport
+               at scrolledPast = height - vh, so revealing over the first ~0.6vh
+               guarantees every row is in well before News appears. */
+            var scrolledPast = nextSec
+              ? (sec.offsetHeight - nextSec.getBoundingClientRect().top)
+              : (vh - sec.getBoundingClientRect().bottom);
+            var p = scrolledPast / (vh * 0.6);
+            for(var k=0;k<n;k++){
+              var t = (p * n) - k;                         // row k reveals over its slice
+              t = t < 0 ? 0 : (t > 1 ? 1 : t);
+              gsap.set(prows[k], {opacity:t, y:64 * (1 - t)});
+            }
+          };
+          window.addEventListener('scroll', function(){ if(!pTick){ requestAnimationFrame(updateP); pTick = true; } }, {passive:true});
+          window.addEventListener('resize', updateP, {passive:true});
+          updateP();
+        } else {
+          /* Cover-fade driven by the next section's on-screen position — the
+             panel stays FULL opacity while it's the focused/top panel and only
+             fades+shrinks as the next section actually rises over it. (Scrubbing
+             this off the sticky element mis-measures and leaves it faded in view.) */
+          var inner = sec.querySelector('.container') || sec;
+          var next = sec.nextElementSibling;
+          if(next){
+            var cTick = false;
+            var updateC = function(){
+              cTick = false;
+              var p = 1 - (next.getBoundingClientRect().top / window.innerHeight);
+              p = p < 0 ? 0 : (p > 1 ? 1 : p);
+              gsap.set(inner, {opacity:1 - 0.5 * p, scale:1 - 0.04 * p});
+            };
+            window.addEventListener('scroll', function(){ if(!cTick){ requestAnimationFrame(updateC); cTick = true; } }, {passive:true});
+            window.addEventListener('resize', updateC, {passive:true});
+            updateC();
+          }
+        }
+      });
+    }
+
     gsap.to('#trackBg', {yPercent:14, ease:'none', scrollTrigger:{trigger:'.track', start:'top bottom', end:'bottom top', scrub:true}});
 
     /* ---- Scroll-reveal: [data-split] headlines (non-hero) ---- */
@@ -789,11 +1072,12 @@
       });
     });
 
-    /* ---- Horizontal pinned showcase ---- */
-    var track = document.getElementById('hTrack');
-    var pin = document.getElementById('hPin');
-    var bar = document.getElementById('hBar');
-    if(track && pin){
+    /* ---- Horizontal pinned showcases (What We Finance + News) ---- */
+    gsap.utils.toArray('.showcase').forEach(function(showcase){
+      var track = showcase.querySelector('.h-track');
+      var pin = showcase.querySelector('.h-pin');
+      var bar = showcase.querySelector('.h-progress-bar span');
+      if(!track || !pin) return;
       var getScrollX = function(){ return Math.max(0, track.scrollWidth - pin.clientWidth); };
       gsap.to(track, {
         x: function(){ return -getScrollX(); },
@@ -805,7 +1089,7 @@
           onUpdate:function(self){ if(bar) bar.style.width = (self.progress*100)+'%'; }
         }
       });
-    }
+    });
 
     /* ---- Counters ---- */
     gsap.utils.toArray('.count').forEach(function(el){
@@ -883,25 +1167,20 @@
      so the nav never uses a scroll-reactive blend mode (no jitter).
      -------------------------------------------------------------- */
   function navTheme(){
-    var zones = [];
-    [['.hero',1],['.marquee',1],['.showcase',1],['.track',1],['.cta',1],['.ec-footer',1],
-     ['.statement',0],['.strategy',0],['.approach',0],['.principles-sec',0]]
-      .forEach(function(pair){
-        var el = document.querySelector(pair[0]);
-        if(el) zones.push({el:el, dark:!!pair[1]});
-      });
-    if(!zones.length) return;
+    /* Light-background sections → nav needs dark text. With sticky panels
+       stacking on top of each other, geometry can't tell which is visible,
+       so we probe what's actually painted at the rail's mid-height and read
+       that section's theme. Probe on the LEFT edge (rail is on the right). */
+    var LIGHT = '.statement,.strategy,.approach,.principles-sec,.cta';
     var ticking = false;
     function update(){
-      var y = window.innerHeight * 0.5;
-      var isDark = true;                       // default = hero (dark)
-      for(var i=0;i<zones.length;i++){
-        var r = zones[i].el.getBoundingClientRect();
-        if(r.top <= y && r.bottom > y){ isDark = zones[i].dark; break; }
-      }
+      ticking = false;
+      var el = document.elementFromPoint(60, window.innerHeight * 0.5);
+      var sec = el ? el.closest('section, .ec-footer, footer') : null;
+      var isDark = !(sec && sec.matches(LIGHT));
       document.body.classList.toggle('nav-light', isDark);
       document.body.classList.toggle('nav-dark', !isDark);
-      ticking = false;
+      document.body.classList.toggle('on-hero', !!(sec && sec.matches('.hero')));
     }
     function onScroll(){ if(!ticking){ requestAnimationFrame(update); ticking = true; } }
     window.addEventListener('scroll', onScroll, {passive:true});
