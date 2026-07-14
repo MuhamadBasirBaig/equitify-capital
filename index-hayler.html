@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EquitiFy Capital — Specialized Capital for Fuel &amp; QSR Real Estate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<script src="site.js" defer></script>
+
+<!-- Motion stack: GSAP + ScrollTrigger + Lenis smooth scroll (the Hayler engine) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+
+<style>
+  :root{
+    --ink:#33465C;
+    --ink-soft:#6C7C8D;
+    --navy:#1B2A3B;
+    --navy-deep:#141F2C;
+    --accent:#51BAFF;
+    --accent-deep:#2A93E6;
+    --accent-on-dark:#6FC5FF;
+    --accent-tint:#EAF4FF;
+    --line:#E1E5EA;
+    --line-on-dark:#2B3B4E;
+    --bg:#FFFFFF;
+    --bg-tint:#F5F7F9;
+    --ink-on-navy:#AEB9C6;
+    --radius:4px;
+    --radius-chip:6px;
+    --ease:cubic-bezier(.19,1,.22,1);
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:auto;}   /* Lenis owns scrolling */
+  body{
+    font-family:'Libre Franklin',sans-serif;background:var(--navy-deep);color:var(--ink);
+    overflow-x:hidden;
+  }
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  svg{display:block;}
+  .container{max-width:1140px;margin:0 auto;padding:0 40px;}
+
+  /* Hide native cursor on devices that support the custom one */
+  @media (hover:hover) and (pointer:fine){
+    body{cursor:none;}
+    a,button,[data-cursor]{cursor:none;}
+  }
+
+  /* ===================================================================
+     PRELOADER — counter + full-screen wipe (Hayler intro)
+     =================================================================== */
+  .preloader{
+    position:fixed;inset:0;z-index:9999;background:var(--navy-deep);
+    display:flex;align-items:flex-end;justify-content:space-between;
+    padding:48px 40px;overflow:hidden;
+  }
+  .pre-word{
+    font-size:clamp(40px,9vw,120px);font-weight:800;letter-spacing:-0.03em;
+    text-transform:uppercase;color:#fff;line-height:.9;overflow:hidden;
+  }
+  .pre-word span{display:inline-block;transform:translateY(105%);}
+  .pre-count{
+    font-size:clamp(40px,9vw,120px);font-weight:800;letter-spacing:-0.03em;color:var(--accent);
+    line-height:.9;font-variant-numeric:tabular-nums;
+  }
+  .pre-bar{position:absolute;left:0;bottom:0;height:2px;width:0;background:var(--accent);}
+
+  /* ===================================================================
+     CUSTOM CURSOR
+     =================================================================== */
+  .cursor{
+    position:fixed;top:0;left:0;z-index:9000;pointer-events:none;
+    width:8px;height:8px;border-radius:50%;background:var(--accent);
+    transform:translate(-50%,-50%);mix-blend-mode:difference;
+  }
+  .cursor-ring{
+    position:fixed;top:0;left:0;z-index:8999;pointer-events:none;
+    width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.5);
+    transform:translate(-50%,-50%);
+    display:flex;align-items:center;justify-content:center;
+    font-size:10px;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:#fff;
+    transition:width .3s var(--ease),height .3s var(--ease),background .3s var(--ease),border-color .3s var(--ease);
+  }
+  .cursor-ring .clabel{opacity:0;transition:opacity .2s ease;}
+  body.cursor-hover .cursor-ring{width:72px;height:72px;background:rgba(81,186,255,.16);border-color:var(--accent);}
+  body.cursor-view .cursor-ring{width:88px;height:88px;background:var(--accent);border-color:var(--accent);}
+  body.cursor-view .cursor-ring .clabel{opacity:1;}
+  body.cursor-view .cursor{opacity:0;}
+  @media (hover:none),(pointer:coarse){.cursor,.cursor-ring{display:none!important;}}
+
+  /* ===================================================================
+     SHARED TYPE UTILITIES
+     =================================================================== */
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:10px;
+    font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--accent-deep);margin-bottom:22px;
+  }
+  .eyebrow::before{content:"";width:26px;height:1px;background:currentColor;}
+  .eyebrow.on-dark{color:var(--accent-on-dark);}
+
+  /* Masked word reveal — each word rides up out of a clip mask */
+  .mask{overflow:hidden;display:inline-block;vertical-align:top;}
+  .mask > span{display:inline-block;will-change:transform;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:9px;
+    font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:16px 30px;border-radius:60px;border:1px solid var(--navy);
+    background:transparent;color:var(--navy);transition:all .3s var(--ease);
+  }
+  .btn:hover{background:var(--navy);color:#fff;}
+  .btn-solid{background:var(--accent-deep);color:#fff;border-color:var(--accent-deep);}
+  .btn-solid:hover{background:#1F7FCB;border-color:#1F7FCB;}
+  .btn-ghost-dark{border-color:rgba(255,255,255,.32);color:#fff;}
+  .btn-ghost-dark:hover{background:#fff;color:var(--navy);}
+
+  .text-link{
+    display:inline-flex;align-items:center;gap:8px;position:relative;
+    font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--accent-deep);
+  }
+  .text-link svg{width:15px;height:15px;transition:transform .3s var(--ease);}
+  .text-link:hover svg{transform:translateX(4px);}
+  .text-link.on-dark{color:var(--accent-on-dark);}
+
+  .icon-chip{
+    width:48px;height:48px;border-radius:var(--radius-chip);background:var(--accent-tint);
+    display:flex;align-items:center;justify-content:center;color:var(--accent-deep);flex-shrink:0;
+  }
+  .icon-chip.on-dark{background:rgba(81,186,255,.14);color:var(--accent-on-dark);}
+  .icon-chip svg{width:23px;height:23px;}
+
+  /* Generic scroll-reveal target (JS animates .reveal children) */
+  [data-reveal]{opacity:0;}
+
+  /* ===================================================================
+     HERO
+     =================================================================== */
+  .hero{position:relative;height:100vh;min-height:660px;overflow:hidden;background:var(--navy-deep);z-index:0;}
+  .hero-bg{position:absolute;inset:-8% 0;z-index:0;will-change:transform;}
+  .hero-bg img{width:100%;height:116%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg,rgba(20,31,44,.62) 0%,rgba(20,31,44,.38) 40%,rgba(20,31,44,.72) 100%);
+  }
+  .hero-inner{
+    position:relative;z-index:2;height:100%;max-width:1240px;margin:0 auto;padding:0 40px;
+    display:flex;flex-direction:column;justify-content:center;
+  }
+  .hero-tag{
+    font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-on-dark);
+    margin-bottom:30px;
+  }
+  .hero h1{
+    font-weight:800;font-size:clamp(2.6rem,8.2vw,7.4rem);line-height:.98;letter-spacing:-0.035em;
+    text-transform:uppercase;color:#fff;margin-bottom:34px;max-width:12ch;
+  }
+  .hero h1 .accent-word{color:var(--accent);}
+  .hero-sub{font-size:clamp(15px,1.4vw,17px);line-height:1.7;color:rgba(255,255,255,.82);max-width:440px;margin-bottom:40px;}
+  .hero-actions{display:flex;gap:14px;flex-wrap:wrap;}
+
+  .hero-scroll{
+    position:absolute;left:50%;bottom:34px;z-index:3;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:12px;
+    font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.75);
+  }
+  .hero-scroll .line{width:1px;height:52px;background:rgba(255,255,255,.35);position:relative;overflow:hidden;}
+  .hero-scroll .line::after{content:"";position:absolute;top:-60%;left:0;width:100%;height:60%;background:var(--accent);animation:scrollLine 1.8s var(--ease) infinite;}
+  @keyframes scrollLine{0%{top:-60%;}60%,100%{top:100%;}}
+
+  .hero-index{
+    position:absolute;right:40px;top:50%;transform:translateY(-50%);z-index:3;
+    writing-mode:vertical-rl;font-size:12px;font-weight:700;letter-spacing:.2em;color:rgba(255,255,255,.6);
+  }
+
+  /* ===================================================================
+     MARQUEE
+     =================================================================== */
+  .marquee{
+    background:var(--navy-deep);border-top:1px solid var(--line-on-dark);border-bottom:1px solid var(--line-on-dark);
+    padding:30px 0;overflow:hidden;white-space:nowrap;
+  }
+  .marquee-track{display:inline-flex;align-items:center;gap:0;will-change:transform;}
+  .marquee-item{
+    font-size:clamp(28px,4.4vw,58px);font-weight:800;letter-spacing:-0.02em;text-transform:uppercase;
+    color:#fff;padding:0 30px;display:inline-flex;align-items:center;gap:44px;
+  }
+  .marquee-item::after{content:"";width:14px;height:14px;border-radius:50%;background:var(--accent);flex-shrink:0;}
+  .marquee-item.outline{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.5);}
+
+  /* ===================================================================
+     INTRO / STATEMENT
+     =================================================================== */
+  .statement{
+    background:var(--bg);padding:150px 0;
+    position:relative;z-index:1;border-radius:30px 30px 0 0;
+    box-shadow:0 -30px 70px -24px rgba(20,31,44,.5);
+  }
+  .statement-grid{display:grid;grid-template-columns:0.4fr 0.6fr;gap:60px;align-items:start;}
+  .statement-lead{
+    font-size:clamp(1.5rem,2.9vw,2.5rem);font-weight:400;line-height:1.28;letter-spacing:-0.02em;color:var(--navy);
+  }
+  .statement-lead b{font-weight:700;}
+  .statement-lead .hl{color:var(--accent-deep);}
+  .statement-body p{font-size:15px;line-height:1.9;color:var(--ink-soft);margin-bottom:18px;}
+  .statement-body p:last-child{margin-bottom:0;}
+  .statement-side .eyebrow{margin-bottom:0;}
+
+  /* ===================================================================
+     HORIZONTAL PINNED SHOWCASE
+     =================================================================== */
+  .showcase{background:var(--navy-deep);position:relative;overflow:hidden;}
+  .showcase-head{max-width:1240px;margin:0 auto;padding:110px 40px 0;}
+  .showcase-head h2{font-size:clamp(2rem,5vw,4rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1;color:#fff;}
+  .showcase-head p{color:var(--ink-on-navy);font-size:15px;line-height:1.8;max-width:520px;margin-top:20px;}
+  .h-pin{height:100vh;display:flex;align-items:center;overflow:hidden;}
+  .h-track{display:flex;gap:40px;padding:0 40px;will-change:transform;}
+  .panel{
+    position:relative;flex:0 0 clamp(320px,44vw,620px);height:64vh;border-radius:6px;overflow:hidden;
+    border:1px solid var(--line-on-dark);
+  }
+  .panel img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease);}
+  .panel:hover img{transform:scale(1.06);}
+  .panel::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,rgba(20,31,44,0) 30%,rgba(20,31,44,.85) 100%);}
+  .panel-body{position:absolute;left:0;bottom:0;z-index:2;padding:36px;}
+  .panel-num{font-size:12px;font-weight:700;letter-spacing:.2em;color:var(--accent-on-dark);margin-bottom:12px;}
+  .panel-title{font-size:clamp(1.4rem,2.4vw,2rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.02em;line-height:1.02;color:#fff;margin-bottom:10px;}
+  .panel-desc{font-size:13.5px;line-height:1.7;color:rgba(255,255,255,.8);max-width:340px;}
+  .h-progress{max-width:1240px;margin:0 auto;padding:0 40px 110px;}
+  .h-progress-bar{height:2px;background:var(--line-on-dark);position:relative;}
+  .h-progress-bar span{position:absolute;left:0;top:0;height:100%;width:0;background:var(--accent);}
+  .h-hint{margin-top:18px;font-size:11px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-on-navy);}
+
+  /* ===================================================================
+     STRATEGY PILLARS
+     =================================================================== */
+  .strategy{background:var(--bg);padding:150px 0;}
+  .strategy-head{max-width:640px;margin-bottom:64px;}
+  .strategy-head h2{font-size:clamp(2rem,4.6vw,3.6rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.02;color:var(--navy);margin-bottom:20px;}
+  .strategy-head p{font-size:15px;line-height:1.85;color:var(--ink-soft);}
+  .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);}
+  .pillar{padding:40px 30px 40px 0;border-bottom:1px solid var(--line);position:relative;transition:padding-left .35s var(--ease);}
+  .pillar + .pillar{border-left:1px solid var(--line);padding-left:30px;}
+  .pillar-idx{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--accent-deep);margin-bottom:26px;}
+  .pillar-title{font-size:18px;font-weight:700;color:var(--navy);line-height:1.25;margin:18px 0 12px;}
+  .pillar-desc{font-size:13.5px;line-height:1.75;color:var(--ink-soft);}
+  .pillar::before{content:"";position:absolute;left:0;bottom:-1px;width:0;height:2px;background:var(--accent);transition:width .4s var(--ease);}
+  .pillar:hover::before{width:100%;}
+
+  /* ===================================================================
+     TRACK RECORD — dark band with counters
+     =================================================================== */
+  .track{position:relative;overflow:hidden;background:var(--navy-deep);padding:150px 0;}
+  .track-bg{position:absolute;inset:-10% 0;z-index:0;will-change:transform;}
+  .track-bg img{width:100%;height:120%;object-fit:cover;opacity:.28;}
+  .track::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(20,31,44,.86),rgba(20,31,44,.82));}
+  .track .container{position:relative;z-index:1;}
+  .track h2{font-size:clamp(2rem,4.6vw,3.6rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.02;color:#fff;margin-bottom:22px;max-width:14ch;}
+  .track-lead{font-size:15px;line-height:1.85;color:var(--ink-on-navy);max-width:620px;}
+  .track-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:70px;}
+  .track-stat{border-top:1px solid var(--line-on-dark);padding-top:26px;}
+  .track-num{font-size:clamp(2.4rem,4.4vw,3.4rem);font-weight:800;color:#fff;letter-spacing:-0.03em;line-height:1;}
+  .track-num .suf{color:var(--accent);}
+  .track-cap{margin-top:14px;font-size:13px;color:var(--ink-on-navy);line-height:1.55;}
+
+  /* ===================================================================
+     APPROACH
+     =================================================================== */
+  .approach{background:var(--bg-tint);padding:150px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .approach-head{max-width:680px;margin-bottom:60px;}
+  .approach-head h2{font-size:clamp(2rem,4.6vw,3.6rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.02;color:var(--navy);}
+  .stages{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .stage{background:#fff;border:1px solid var(--line);border-radius:6px;padding:40px 32px;transition:transform .4s var(--ease),box-shadow .4s var(--ease),border-color .4s var(--ease);}
+  .stage:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 24px 50px -24px rgba(20,31,44,.35);}
+  .stage-num{font-size:13px;font-weight:800;letter-spacing:.1em;color:var(--accent-deep);}
+  .stage-label{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin:22px 0 8px;}
+  .stage-title{font-size:20px;font-weight:700;color:var(--navy);margin-bottom:14px;}
+  .stage-desc{font-size:13.5px;line-height:1.8;color:var(--ink-soft);}
+
+  /* ===================================================================
+     PRINCIPLES — big list rows
+     =================================================================== */
+  .principles-sec{background:var(--bg);padding:150px 0;}
+  .principles-sec .eyebrow{margin-bottom:40px;}
+  .prow{
+    display:grid;grid-template-columns:80px 1fr 1.1fr;gap:30px;align-items:center;
+    padding:38px 0;border-top:1px solid var(--line);transition:padding-left .4s var(--ease);
+  }
+  .prow:last-child{border-bottom:1px solid var(--line);}
+  .prow:hover{padding-left:22px;}
+  .prow-idx{font-size:13px;font-weight:800;color:var(--accent-deep);}
+  .prow-title{font-size:clamp(1.5rem,3vw,2.4rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.02em;color:var(--navy);line-height:1;transition:color .3s var(--ease);}
+  .prow:hover .prow-title{color:var(--accent-deep);}
+  .prow-desc{font-size:14.5px;line-height:1.8;color:var(--ink-soft);}
+
+  /* ===================================================================
+     CONTACT / CTA
+     =================================================================== */
+  .cta{background:var(--navy-deep);padding:150px 0;text-align:center;position:relative;overflow:hidden;}
+  .cta h2{font-size:clamp(2.4rem,7vw,6rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.035em;line-height:.98;color:#fff;margin-bottom:36px;}
+  .cta h2 .accent-word{color:var(--accent);}
+  .cta p{font-size:16px;line-height:1.8;color:var(--ink-on-navy);max-width:480px;margin:0 auto 44px;}
+  .cta-actions{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+  .cta-meta{margin-top:70px;display:flex;gap:60px;justify-content:center;flex-wrap:wrap;}
+  .cta-meta .lab{font-size:11px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-on-navy);margin-bottom:10px;}
+  .cta-meta .val{font-size:15px;color:#fff;line-height:1.6;}
+  .cta-meta a.val:hover{color:var(--accent);}
+
+  /* ===================================================================
+     RESPONSIVE
+     =================================================================== */
+  @media (max-width:1000px){
+    .statement-grid{grid-template-columns:1fr;gap:40px;}
+    .pillars{grid-template-columns:1fr 1fr;}
+    .pillar,.pillar + .pillar{border-left:none;padding-left:0;}
+    .pillar + .pillar{border-left:none;}
+    .track-stats{grid-template-columns:1fr 1fr;gap:36px;}
+    .stages{grid-template-columns:1fr;}
+    .prow{grid-template-columns:40px 1fr;gap:16px;}
+    .prow-desc{grid-column:1 / -1;padding-left:56px;}
+  }
+  @media (max-width:640px){
+    .container{padding:0 24px;}
+    .statement,.strategy,.track,.approach,.principles-sec,.cta{padding:96px 0;}
+    .pillars{grid-template-columns:1fr;}
+    .track-stats{grid-template-columns:1fr;}
+    .hero-index{display:none;}
+    .h-track{gap:20px;}
+    .panel{height:56vh;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .hero-scroll .line::after{animation:none;}
+  }
+
+  /* ===================================================================
+     VERTICAL RIGHT-SIDE NAV — overrides the shared <site-header> for
+     THIS page only (site.css/site.js stay untouched → other pages keep
+     their top bar). Desktop only; mobile falls back to the hamburger.
+     =================================================================== */
+  @media (min-width:901px){
+    /* Fixed rail pinned to the right edge, full height */
+    .ec-nav.ec-nav--overlay,
+    .ec-nav.ec-nav--overlay.ec-scrolled{
+      position:fixed;top:0;right:0;left:auto;bottom:0;width:auto;height:100vh;
+      background:transparent!important;border:none!important;box-shadow:none!important;
+    }
+    .ec-nav--overlay .ec-nav-inner{
+      max-width:none;height:100%;padding:38px 40px;
+      flex-direction:column;justify-content:center;align-items:flex-end;
+    }
+
+    /* Logo anchored top-right, CTA anchored bottom-right */
+    .ec-nav--overlay .ec-logo{position:absolute;top:30px;right:40px;}
+    .ec-nav--overlay .ec-cta-d{position:absolute;bottom:34px;right:40px;}
+
+    /* Links stacked vertically, right-aligned */
+    .ec-nav--overlay .ec-links{
+      flex-direction:column;align-items:flex-end;gap:22px;
+    }
+    .ec-nav--overlay .ec-links > a,
+    .ec-nav--overlay .ec-has-sub{align-self:flex-end;}
+    .ec-nav--overlay .ec-links a{
+      font-size:14px;font-weight:600;letter-spacing:.02em;
+    }
+
+    /* Legibility over alternating dark/light bands is handled by swapping
+       the text color per section (JS toggles body.nav-light / .nav-dark).
+       No mix-blend-mode here on purpose: a blend mode on a fixed element
+       makes it jitter/lag while scrolling. Only color transitions. */
+    .ec-nav--overlay .ec-logo,
+    .ec-nav--overlay .ec-links a:not(.btn),
+    .ec-nav--overlay .ec-has-sub > a .ec-caret{
+      transition:color .35s var(--ease);
+    }
+    body.nav-light .ec-nav--overlay .ec-logo,
+    body.nav-light .ec-nav--overlay .ec-links a:not(.btn){color:#fff!important;}
+    body.nav-light .ec-nav--overlay .ec-has-sub > a .ec-caret{color:#fff;}
+    body.nav-dark .ec-nav--overlay .ec-logo,
+    body.nav-dark .ec-nav--overlay .ec-links a:not(.btn){color:var(--navy)!important;}
+    body.nav-dark .ec-nav--overlay .ec-has-sub > a .ec-caret{color:var(--navy);}
+    .ec-nav--overlay .ec-links a:not(.btn):hover{color:var(--accent)!important;}
+
+    /* Portfolio dropdown opens to the LEFT of the rail */
+    .ec-nav--overlay .ec-sub{
+      top:-8px;left:auto;right:calc(100% + 16px);mix-blend-mode:normal;
+    }
+    .ec-has-sub:hover .ec-sub{transform:translateX(0);}
+    .ec-nav--overlay .ec-sub{transform:translateX(6px);}
+
+    /* Give page content breathing room from the rail + move the hero
+       index marker to the left so it doesn't sit under the nav. */
+    .hero-inner,.showcase-head,.h-progress{padding-right:150px;}
+    .hero-index{right:auto;left:40px;}
+  }
+
+  /* Section headings (everything except the hero h1) use weight 500 */
+  .showcase-head h2,
+  .strategy-head h2,
+  .track h2,
+  .approach-head h2,
+  .cta h2{font-weight:500;}
+</style>
+</head>
+<body>
+
+<!-- ===== PRELOADER ===== -->
+<div class="preloader" id="preloader" aria-hidden="true">
+  <div class="pre-word"><span>EquitiFy</span></div>
+  <div class="pre-count" id="preCount">0</div>
+  <div class="pre-bar" id="preBar"></div>
+</div>
+
+<!-- ===== CUSTOM CURSOR ===== -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"><span class="clabel" id="clabel">View</span></div>
+
+<!-- ===== NAV (shared component) ===== -->
+<site-header base="" active="story" overlay></site-header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-bg" id="heroBg"><img src="public/mountain_6.jpg" alt=""></div>
+  <div class="hero-inner">
+    <div class="hero-tag" data-hero="tag">EquitiFy Capital — Fuel &amp; QSR Real Estate</div>
+    <h1 data-split>Specialized capital for the corners America runs on</h1>
+    <p class="hero-sub" data-hero="sub">We finance and acquire gas station and quick-service restaurant real estate — backing operators and owners with the capital and site-level expertise these assets demand.</p>
+    <div class="hero-actions" data-hero="actions">
+      <a href="#contact" class="btn btn-solid" data-cursor>Get in touch</a>
+      <a href="#approach" class="btn btn-ghost-dark" data-cursor>See our approach</a>
+    </div>
+  </div>
+  <div class="hero-index">EST. 2026 — DFW, TX</div>
+  <div class="hero-scroll"><span>Scroll</span><span class="line"></span></div>
+</section>
+
+<!-- ===== MARQUEE ===== -->
+<!--
+<div class="marquee" aria-hidden="true">
+  <div class="marquee-track" id="marquee">
+    <span class="marquee-item">Fuel Retail</span>
+    <span class="marquee-item outline">QSR Real Estate</span>
+    <span class="marquee-item">Net-Lease Capital</span>
+    <span class="marquee-item outline">Operator Financing</span>
+    <span class="marquee-item">Fuel Retail</span>
+    <span class="marquee-item outline">QSR Real Estate</span>
+    <span class="marquee-item">Net-Lease Capital</span>
+    <span class="marquee-item outline">Operator Financing</span>
+  </div>
+</div>
+-->
+
+
+<!-- ===== STATEMENT / WHO WE ARE ===== -->
+<section class="statement">
+  <div class="container statement-grid">
+    <div class="statement-side" data-reveal>
+      <div class="eyebrow">Who We Are</div>
+    </div>
+    <div>
+      <p class="statement-lead" data-split>
+        A principal-led real estate firm built on <b class="hl">unit-level economics</b> — we underwrite location, tenant, and the cash flow an asset actually produces, not market momentum.
+      </p>
+      <div class="statement-body" style="margin-top:40px;" data-reveal>
+        <p>EquitiFy Capital is a privately held real estate investment and asset management firm focused on net-leased retail and fuel-retail commercial real estate across the United States. We acquire, develop, and manage single- and multi-tenant retail assets — with particular depth in convenience-store and fuel-retail properties.</p>
+        <p>Headquartered in the Dallas–Fort Worth area, we pair the speed and hands-on focus of a boutique firm with the underwriting discipline and risk management of an institutional platform.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HORIZONTAL PINNED SHOWCASE ===== -->
+<section class="showcase">
+  <div class="showcase-head">
+    <div class="eyebrow on-dark">What We Finance</div>
+    <h2 data-split>Assets built around real demand</h2>
+    <p data-reveal>From high-volume fuel corridors to national QSR brands — we structure capital around the site, the tenant, and the way these businesses actually run.</p>
+  </div>
+  <div class="h-pin" id="hPin">
+    <div class="h-track" id="hTrack">
+      <article class="panel" data-cursor data-cursor-label="View">
+        <img src="public/gas-blue3.jpg" alt="Fuel retail site">
+        <div class="panel-body">
+          <div class="panel-num">01 — Acquisition</div>
+          <div class="panel-title">Fuel &amp; C-Store</div>
+          <p class="panel-desc">Capital to acquire gas station real estate, structured around fuel brand agreements and site-level cash flow.</p>
+        </div>
+      </article>
+      <article class="panel" data-cursor data-cursor-label="View">
+        <img src="public/restraunt-4.jpg" alt="Quick-service restaurant">
+        <div class="panel-body">
+          <div class="panel-num">02 — Acquisition</div>
+          <div class="panel-title">QSR Real Estate</div>
+          <p class="panel-desc">Net-leased quick-service restaurant properties backed by creditworthy operators and durable tenancy.</p>
+        </div>
+      </article>
+      <article class="panel" data-cursor data-cursor-label="View">
+        <img src="public/gas-blue4.png" alt="Operator financing">
+        <div class="panel-body">
+          <div class="panel-num">03 — Financing</div>
+          <div class="panel-title">Operator Growth</div>
+          <p class="panel-desc">Financing for owner-operators expanding portfolios, with terms built around running a fuel or QSR business.</p>
+        </div>
+      </article>
+      <article class="panel" data-cursor data-cursor-label="View">
+        <img src="public/restraunt-2.jpg" alt="Net-leased retail">
+        <div class="panel-body">
+          <div class="panel-num">04 — Portfolio</div>
+          <div class="panel-title">Net-Lease Retail</div>
+          <p class="panel-desc">Well-located single- and multi-tenant retail with defensible cash flow and long-term net leases.</p>
+        </div>
+      </article>
+    </div>
+  </div>
+  <div class="h-progress">
+    <div class="h-progress-bar"><span id="hBar"></span></div>
+    <div class="h-hint">Drag / Scroll to explore</div>
+  </div>
+</section>
+
+<!-- ===== STRATEGY ===== -->
+<section class="strategy">
+  <div class="container">
+    <div class="strategy-head">
+      <div class="eyebrow">Our Strategy</div>
+      <h2 data-split>Focused on durable, well-located assets</h2>
+      <p data-reveal>We target net-leased retail and industrial assets and neighborhood retail centers with durable tenancy and defensible cash flow.</p>
+    </div>
+    <div class="pillars">
+      <div class="pillar" data-reveal>
+        <div class="pillar-idx">01</div>
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M7 21v-7M12 21V6M17 21v-4"/></svg></div>
+        <div class="pillar-title">Location &amp; unit-level performance</div>
+        <div class="pillar-desc">Assets underwritten on real, property-level economics.</div>
+      </div>
+      <div class="pillar" data-reveal>
+        <div class="pillar-idx">02</div>
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></div>
+        <div class="pillar-title">Credit &amp; lease structure</div>
+        <div class="pillar-desc">Long-term net leases with creditworthy operators.</div>
+      </div>
+      <div class="pillar" data-reveal>
+        <div class="pillar-idx">03</div>
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5.5H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H6"/></svg></div>
+        <div class="pillar-title">Disciplined capitalization</div>
+        <div class="pillar-desc">Conservative leverage and structured risk management.</div>
+      </div>
+      <div class="pillar" data-reveal>
+        <div class="pillar-idx">04</div>
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></div>
+        <div class="pillar-title">Active asset management</div>
+        <div class="pillar-desc">Hands-on oversight from acquisition through disposition.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRACK RECORD ===== -->
+<section class="track">
+  <div class="track-bg" id="trackBg"><img src="public/mountain_8.jpg" alt=""></div>
+  <div class="container">
+    <div class="eyebrow on-dark">Track Record</div>
+    <h2 data-split>Decades of proven execution</h2>
+    <p class="track-lead" data-reveal>Our principals bring deep, hands-on experience in commercial real estate acquisition, development, and asset management across significant net-leased and retail transactions.</p>
+    <div class="track-stats">
+      <div class="track-stat" data-reveal>
+        <div class="track-num"><span class="count" data-target="185" data-prefix="$" data-suffix="M">$0M</span></div>
+        <div class="track-cap">Capital deployed across the platform</div>
+      </div>
+      <div class="track-stat" data-reveal>
+        <div class="track-num"><span class="count" data-target="60" data-suffix="+">0</span></div>
+        <div class="track-cap">Sites financed &amp; acquired</div>
+      </div>
+      <div class="track-stat" data-reveal>
+        <div class="track-num"><span class="count" data-target="12">0</span></div>
+        <div class="track-cap">States with active assets</div>
+      </div>
+      <div class="track-stat" data-reveal>
+        <div class="track-num"><span class="count" data-target="15" data-suffix="+ yrs">0</span></div>
+        <div class="track-cap">Combined site-level experience</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== APPROACH ===== -->
+<section class="approach" id="approach">
+  <div class="container">
+    <div class="approach-head">
+      <div class="eyebrow">Our Approach</div>
+      <h2 data-split>Financing &amp; acquisition, structured around the asset</h2>
+    </div>
+    <div class="stages">
+      <div class="stage" data-reveal>
+        <div class="stage-num">01</div>
+        <div class="stage-label">Acquisition</div>
+        <div class="stage-title">Site Acquisition Capital</div>
+        <div class="stage-desc">We provide capital to acquire gas station and QSR real estate, structured around fuel brand agreements, lease terms, and site-level cash flow.</div>
+      </div>
+      <div class="stage" data-reveal>
+        <div class="stage-num">02</div>
+        <div class="stage-label">Financing</div>
+        <div class="stage-title">Operator Financing</div>
+        <div class="stage-desc">We finance owner-operators and groups expanding their portfolios, with terms built around the realities of running a fuel or QSR business.</div>
+      </div>
+      <div class="stage" data-reveal>
+        <div class="stage-num">03</div>
+        <div class="stage-label">Partnership</div>
+        <div class="stage-title">Ongoing Support</div>
+        <div class="stage-desc">Our investment doesn't end at closing. We stay engaged with operators on growth, refinancing, and future site opportunities.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRINCIPLES ===== -->
+<section class="principles-sec">
+  <div class="container">
+    <div class="eyebrow">Guiding Principles</div>
+    <div class="prow" data-reveal>
+      <div class="prow-idx">01</div>
+      <div class="prow-title">Site Expertise</div>
+      <div class="prow-desc">Deep knowledge of how a site actually performs — traffic, fuel volumes, and the unit-level economics generic lenders overlook.</div>
+    </div>
+    <div class="prow" data-reveal>
+      <div class="prow-idx">02</div>
+      <div class="prow-title">Speed</div>
+      <div class="prow-desc">Timelines that match how operators move, so a good site doesn't slip away while capital waits on committee.</div>
+    </div>
+    <div class="prow" data-reveal>
+      <div class="prow-idx">03</div>
+      <div class="prow-title">Discipline</div>
+      <div class="prow-desc">Consistent structure in how we deploy capital — conservative leverage, clear terms, and risk managed at the asset.</div>
+    </div>
+    <div class="prow" data-reveal>
+      <div class="prow-idx">04</div>
+      <div class="prow-title">Integrity</div>
+      <div class="prow-desc">Following through on exactly what we commit to, from first conversation through closing and beyond.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CTA / CONTACT ===== -->
+<section class="cta" id="contact">
+  <div class="container">
+    <div class="eyebrow on-dark" style="justify-content:center;">Get in Touch</div>
+    <h2 data-split>Let's talk about your next <span class="accent-word">site</span></h2>
+    <p data-reveal>Whether you're acquiring a single location or financing a multi-site portfolio, we'd like to hear from you.</p>
+    <div class="cta-actions" data-reveal>
+      <a href="mailto:info@equitifycap.com" class="btn btn-solid" data-cursor>Start a conversation</a>
+      <a href="index.html#contact" class="btn btn-ghost-dark" data-cursor>Full contact form</a>
+    </div>
+    <div class="cta-meta" data-reveal>
+      <div><div class="lab">Office</div><div class="val">555 Republic Dr, Suite #525<br>Plano, TX 75074</div></div>
+      <div><div class="lab">Email</div><a class="val" href="mailto:info@equitifycap.com">info@equitifycap.com</a></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER (shared component) ===== -->
+<site-footer base=""></site-footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine   = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  /* --------------------------------------------------------------
+     Split [data-split] elements into masked, per-word spans.
+     Keeps inline markup (b, span.accent-word) intact.
+     -------------------------------------------------------------- */
+  function splitWords(el){
+    var out = [];
+    function walk(node, inheritClass){
+      node.childNodes.forEach(function(child){
+        if(child.nodeType === 3){                       // text node
+          child.textContent.split(/(\s+)/).forEach(function(tok){
+            if(tok.trim() === ''){ out.push(document.createTextNode(tok)); return; }
+            var mask = document.createElement('span'); mask.className = 'mask';
+            var inner = document.createElement('span');
+            inner.className = 'w' + (inheritClass ? ' ' + inheritClass : '');
+            inner.textContent = tok;
+            mask.appendChild(inner); out.push(mask);
+          });
+        } else if(child.nodeType === 1){                // element (b, span…)
+          walk(child, child.className || inheritClass);
+        }
+      });
+    }
+    walk(el, '');
+    el.innerHTML = '';
+    out.forEach(function(n){ el.appendChild(n); });
+    return el.querySelectorAll('.w');
+  }
+
+  var splitTargets = [];
+  document.querySelectorAll('[data-split]').forEach(function(el){
+    splitTargets.push({ el: el, words: splitWords(el) });
+    if(reduce){ el.querySelectorAll('.w').forEach(function(w){ w.style.transform='none'; }); }
+  });
+  // starting position (before reveal)
+  if(!reduce){
+    splitTargets.forEach(function(t){
+      window.gsap && gsap.set(t.words, {yPercent:110});
+    });
+  }
+
+  /* --------------------------------------------------------------
+     Preloader — count 0→100, then wipe away and reveal the hero.
+     -------------------------------------------------------------- */
+  function startSite(){
+    if(!window.gsap){ document.getElementById('preloader').style.display='none'; return; }
+    var pre = document.getElementById('preloader');
+    var count = document.getElementById('preCount');
+    var bar = document.getElementById('preBar');
+    var word = document.querySelector('.pre-word span');
+    var obj = {v:0};
+    var tl = gsap.timeline();
+    tl.to(word, {yPercent:0, duration:.8, ease:'expo.out'})
+      .to(obj, {v:100, duration:1.4, ease:'power2.inOut', onUpdate:function(){
+        count.textContent = Math.round(obj.v);
+      }}, 0)
+      .to(bar, {width:'100%', duration:1.4, ease:'power2.inOut'}, 0)
+      .to(pre, {yPercent:-100, duration:.9, ease:'expo.inOut'}, '+=.15')
+      .add(revealHero, '-=.5');
+  }
+
+  function revealHero(){
+    if(!window.gsap || reduce){ return; }
+    var tl = gsap.timeline({defaults:{ease:'expo.out'}});
+    var h1 = document.querySelector('.hero [data-split] .w, .hero [data-split]');
+    tl.from('[data-hero="tag"]', {y:24, opacity:0, duration:.8})
+      .to('.hero h1 .w', {yPercent:0, duration:1.1, stagger:.045}, '-=.5')
+      .from('[data-hero="sub"]', {y:24, opacity:0, duration:.9}, '-=.7')
+      .from('[data-hero="actions"]', {y:24, opacity:0, duration:.9}, '-=.7')
+      .from('.hero-scroll, .hero-index', {opacity:0, duration:.8, stagger:.1}, '-=.6');
+  }
+
+  /* --------------------------------------------------------------
+     Boot GSAP-driven behaviour once libs + DOM are ready.
+     -------------------------------------------------------------- */
+  function boot(){
+    if(!window.gsap){ document.getElementById('preloader').style.display='none'; return; }
+    gsap.registerPlugin(ScrollTrigger);
+
+    /* ---- Lenis smooth scroll, synced to ScrollTrigger ---- */
+    var lenis;
+    if(window.Lenis && !reduce){
+      lenis = new Lenis({ lerp:0.09, wheelMultiplier:1, smoothWheel:true });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    }
+
+    startSite();
+
+    /* ---- Hero "curtain": pin the hero, let the next section rise over it ----
+       pinSpacing:false keeps the hero fixed with NO extra space, so the
+       statement panel scrolls straight up and covers it. The hero scales
+       up + darkens as it's covered, for depth. */
+    if(!reduce){
+      ScrollTrigger.create({ trigger:'.hero', start:'top top', end:'bottom top', pin:true, pinSpacing:false, anticipatePin:1 });
+      gsap.timeline({scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}})
+        .to('#heroBg', {yPercent:12, scale:1.14, filter:'brightness(.5)', ease:'none'}, 0)
+        .to('.hero-inner', {yPercent:-14, opacity:.15, ease:'none'}, 0)
+        .to('.hero-scroll', {opacity:0, ease:'none'}, 0);
+    }
+    gsap.to('#trackBg', {yPercent:14, ease:'none', scrollTrigger:{trigger:'.track', start:'top bottom', end:'bottom top', scrub:true}});
+
+    /* ---- Scroll-reveal: [data-split] headlines (non-hero) ---- */
+    splitTargets.forEach(function(t){
+      if(t.el.closest('.hero')) return;         // hero handled by preloader timeline
+      gsap.to(t.words, {
+        yPercent:0, duration:1, ease:'expo.out', stagger:.04,
+        scrollTrigger:{trigger:t.el, start:'top 85%'}
+      });
+    });
+
+    /* ---- Scroll-reveal: generic [data-reveal] blocks ---- */
+    gsap.utils.toArray('[data-reveal]').forEach(function(el){
+      gsap.fromTo(el, {y:40, opacity:0}, {
+        y:0, opacity:1, duration:1, ease:'expo.out',
+        scrollTrigger:{trigger:el, start:'top 88%'}
+      });
+    });
+
+    /* ---- Horizontal pinned showcase ---- */
+    var track = document.getElementById('hTrack');
+    var pin = document.getElementById('hPin');
+    var bar = document.getElementById('hBar');
+    if(track && pin){
+      var getScrollX = function(){ return Math.max(0, track.scrollWidth - pin.clientWidth); };
+      gsap.to(track, {
+        x: function(){ return -getScrollX(); },
+        ease:'none',
+        scrollTrigger:{
+          trigger:pin, start:'top top',
+          end:function(){ return '+=' + getScrollX(); },
+          pin:pin, anticipatePin:1, scrub:1, invalidateOnRefresh:true,
+          onUpdate:function(self){ if(bar) bar.style.width = (self.progress*100)+'%'; }
+        }
+      });
+    }
+
+    /* ---- Counters ---- */
+    gsap.utils.toArray('.count').forEach(function(el){
+      var target = parseFloat(el.getAttribute('data-target')) || 0;
+      var prefix = el.getAttribute('data-prefix') || '';
+      var suffix = el.getAttribute('data-suffix') || '';
+      var obj = {v:0};
+      ScrollTrigger.create({ trigger:el, start:'top 90%', once:true, onEnter:function(){
+        gsap.to(obj, {v:target, duration:1.8, ease:'power2.out', onUpdate:function(){
+          el.textContent = prefix + Math.round(obj.v) + suffix;
+        }});
+      }});
+    });
+
+    ScrollTrigger.refresh();
+  }
+
+  /* --------------------------------------------------------------
+     Custom cursor + magnetic buttons.
+     -------------------------------------------------------------- */
+  function cursor(){
+    if(!fine || !window.gsap) return;
+    var dot = document.getElementById('cursor');
+    var ring = document.getElementById('cursorRing');
+    var label = document.getElementById('clabel');
+    var xDot = gsap.quickTo(dot,'x',{duration:.15,ease:'power3'});
+    var yDot = gsap.quickTo(dot,'y',{duration:.15,ease:'power3'});
+    var xRing = gsap.quickTo(ring,'x',{duration:.45,ease:'power3'});
+    var yRing = gsap.quickTo(ring,'y',{duration:.45,ease:'power3'});
+    window.addEventListener('mousemove', function(e){
+      xDot(e.clientX); yDot(e.clientY); xRing(e.clientX); yRing(e.clientY);
+    });
+    document.querySelectorAll('a,button,[data-cursor]').forEach(function(el){
+      var view = el.hasAttribute('data-cursor-label') || el.classList.contains('panel');
+      el.addEventListener('mouseenter', function(){
+        document.body.classList.add(view ? 'cursor-view' : 'cursor-hover');
+        if(view) label.textContent = el.getAttribute('data-cursor-label') || 'View';
+      });
+      el.addEventListener('mouseleave', function(){
+        document.body.classList.remove('cursor-view','cursor-hover');
+      });
+    });
+    // magnetic buttons
+    document.querySelectorAll('.btn').forEach(function(btn){
+      btn.addEventListener('mousemove', function(e){
+        var r = btn.getBoundingClientRect();
+        gsap.to(btn, {x:(e.clientX-r.left-r.width/2)*.3, y:(e.clientY-r.top-r.height/2)*.4, duration:.4, ease:'power3'});
+      });
+      btn.addEventListener('mouseleave', function(){ gsap.to(btn,{x:0,y:0,duration:.5,ease:'elastic.out(1,.4)'}); });
+    });
+  }
+
+  /* --------------------------------------------------------------
+     Marquee — infinite loop, speed reacts to scroll velocity.
+     -------------------------------------------------------------- */
+  function marquee(){
+    if(!window.gsap) return;
+    var el = document.getElementById('marquee');
+    if(!el) return;
+    var half = el.scrollWidth / 2;
+    var tween = gsap.to(el, {x:-half, duration:18, ease:'none', repeat:-1,
+      modifiers:{ x:function(x){ return (parseFloat(x)%half)+'px'; } }});
+    if(window.ScrollTrigger){
+      ScrollTrigger.create({ onUpdate:function(self){
+        var v = 1 + Math.min(Math.abs(self.getVelocity())/300, 6);
+        gsap.to(tween, {timeScale:v, duration:.3, overwrite:true});
+        gsap.to(tween, {timeScale:1, duration:1, delay:.3, overwrite:false});
+      }});
+    }
+  }
+
+  /* --------------------------------------------------------------
+     Nav theme — light text over dark sections, dark text over light
+     ones. Swaps color as each section passes behind the fixed rail,
+     so the nav never uses a scroll-reactive blend mode (no jitter).
+     -------------------------------------------------------------- */
+  function navTheme(){
+    var zones = [];
+    [['.hero',1],['.marquee',1],['.showcase',1],['.track',1],['.cta',1],['.ec-footer',1],
+     ['.statement',0],['.strategy',0],['.approach',0],['.principles-sec',0]]
+      .forEach(function(pair){
+        var el = document.querySelector(pair[0]);
+        if(el) zones.push({el:el, dark:!!pair[1]});
+      });
+    if(!zones.length) return;
+    var ticking = false;
+    function update(){
+      var y = window.innerHeight * 0.5;
+      var isDark = true;                       // default = hero (dark)
+      for(var i=0;i<zones.length;i++){
+        var r = zones[i].el.getBoundingClientRect();
+        if(r.top <= y && r.bottom > y){ isDark = zones[i].dark; break; }
+      }
+      document.body.classList.toggle('nav-light', isDark);
+      document.body.classList.toggle('nav-dark', !isDark);
+      ticking = false;
+    }
+    function onScroll(){ if(!ticking){ requestAnimationFrame(update); ticking = true; } }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onScroll, {passive:true});
+    update();
+  }
+
+  function ready(fn){
+    if(document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
+  ready(function(){
+    boot();
+    cursor();
+    marquee();
+    navTheme();
+  });
+})();
+</script>
+
+</body>
+</html>
