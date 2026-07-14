@@ -249,7 +249,7 @@
      STRATEGY PILLARS
      =================================================================== */
   .strategy{background:var(--bg);padding:150px 0;}
-  .strategy-head{max-width:640px;margin-bottom:40px;}
+  .strategy-head{max-width:640px;margin-bottom:26px;}
   .strategy-head h2{font-size:clamp(2rem,4.6vw,3.6rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.02;color:var(--navy);margin-bottom:16px;}
   .strategy-head p{font-size:15px;line-height:1.8;color:var(--ink-soft);}
   .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);}
@@ -423,9 +423,11 @@
     .ec-nav--overlay .ec-cta-m{display:none;}
     .ec-nav--overlay.is-open .ec-cta-m{display:inline-flex;margin-top:26px;}
 
-    /* Over the white page, force the bar's icon + wordmark dark (beats theming) */
-    .ec-nav--overlay.is-open .ec-logo{color:var(--navy)!important;}
-    .ec-nav--overlay.is-open .ec-toggle span{background:var(--navy)!important;}
+    /* Over the white page, force the bar's icon + wordmark dark. The `body`
+       prefix raises specificity to match `body.nav-light …` so it wins even
+       while the section theme says light. */
+    body .ec-nav--overlay.is-open .ec-logo{color:var(--navy)!important;}
+    body .ec-nav--overlay.is-open .ec-toggle span{background:var(--navy)!important;}
 
     /* --- ON THE HERO: hide the menu icon, show the links bottom-right --- */
     body.on-hero .ec-nav--overlay .ec-toggle{display:none;}
@@ -1175,6 +1177,11 @@
     var ticking = false;
     function update(){
       ticking = false;
+      /* While the full-screen menu is open, leave the bar colors to the
+         .is-open CSS — don't let the section probe flip them (the probe would
+         hit the white overlay and wrongly switch to light text). */
+      var navEl = document.querySelector('.ec-nav');
+      if(navEl && navEl.classList.contains('is-open')) return;
       var el = document.elementFromPoint(60, window.innerHeight * 0.5);
       var sec = el ? el.closest('section, .ec-footer, footer') : null;
       var isDark = !(sec && sec.matches(LIGHT));
