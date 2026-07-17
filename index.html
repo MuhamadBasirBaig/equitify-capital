@@ -249,8 +249,8 @@
      STRATEGY PILLARS
      =================================================================== */
   .strategy{background:var(--bg);padding:150px 0;}
-  .strategy-head{max-width:640px;margin-bottom:26px;}
-  .strategy-head h2{font-size:clamp(2rem,4.6vw,3.6rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.02;color:var(--navy);margin-bottom:16px;}
+  .strategy-head{max-width:820px;margin-bottom:26px;}
+  .strategy-head h2{font-size:clamp(1.7rem,3.1vw,2.5rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.06;color:var(--navy);margin-bottom:16px;}
   .strategy-head p{font-size:15px;line-height:1.8;color:var(--ink-soft);}
   .pillars{display:grid;grid-template-columns:repeat(4,1fr);gap:0;border-top:1px solid var(--line);}
   .pillar{padding:28px 26px 28px 0;border-bottom:1px solid var(--line);position:relative;transition:padding-left .35s var(--ease);}
@@ -269,7 +269,7 @@
   .track-bg img{width:100%;height:120%;object-fit:cover;opacity:.28;}
   .track::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg,rgba(20,31,44,.86),rgba(20,31,44,.82));}
   .track .container{position:relative;z-index:1;}
-  .track h2{font-size:clamp(2rem,4.6vw,3.6rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.02;color:#fff;margin-bottom:22px;max-width:14ch;}
+  .track h2{font-size:clamp(1.7rem,3.1vw,2.5rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.06;color:#fff;margin-bottom:22px;max-width:820px;}
   .track-lead{font-size:15px;line-height:1.85;color:var(--ink-on-navy);max-width:620px;}
   .track-stats{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;margin-top:70px;}
   .track-stat{border-top:1px solid var(--line-on-dark);padding-top:26px;}
@@ -281,8 +281,8 @@
      APPROACH
      =================================================================== */
   .approach{background:var(--bg-tint);padding:150px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
-  .approach-head{max-width:680px;margin-bottom:60px;}
-  .approach-head h2{font-size:clamp(2rem,4.6vw,3.6rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.02;color:var(--navy);}
+  .approach-head{max-width:820px;margin-bottom:40px;}
+  .approach-head h2{font-size:clamp(1.7rem,3.1vw,2.5rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.06;color:var(--navy);}
   .stages{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
   .stage{background:#fff;border:1px solid var(--line);border-radius:6px;padding:40px 32px;transition:transform .4s var(--ease),box-shadow .4s var(--ease),border-color .4s var(--ease);}
   .stage:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 24px 50px -24px rgba(20,31,44,.35);}
@@ -475,6 +475,10 @@
     min-height:100vh;display:flex;flex-direction:column;justify-content:center;
     padding-top:85px;padding-bottom:110px;
   }
+  /* Extra breathing room beneath these two. Keep padT+content+padB under
+     100vh — if it exceeds, the section grows past the screen and the extra
+     padding just falls below the fold (and the cards get clipped). */
+  .strategy,.approach{padding-bottom:150px;}
   /* Footer must paint over the last sticky panel as it scrolls up, and fill
      the whole screen so the bottom reads as a full-page footer (not a strip
      sharing the screen with the stuck Contact panel). */
@@ -590,7 +594,7 @@
 
 
 <!-- ===== STATEMENT / WHO WE ARE ===== -->
-<section class="statement">
+<section class="statement" id="about">
   <div class="container statement-grid">
     <div class="statement-side" data-reveal>
       <div class="eyebrow">Who We Are</div>
@@ -617,7 +621,7 @@
   <div class="h-pin" id="hPin">
     <div class="h-track" id="hTrack">
       <article class="panel" data-cursor data-cursor-label="View">
-        <img src="public/gas-blue3.jpg" alt="Fuel retail site">
+        <img src="https://equitify.net/wp-content/uploads/2026/04/Screenshot-2026-04-06-112826-1024x486.png" alt="Shell gas station — Bonham, TX">
         <div class="panel-body">
           <div class="panel-num">01 — Acquisition</div>
           <div class="panel-title">Fuel &amp; C-Store</div>
@@ -625,7 +629,7 @@
         </div>
       </article>
       <article class="panel" data-cursor data-cursor-label="View">
-        <img src="public/restraunt-4.jpg" alt="Quick-service restaurant">
+        <img src="https://equitify.net/wp-content/uploads/2026/04/Screenshot-2026-04-06-111252-1024x394.png" alt="Valero gas station — Longview, TX">
         <div class="panel-body">
           <div class="panel-num">02 — Acquisition</div>
           <div class="panel-title">QSR Real Estate</div>
@@ -633,7 +637,7 @@
         </div>
       </article>
       <article class="panel" data-cursor data-cursor-label="View">
-        <img src="public/gas-blue4.png" alt="Operator financing">
+        <img src="https://equitify.net/wp-content/uploads/2026/02/QT-701WestHarrisRd-Arlington-TX-opt-1024x593.webp" alt="QuikTrip gas station — Arlington, TX">
         <div class="panel-body">
           <div class="panel-num">03 — Financing</div>
           <div class="panel-title">Operator Growth</div>
@@ -641,7 +645,7 @@
         </div>
       </article>
       <article class="panel" data-cursor data-cursor-label="View">
-        <img src="public/restraunt-2.jpg" alt="Net-leased retail">
+        <img src="https://equitify.net/wp-content/uploads/2026/02/MurphyExpress-1001SStateHwy78-Wylie-TX-opt-1024x593.webp" alt="Murphy USA gas station — Wylie, TX">
         <div class="panel-body">
           <div class="panel-num">04 — Portfolio</div>
           <div class="panel-title">Net-Lease Retail</div>
@@ -854,7 +858,7 @@
         </div>
         <div class="cta-record">
           <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 6l8 7 8-7"/></svg></div>
-          <div><div class="lab">Email</div><a class="val" href="mailto:info@equitifycap.net">info@equitifycap.net</a></div>
+          <div><div class="lab">Email</div><a class="val" href="mailto:info@equitifycapital.net">info@equitifycapital.net</a></div>
         </div>
       </div>
     </div>
@@ -1207,21 +1211,6 @@
     update();
   }
 
-  /* In the desktop full-screen menu, clicking "Portfolio" expands/collapses
-     its submenu (site.js only wires this toggle for mobile widths). */
-  function menuDropdown(){
-    var desktop = window.matchMedia('(min-width:901px)');
-    document.querySelectorAll('.ec-has-sub > a').forEach(function(a){
-      a.addEventListener('click', function(e){
-        var nav = document.querySelector('.ec-nav');
-        if(desktop.matches && nav && nav.classList.contains('is-open')){
-          e.preventDefault();
-          a.parentElement.classList.toggle('is-open');
-        }
-      });
-    });
-  }
-
   function ready(fn){
     if(document.readyState !== 'loading') fn();
     else document.addEventListener('DOMContentLoaded', fn);
@@ -1231,7 +1220,6 @@
     cursor();
     marquee();
     navTheme();
-    menuDropdown();
   });
 })();
 </script>

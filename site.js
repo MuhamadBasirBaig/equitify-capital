@@ -19,12 +19,13 @@
       +   '<div class="ec-nav-inner">'
       +     '<a href="' + base + 'index.html" class="ec-logo">' + BRAND + '</a>'
       +     '<nav class="ec-links">'
+      +       '<a href="' + base + 'index.html#about"' + on('about') + '>About Us</a>'
       +       '<a href="' + base + 'team.html"' + on('team') + '>Our Team</a>'
       +       '<div class="ec-has-sub">'
       +         '<a href="#">Portfolio ' + CHEVRON + '</a>'
       +         '<div class="ec-sub">'
       +           '<a href="' + base + 'investment-portfolio.html">Investment Portfolio</a>'
-      +           '<a href="#">Development Portfolio</a>'
+      // +           '<a href="#">Development Portfolio</a>'
       +         '</div>'
       +       '</div>'
       +       '<a href="' + base + 'index.html"' + on('news') + '>News &amp; Insights</a>'
@@ -58,7 +59,7 @@
       +       '<div><h4>Office</h4><ul>'
       +         '<li><span>555 Republic Dr, Suite #525</span></li>'
       +         '<li><span>Plano, TX 75074</span></li>'
-      +         '<li><a href="mailto:info@equitifycap.net">info@equitifycap.net</a></li>'
+      +         '<li><a href="mailto:info@equitifycapital.net">info@equitifycapital.net</a></li>'
       +       '</ul></div>'
       +       '<div><h4>Legal</h4><ul>'
       +         '<li><a href="' + base + 'disclaimer/">Legal Disclaimer</a></li>'
@@ -95,7 +96,10 @@
     var isMobile = function(){ return window.matchMedia("(max-width:900px)").matches; };
     root.querySelectorAll(".ec-has-sub > a").forEach(function(a){
       a.addEventListener("click", function(e){
-        if(isMobile()){
+        /* Toggle the submenu on mobile, and on desktop whenever the
+           full-screen menu is open (pages using the overlay hamburger nav).
+           Desktop pages with the inline top bar still use hover instead. */
+        if(isMobile() || header.classList.contains("is-open")){
           e.preventDefault();
           e.stopPropagation();
           a.parentElement.classList.toggle("is-open");
