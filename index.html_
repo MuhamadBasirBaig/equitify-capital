@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EquitiFy Capital — Specialized Capital for Fuel &amp; QSR Real Estate</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<script src="site.js" defer></script>
+<style>
+  :root{
+    --ink:#33465C;
+    --ink-soft:#6C7C8D;
+    --navy:#1B2A3B;
+    --navy-deep:#141F2C;
+    --accent:#51BAFF;          /* brand blue */
+    --accent-deep:#2A93E6;     /* deeper blue for solid fills / legible text on white */
+    --accent-on-dark:#6FC5FF;  /* softer blue for small labels on navy */
+    --accent-tint:#EAF4FF;
+    --line:#E1E5EA;
+    --line-on-dark:#2B3B4E;
+    --bg:#FFFFFF;
+    --bg-tint:#F5F7F9;
+    --ink-on-navy:#AEB9C6;
+    --radius:4px;
+    --radius-chip:6px;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Libre Franklin',sans-serif;background:var(--bg);color:var(--ink);}
+  img{max-width:100%;display:block;}
+  a{color:inherit;text-decoration:none;}
+  svg{display:block;}
+
+  .container{max-width:1140px;margin:0 auto;padding:0 40px;}
+
+  .eyebrow{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:12px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;
+    color:var(--accent-deep);margin-bottom:16px;
+  }
+  .eyebrow.on-dark{color:var(--accent-on-dark);}
+
+  .icon-chip{
+    width:44px;height:44px;border-radius:var(--radius-chip);background:var(--accent-tint);
+    display:flex;align-items:center;justify-content:center;color:var(--accent-deep);
+    flex-shrink:0;
+  }
+  .icon-chip.on-dark{background:rgba(81,186,255,.14);color:var(--accent-on-dark);}
+  .icon-chip svg{width:22px;height:22px;}
+
+  .btn{
+    display:inline-flex;align-items:center;gap:8px;
+    font-size:14px;font-weight:600;
+    padding:14px 28px;border-radius:var(--radius);border:1px solid var(--navy);
+    background:transparent;color:var(--navy);cursor:pointer;
+    transition:all .15s ease;
+  }
+  .btn:hover{background:var(--navy);color:#fff;}
+  .btn-solid{background:var(--accent-deep);color:#fff;border-color:var(--accent-deep);}
+  .btn-solid:hover{background:#1F7FCB;border-color:#1F7FCB;}
+  .btn-on-dark{border-color:rgba(255,255,255,.35);color:#fff;}
+  .btn-on-dark:hover{background:#fff;color:var(--navy);}
+
+  .text-link{
+    display:inline-flex;align-items:center;gap:6px;
+    font-size:14px;font-weight:600;color:var(--accent-deep);
+  }
+  .text-link svg{width:15px;height:15px;transition:transform .15s ease;}
+  .text-link:hover svg{transform:translateX(3px);}
+  .text-link.on-dark{color:var(--accent-on-dark);}
+
+  /* nav + footer styles now live in site.css (shared component) */
+
+  /* ===== HERO ===== */
+  .hero{background:var(--navy-deep);position:relative;overflow:hidden;}
+  .hero::before{
+    content:"";position:absolute;left:0;right:0;height:100%;z-index:0;
+    background:url("public/mountain_6.jpg") center/cover no-repeat;
+    /* filter:blur(1px);s */
+    transform:translate3d(0,var(--hero-parallax,0),0) scale(1.03);will-change:transform;
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;z-index:0;
+    background:linear-gradient(90deg, rgba(20,31,44,.5) 0%, rgba(20,31,44,.32) 52%, rgba(20,31,44,.12) 100%);
+  }
+  .hero-inner{max-width:1140px;margin:0 auto;padding:130px 40px 130px;position:relative;z-index:1;}
+  .hero h1{
+    font-weight:800;font-size:3.62em;line-height:1.40;letter-spacing:-0.015em;
+    color:#fff;max-width:655px;margin:0 auto 24px;text-align:center;text-transform:uppercase;
+  }
+  .hero h1 .accent-word{color:var(--accent);}
+  .hero-sub{font-size:16px;line-height:1.75;color:#fff;max-width:480px;margin:0 auto 60px;text-align:center;}
+  .hero-actions{display:flex;gap:14px;margin-bottom:50px;}
+  .hero-meta{display:grid;grid-template-columns:repeat(4,1fr);gap:24px;padding-top:36px;border-top:1px solid rgba(255,255,255,.16);}
+  .hero-meta-item{display:flex;align-items:center;gap:14px;}
+  .hero-meta-item .num{font-weight:700;font-size:22px;color:#fff;}
+  .hero-meta-item .cap{font-size:12px;color:var(--ink-on-navy);margin-top:2px;}
+  .hero-scroll{
+    position:absolute;left:50%;bottom:34px;z-index:2;
+    width:64px;height:64px;border-radius:50%;
+    border:1px solid rgba(255,255,255,.6);color:#fff;background:transparent;
+    display:flex;align-items:center;justify-content:center;
+    transition:background .25s ease,border-color .25s ease;
+    animation:heroScrollBob 2s ease-in-out infinite;
+  }
+  .hero-scroll:hover{background:rgba(255,255,255,.14);border-color:#fff;}
+  .hero-scroll svg{width:22px;height:22px;}
+  @keyframes heroScrollBob{0%,100%{transform:translate(-50%,0);}50%{transform:translate(-50%,7px);}}
+  @media (prefers-reduced-motion: reduce){.hero-scroll{animation:none;transform:translateX(-50%);}}
+
+  /* ===== WHO WE ARE / STRATEGIC CAPITAL ===== */
+  /* Who We Are — image left, content right */
+  .intro{padding:110px 0;}
+  .who2col{display:grid;grid-template-columns:0.9fr 1.1fr;gap:60px;align-items:stretch;}
+  .who-media{background:url("public/restraunt-4.jpg") center/cover no-repeat, var(--bg-tint);border:1px solid var(--line);border-radius:var(--radius);min-height:440px;}
+  .who-content h2{font-size:3.62em;font-weight:400;color:var(--navy);line-height:1.15;letter-spacing:-0.015em;margin-bottom:22px;}
+  .who-content p{font-size:14.5px;line-height:1.85;color:var(--ink-soft);margin-bottom:16px;}
+  .who-content p:last-child{margin-bottom:0;}
+
+  /* Our Strategy — own band, 4 pillar cards */
+  .strategy-sec{padding:110px 0;background:var(--bg-tint);border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .strategy-layout{display:grid;grid-template-columns:0.9fr 1.1fr;gap:60px;align-items:center;}
+  .strategy-sec h2{font-size:3.62em;font-weight:400;color:var(--navy);line-height:1.15;letter-spacing:-0.015em;margin-bottom:16px;}
+  .strategy-head p{font-size:15px;line-height:1.8;color:var(--ink-soft);max-width:420px;}
+  .strategy-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+  .pillar{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;transition:border-color .18s ease,transform .18s ease,box-shadow .18s ease;}
+  .pillar:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 12px 28px -14px rgba(20,31,44,.28);}
+  .pillar-title{font-size:18px;font-weight:700;color:var(--navy);line-height:1.3;margin:16px 0 10px;}
+  .pillar-desc{font-size:13.5px;line-height:1.75;color:var(--ink-soft);}
+  @media (prefers-reduced-motion: reduce){.pillar:hover{transform:none;}}
+
+  /* ===== TRACK RECORD ===== */
+  .track{position:relative;overflow:hidden;background:var(--navy-deep);padding:90px 0;}
+  .track::before{
+    content:"";position:absolute;left:0;right:0;top:-25%;height:150%;z-index:0;
+    background:url("public/mountain_8.jpg") center/cover no-repeat;
+    transform:translate3d(0,var(--track-parallax,0),0) scale(1.06);will-change:transform;
+  }
+  .track::after{content:"";position:absolute;inset:0;z-index:0;background:linear-gradient(180deg, rgba(20,31,44,.88), rgba(20,31,44,.82));}
+  .track .container{position:relative;z-index:1;}
+  .track .eyebrow{color:var(--accent-on-dark);}
+  .track h2{font-size:3.62em;font-weight:400;color:#fff;line-height:1.15;letter-spacing:-0.015em;margin-bottom:18px;max-width:560px;}
+  .track-lead{font-size:15px;line-height:1.8;color:var(--ink-on-navy);max-width:640px;}
+  .track-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:44px;}
+  .track-stat{border:1px solid var(--line-on-dark);border-radius:var(--radius);padding:28px 26px;}
+  .track-num{font-size:40px;font-weight:700;color:#fff;letter-spacing:-0.02em;line-height:1;}
+  .track-cap{margin-top:10px;font-size:13px;color:var(--ink-on-navy);line-height:1.5;}
+
+  /* ===== APPROACH ===== */
+  .approach{background:var(--bg-tint);padding:110px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);}
+  .approach-head{max-width:600px;margin-bottom:56px;}
+  .approach h2{font-size:3.62em;font-weight:400;color:var(--navy);line-height:1.15;letter-spacing:-0.015em;}
+  .stages{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+  .stage{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:30px 26px;}
+  .stage-label{font-size:12px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-deep);margin:16px 0 8px;}
+  .stage-title{font-size:18px;font-weight:700;color:var(--navy);margin-bottom:12px;}
+  .stage-desc{font-size:13.5px;line-height:1.75;color:var(--ink-soft);}
+
+  /* ===== STANDARDS ===== */
+  .standards{padding:110px 0;}
+  .standards-grid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:60px;align-items:start;}
+  .standards h2{font-size:3.62em;font-weight:400;color:var(--navy);line-height:1.15;letter-spacing:-0.015em;margin-bottom:18px;}
+  .standards-intro p{font-size:14.5px;line-height:1.8;color:var(--ink-soft);max-width:420px;}
+  .principles{display:flex;flex-direction:column;gap:14px;}
+  .principle{display:flex;align-items:center;gap:18px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:20px 24px;}
+  .p-title{font-size:15px;font-weight:700;color:var(--navy);margin:0 0 3px;}
+  .p-desc{font-size:13px;line-height:1.6;color:var(--ink-soft);}
+
+  /* ===== INSIGHTS ===== */
+  .insights{background:var(--navy-deep);padding:100px 0;}
+  .insights-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:52px;}
+  .insights h2{font-size:3.62em;font-weight:400;color:#fff;line-height:1.15;letter-spacing:-0.015em;}
+  .carousel-nav{display:flex;gap:12px;flex-shrink:0;}
+  .car-btn{
+    width:52px;height:52px;flex-shrink:0;padding:0;display:flex;align-items:center;justify-content:center;
+    border:1px solid rgba(255,255,255,.28);border-radius:50%;background:transparent;color:#fff;
+    cursor:pointer;transition:border-color .2s, background .2s, color .2s, opacity .2s;
+  }
+  .car-btn svg{width:20px;height:20px;}
+  .car-btn:hover:not(:disabled){border-color:var(--accent);color:var(--accent);}
+  .car-btn.car-prev{transform:scaleX(-1);}
+  .car-btn:disabled{opacity:.32;cursor:default;}
+  .insights-carousel{overflow:hidden;padding:24px 0;margin:-24px 0;}
+  .insight-track{display:flex;gap:24px;transition:transform .45s cubic-bezier(.4,0,.2,1);will-change:transform;}
+  .insight-card{flex:0 0 calc((100% - 48px) / 3);background:var(--navy);border:1px solid var(--line-on-dark);border-radius:var(--radius);padding:26px;}
+  .insight-tag{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-on-dark);margin-bottom:16px;}
+  .insight-title{font-size:17px;font-weight:700;color:#fff;line-height:1.4;margin-bottom:12px;}
+  .insight-desc{font-size:13px;line-height:1.75;color:var(--ink-on-navy);margin-bottom:18px;}
+
+  /* ===== CONTACT ===== */
+  .contact{padding:110px 0;}
+  .contact-grid{display:grid;grid-template-columns:0.85fr 1.15fr;gap:60px;}
+  .contact h2{font-size:3.62em;font-weight:400;color:var(--navy);margin-bottom:16px;line-height:1.15;letter-spacing:-0.015em;}
+  .contact-lede{font-size:14.5px;line-height:1.8;color:var(--ink-soft);max-width:400px;margin-bottom:36px;}
+  .contact-record{display:flex;gap:14px;margin-bottom:20px;align-items:flex-start;}
+  .contact-record .val{font-size:14px;color:var(--ink);line-height:1.7;padding-top:8px;}
+  .contact-record .val .lab{display:block;font-size:11.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:4px;}
+
+  .contact-card{background:var(--bg-tint);border:1px solid var(--line);border-radius:var(--radius);padding:32px;}
+  .field-row{display:grid;grid-template-columns:1fr 1fr;gap:18px;margin-bottom:18px;}
+  label{display:block;font-size:12px;font-weight:600;color:var(--ink-soft);margin-bottom:8px;}
+  input,textarea{
+    width:100%;border:1px solid var(--line);border-radius:var(--radius);padding:11px 13px;
+    font-family:'Libre Franklin',sans-serif;font-size:14px;color:var(--navy);
+    background:#fff;outline:none;transition:border-color .15s;
+  }
+  input:focus,textarea:focus{border-color:var(--accent);}
+  textarea{min-height:100px;resize:vertical;margin-bottom:20px;}
+  .form-note{font-size:11.5px;color:var(--ink-soft);margin-top:16px;line-height:1.6;}
+  .form-note a{color:var(--accent-deep);text-decoration:underline;}
+
+  /* ===== CARD HOVER — accent fade + lift ===== */
+  .stage,.principle,.insight-card{transition:border-color .18s ease, transform .18s ease, box-shadow .18s ease;}
+  .stage:hover,.principle:hover{border-color:var(--accent);transform:translateY(-3px);box-shadow:0 12px 28px -14px rgba(20,31,44,.28);}
+  .insight-card:hover{border-color:var(--accent-on-dark);transform:translateY(-3px);box-shadow:0 16px 32px -16px rgba(0,0,0,.55);}
+  @media (prefers-reduced-motion: reduce){
+    .stage:hover,.principle:hover,.insight-card:hover{transform:none;}
+  }
+
+  @media (max-width: 900px){
+    .hero-inner{padding:120px 28px 96px;}
+    .hero h1{font-size:2.2em;line-height:1.18;}
+    .hero-sub{margin-bottom:0;}
+    .hero-actions{flex-direction:column;align-items:stretch;}
+    .hero-actions .btn{width:100%;justify-content:center;}
+    .approach h2,.standards h2,.insights h2,.contact h2,.track h2,.who-content h2,.strategy-sec h2{font-size:2.1em;}
+    .hero-meta{grid-template-columns:1fr 1fr;}
+    .standards-grid,.contact-grid{grid-template-columns:1fr!important;gap:36px!important;}
+    .who2col{grid-template-columns:1fr;gap:28px;}
+    .who-media{min-height:300px;}
+    .strategy-layout{grid-template-columns:1fr;gap:36px;}
+    .strategy-grid{grid-template-columns:1fr 1fr;}
+    .track-stats{grid-template-columns:1fr;}
+    .stages{grid-template-columns:1fr;}
+    .insight-card{flex-basis:calc((100% - 24px) / 2);}
+    .field-row{grid-template-columns:1fr;}
+  }
+  @media (max-width: 560px){
+    .insight-card{flex-basis:100%;}
+    .strategy-grid{grid-template-columns:1fr;}
+    .hero-inner{padding:110px 22px 90px;}
+    .hero h1{font-size:1.85em;}
+    .hero-sub{font-size:15px;}
+    .hero-scroll{width:54px;height:54px;bottom:26px;}
+  }
+</style>
+</head>
+<body>
+
+<!-- ===== NAV (shared component) ===== -->
+<site-header base="" active="story" overlay></site-header>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="hero-inner">
+
+    <!-- <h1>Specialized capital for <span class="accent-word">fuel &amp; QSR</span> real estate.</h1> -->
+    <h1>Specialized capital for fuel &amp; QSR real estate.</h1>
+    <p class="hero-sub">We finance and acquire gas station and quick-service restaurant real estate — backing operators and owners with the capital and site-level expertise these assets demand.</p>
+    
+    <!-- <div class="hero-actions">
+      <a href="#contact" class="btn btn-solid">Get in touch</a>
+      <a href="#approach" class="btn btn-on-dark">See our approach</a>
+    </div> -->
+    <!-- <div class="hero-meta">
+      <div class="hero-meta-item">
+        <div class="icon-chip on-dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5.5H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H6"/></svg></div>
+        <div><div class="num">$185M+</div><div class="cap">Capital deployed</div></div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="icon-chip on-dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18M6 21V9l6-4 6 4v12M10 21v-6h4v6"/></svg></div>
+        <div><div class="num">60+</div><div class="cap">Sites financed</div></div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="icon-chip on-dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22Z"/><circle cx="12" cy="9.5" r="2.4"/></svg></div>
+        <div><div class="num">12</div><div class="cap">States</div></div>
+      </div>
+      <div class="hero-meta-item">
+        <div class="icon-chip on-dark"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/></svg></div>
+        <div><div class="num">15+ yrs</div><div class="cap">Site experience</div></div>
+      </div>
+    </div> -->
+  </div>
+  <a href="#approach" class="hero-scroll" aria-label="Scroll to content">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 5v14M6 13l6 6 6-6"/></svg>
+  </a>
+</section>
+
+<!-- ===== WHO WE ARE ===== -->
+<section class="intro">
+  <div class="container who2col">
+    <div class="who-media"></div>
+    <div class="who-content">
+      <div class="eyebrow">Who We Are</div>
+      <h2>Net-leased and fuel-retail specialists</h2>
+      <p>EquitiFy Capital is a privately held real estate investment and asset management firm focused on net-leased retail and fuel-retail commercial real estate across the United States. We acquire, develop, and manage single-tenant and multi-tenant retail assets — with particular depth in convenience-store and fuel-retail properties — for our own account and on behalf of our investor network.</p>
+      <p>Headquartered in the Dallas–Fort Worth area, EquitiFy operates as an entrepreneurial, principal-led organization. We pair the speed and hands-on focus of a boutique firm with the underwriting discipline and risk management of an institutional platform.</p>
+      <p>Our approach is grounded in real estate fundamentals and unit-level economics. We underwrite each asset on the strength of its location, its tenant, and the cash flow it actually produces — not on market momentum. That discipline governs how we source, structure, and hold every property we bring into the portfolio.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ===== OUR STRATEGY ===== -->
+<section class="strategy-sec">
+  <div class="container strategy-layout">
+    <div class="strategy-head">
+      <div class="eyebrow">Our Strategy</div>
+      <h2>Focused on durable, well-located assets</h2>
+      <p>We target well-located net-leased retail and industrial assets and neighborhood retail centers with durable tenancy and defensible cash flow. Our investment strategy emphasizes:</p>
+    </div>
+    <div class="strategy-grid">
+      <div class="pillar">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M7 21v-7M12 21V6M17 21v-4"/></svg></div>
+        <div class="pillar-title">Location &amp; unit-level performance</div>
+        <div class="pillar-desc">Assets underwritten on real, property-level economics.</div>
+      </div>
+      <div class="pillar">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8Z"/><path d="M14 3v5h5"/><path d="M9 13h6M9 17h4"/></svg></div>
+        <div class="pillar-title">Credit &amp; lease structure</div>
+        <div class="pillar-desc">Long-term net leases with creditworthy operators.</div>
+      </div>
+      <div class="pillar">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5.5H9.5a3 3 0 0 0 0 6h5a3 3 0 0 1 0 6H6"/></svg></div>
+        <div class="pillar-title">Disciplined capitalization</div>
+        <div class="pillar-desc">Conservative leverage and structured risk management.</div>
+      </div>
+      <div class="pillar">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12a9 9 0 1 1-2.64-6.36"/><path d="M21 3v6h-6"/></svg></div>
+        <div class="pillar-title">Active asset management</div>
+        <div class="pillar-desc">Hands-on oversight from acquisition through disposition.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRACK RECORD ===== -->
+<section class="track">
+  <div class="container">
+    <div class="eyebrow">Track Record</div>
+    <h2>Decades of proven execution</h2>
+    <p class="track-lead">Our principals bring deep, hands-on experience in commercial real estate acquisition, development, and asset management. Across their careers, EquitiFy's principals have been involved in significant net-leased and retail real estate transactions.</p>
+    <div class="track-stats">
+      <div class="track-stat"><div class="track-num">[XX]+</div><div class="track-cap">Years of combined experience</div></div>
+      <div class="track-stat"><div class="track-num">[$X]</div><div class="track-cap">In net-leased &amp; retail transactions</div></div>
+      <div class="track-stat"><div class="track-num">[XX]</div><div class="track-cap">Acquisitions &amp; developments completed</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== APPROACH ===== -->
+<section class="approach" id="approach">
+  <div class="container">
+    <div class="approach-head">
+      <div class="eyebrow">Our Approach</div>
+      <h2>Financing &amp; acquisition, structured around the asset.</h2>
+    </div>
+    <div class="stages">
+      <div class="stage">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 6l4 4-8.5 8.5H5.5V14L14 6Z"/><path d="M12.5 7.5 16.5 11.5"/></svg></div>
+        <div class="stage-label">Acquisition</div>
+        <div class="stage-title">Site Acquisition Capital</div>
+        <div class="stage-desc">We provide capital to acquire gas station and QSR real estate, structured around fuel brand agreements, lease terms, and site-level cash flow.</div>
+      </div>
+      <div class="stage">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 17l6-6 4 4 8-8"/><path d="M15 6h6v6"/></svg></div>
+        <div class="stage-label">Financing</div>
+        <div class="stage-title">Operator Financing</div>
+        <div class="stage-desc">We finance owner-operators and groups expanding their portfolios, with terms built around the realities of running a fuel or QSR business.</div>
+      </div>
+      <div class="stage">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="8" r="4.5"/><path d="M17 8.5h4M19 6.5v4"/></svg></div>
+        <div class="stage-label">Partnership</div>
+        <div class="stage-title">Ongoing Support</div>
+        <div class="stage-desc">Our investment doesn't end at closing. We stay engaged with operators on growth, refinancing, and future site opportunities.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== STANDARDS ===== -->
+<section class="standards">
+  <div class="container standards-grid">
+    <div class="standards-intro">
+      <div class="eyebrow">Guiding Principles</div>
+      <h2>The standards behind every deal.</h2>
+      <p>Every deal runs through the same standards — deep knowledge of how a site actually performs, speed that matches how operators move, discipline in how we structure capital, and integrity in what we commit to.</p>
+    </div>
+    <div class="principles">
+      <div class="principle">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22Z"/><circle cx="12" cy="9.5" r="2.4"/></svg></div>
+        <div class="p-body">
+          <div class="p-title">Site Expertise</div>
+          <div class="p-desc">Deep knowledge of how a site actually performs.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 12 16 8"/></svg></div>
+        <div class="p-body">
+          <div class="p-title">Speed</div>
+          <div class="p-desc">Timelines that match how operators move.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="4"/><circle cx="12" cy="12" r=".6" fill="currentColor"/></svg></div>
+        <div class="p-body">
+          <div class="p-title">Discipline</div>
+          <div class="p-desc">Consistent structure in how we deploy capital.</div>
+        </div>
+      </div>
+      <div class="principle">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 5 6v6c0 5 3.5 7.5 7 9 3.5-1.5 7-4 7-9V6l-7-3Z"/><path d="M9 12l2 2 4-4"/></svg></div>
+        <div class="p-body">
+          <div class="p-title">Integrity</div>
+          <div class="p-desc">Following through on what we commit to.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== INSIGHTS ===== -->
+<section class="insights">
+  <div class="container">
+    <div class="insights-head">
+      <div>
+        <div class="eyebrow on-dark">News &amp; Insights</div>
+        <h2>From the EquitiFy desk.</h2>
+      </div>
+      <div class="carousel-nav">
+        <button type="button" class="car-btn car-prev" id="newsPrev" aria-label="Previous articles">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+        <button type="button" class="car-btn car-next" id="newsNext" aria-label="Next articles">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        </button>
+      </div>
+    </div>
+    <div class="insights-carousel">
+      <div class="insight-track" id="newsTrack">
+        <div class="insight-card">
+          <div class="insight-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M3 11l18-6v14L3 15v-4Z"/><path d="M7 15v5a2 2 0 0 0 2 2h1"/></svg>
+            Announcement
+          </div>
+          <div class="insight-title">EquitiFy Capital launches dedicated QSR acquisition program</div>
+          <div class="insight-desc">Placeholder summary — to be replaced once the client confirms real press content for this section.</div>
+          <a href="#" class="text-link on-dark">Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="insight-card">
+          <div class="insight-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.5.5.9 1.2 1 2h6c.1-.8.5-1.5 1-2A6 6 0 0 0 12 3Z"/></svg>
+            Insight
+          </div>
+          <div class="insight-title">What lenders miss when underwriting fuel real estate</div>
+          <div class="insight-desc">Placeholder summary — to be replaced once the client confirms real press content for this section.</div>
+          <a href="#" class="text-link on-dark">Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="insight-card">
+          <div class="insight-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M4 4h16v14H8l-4 4V4Z"/><path d="M8 9h8M8 12h5"/></svg>
+            Press
+          </div>
+          <div class="insight-title">EquitiFy closes financing on multi-site QSR portfolio</div>
+          <div class="insight-desc">Placeholder summary — to be replaced once the client confirms real press content for this section.</div>
+          <a href="#" class="text-link on-dark">Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="insight-card">
+          <div class="insight-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M9 18h6M10 21h4M12 3a6 6 0 0 0-4 10.5c.5.5.9 1.2 1 2h6c.1-.8.5-1.5 1-2A6 6 0 0 0 12 3Z"/></svg>
+            Insight
+          </div>
+          <div class="insight-title">Reading fuel volumes: the metric generic lenders overlook</div>
+          <div class="insight-desc">Placeholder summary — to be replaced once the client confirms real press content for this section.</div>
+          <a href="#" class="text-link on-dark">Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+        <div class="insight-card">
+          <div class="insight-tag">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="width:14px;height:14px;"><path d="M3 11l18-6v14L3 15v-4Z"/><path d="M7 15v5a2 2 0 0 0 2 2h1"/></svg>
+            Announcement
+          </div>
+          <div class="insight-title">Expanding capital solutions for owner-operators nationwide</div>
+          <div class="insight-desc">Placeholder summary — to be replaced once the client confirms real press content for this section.</div>
+          <a href="#" class="text-link on-dark">Read more <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CONTACT ===== -->
+<section class="contact" id="contact">
+  <div class="container contact-grid">
+    <div>
+      <div class="eyebrow">Get in Touch</div>
+      <h2>Let's talk about your next site.</h2>
+      <p class="contact-lede">Whether you're acquiring a single location or financing a multi-site portfolio, we'd like to hear from you.</p>
+      <div class="contact-record">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s7-7.58 7-12.5A7 7 0 0 0 5 9.5C5 14.42 12 22 12 22Z"/><circle cx="12" cy="9.5" r="2.4"/></svg></div>
+        <div class="val"><span class="lab">Office</span>555 Republic Dr, Suite #525<br>Plano, TX 75074</div>
+      </div>
+      <div class="contact-record">
+        <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 6l8 7 8-7"/></svg></div>
+        <div class="val"><span class="lab">Email</span>info@equitifycap.com</div>
+      </div>
+    </div>
+    <div class="contact-card">
+      <form>
+        <div class="field-row">
+          <div><label>First Name</label><input type="text"></div>
+          <div><label>Last Name</label><input type="text"></div>
+        </div>
+        <div class="field-row">
+          <div><label>Email</label><input type="email"></div>
+          <div><label>Phone</label><input type="tel"></div>
+        </div>
+        <label>Message</label>
+        <textarea></textarea>
+        <button type="button" class="btn btn-solid" style="width:100%;justify-content:center;">Send message</button>
+        <p class="form-note">By submitting, you agree that EquitiFy Capital may contact you about this inquiry in accordance with our <a href="privacy/">Privacy Policy</a>.</p>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER (shared component) ===== -->
+<site-footer base=""></site-footer>
+
+<script>
+  /* Hero background parallax — moves the photo slower than the page scroll. */
+  (function(){
+    var hero = document.querySelector('.hero');
+    if(!hero) return;
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ticking = false;
+    function update(){
+      var offset = window.pageYOffset || document.documentElement.scrollTop || 0;
+      hero.style.setProperty('--hero-parallax', (offset * 0.2) + 'px');
+      ticking = false;
+    }
+    window.addEventListener('scroll', function(){
+      if(!ticking){ window.requestAnimationFrame(update); ticking = true; }
+    }, {passive:true});
+    update();
+  })();
+
+  /* Track Record background parallax. */
+  (function(){
+    var el = document.querySelector('.track');
+    if(!el) return;
+    if(window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+    var ticking = false;
+    function update(){
+      var rect = el.getBoundingClientRect();
+      el.style.setProperty('--track-parallax', (rect.top * -0.12) + 'px');
+      ticking = false;
+    }
+    window.addEventListener('scroll', function(){
+      if(!ticking){ window.requestAnimationFrame(update); ticking = true; }
+    }, {passive:true});
+    update();
+  })();
+
+  /* Insights carousel — pages the track by whole steps. */
+  (function(){
+    var track = document.getElementById('newsTrack');
+    var prev = document.getElementById('newsPrev');
+    var next = document.getElementById('newsNext');
+    if(!track || !prev || !next) return;
+    var cards = track.children;
+    var index = 0;
+
+    function metrics(){
+      if(cards.length < 2) return {step:0, maxIndex:0};
+      var a = cards[0].getBoundingClientRect();
+      var b = cards[1].getBoundingClientRect();
+      var step = b.left - a.left;                       // card width + gap
+      var perView = Math.max(1, Math.round(track.parentElement.clientWidth / step));
+      var maxIndex = Math.max(0, cards.length - perView);
+      return {step:step, maxIndex:maxIndex};
+    }
+    function render(){
+      var m = metrics();
+      if(index > m.maxIndex) index = m.maxIndex;
+      if(index < 0) index = 0;
+      track.style.transform = 'translateX(' + (-index * m.step) + 'px)';
+      prev.disabled = index <= 0;
+      next.disabled = index >= m.maxIndex;
+    }
+    prev.addEventListener('click', function(){ index--; render(); });
+    next.addEventListener('click', function(){ index++; render(); });
+    window.addEventListener('resize', render);
+    render();
+  })();
+</script>
+
+</body>
+</html>

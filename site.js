@@ -58,7 +58,7 @@
       +       '<div><h4>Office</h4><ul>'
       +         '<li><span>555 Republic Dr, Suite #525</span></li>'
       +         '<li><span>Plano, TX 75074</span></li>'
-      +         '<li><a href="mailto:info@equitifycap.com">info@equitifycap.com</a></li>'
+      +         '<li><a href="mailto:info@equitifycap.net">info@equitifycap.net</a></li>'
       +       '</ul></div>'
       +       '<div><h4>Legal</h4><ul>'
       +         '<li><a href="' + base + 'disclaimer/">Legal Disclaimer</a></li>'
