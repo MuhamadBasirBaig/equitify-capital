@@ -9,15 +9,21 @@
 <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
 <script src="site.js" defer></script>
+
+<!-- Motion stack: GSAP + ScrollTrigger + Lenis smooth scroll (same as index.html) -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.14/dist/lenis.min.js"></script>
+
 <style>
   :root{
     --ink:#33465C;
     --ink-soft:#6C7C8D;
     --navy:#1B2A3B;
     --navy-deep:#141F2C;
-    --accent:#51BAFF;          /* brand blue */
-    --accent-deep:#2A93E6;     /* deeper blue for solid fills / legible text on white */
-    --accent-on-dark:#6FC5FF;  /* softer blue for small labels on navy */
+    --accent:#51BAFF;
+    --accent-deep:#2A93E6;
+    --accent-on-dark:#6FC5FF;
     --accent-tint:#EAF4FF;
     --line:#E1E5EA;
     --line-on-dark:#2B3B4E;
@@ -29,14 +35,42 @@
     --ease:cubic-bezier(.19,1,.22,1);
   }
   *{box-sizing:border-box;margin:0;padding:0;}
-  html{scroll-behavior:smooth;}
-  body{font-family:'Libre Franklin',sans-serif;background:var(--bg);color:var(--ink);overflow-x:clip;}
+  html{scroll-behavior:auto;}   /* Lenis owns scrolling */
+  body{
+    font-family:'Libre Franklin',sans-serif;background:var(--navy-deep);color:var(--ink);
+    overflow-x:clip;   /* clip (not hidden) so position:sticky still anchors to the viewport */
+  }
   img{max-width:100%;display:block;}
   a{color:inherit;text-decoration:none;}
   svg{display:block;}
-
   .container{max-width:1140px;margin:0 auto;padding:0 40px;}
 
+  /* Hide native cursor on devices that support the custom one */
+  @media (hover:hover) and (pointer:fine){
+    body{cursor:none;}
+    a,button,[data-cursor]{cursor:none;}
+  }
+
+  /* ===================================================================
+     CUSTOM CURSOR
+     =================================================================== */
+  .cursor{
+    position:fixed;top:0;left:0;z-index:9000;pointer-events:none;
+    width:8px;height:8px;border-radius:50%;background:var(--accent);
+    transform:translate(-50%,-50%);mix-blend-mode:difference;
+  }
+  .cursor-ring{
+    position:fixed;top:0;left:0;z-index:8999;pointer-events:none;
+    width:46px;height:46px;border-radius:50%;border:1px solid rgba(255,255,255,.5);
+    transform:translate(-50%,-50%);
+    transition:width .3s var(--ease),height .3s var(--ease),background .3s var(--ease),border-color .3s var(--ease);
+  }
+  body.cursor-hover .cursor-ring{width:72px;height:72px;background:rgba(81,186,255,.16);border-color:var(--accent);}
+  @media (hover:none),(pointer:coarse){.cursor,.cursor-ring{display:none!important;}}
+
+  /* ===================================================================
+     SHARED TYPE UTILITIES
+     =================================================================== */
   .eyebrow{
     display:inline-flex;align-items:center;gap:10px;
     font-size:12px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;
@@ -45,39 +79,113 @@
   .eyebrow::before{content:"";width:26px;height:1px;background:currentColor;}
   .eyebrow.on-dark{color:var(--accent-on-dark);}
 
-  .icon-chip{
-    width:44px;height:44px;border-radius:var(--radius-chip);background:var(--accent-tint);
-    display:flex;align-items:center;justify-content:center;color:var(--accent-deep);
-    flex-shrink:0;
-  }
-  .icon-chip.on-dark{background:rgba(81,186,255,.14);color:var(--accent-on-dark);}
-  .icon-chip svg{width:22px;height:22px;}
+  /* Masked word reveal — each word rides up out of a clip mask */
+  .mask{overflow:hidden;display:inline-block;vertical-align:top;}
+  .mask > span{display:inline-block;will-change:transform;}
 
   .btn{
-    display:inline-flex;align-items:center;gap:8px;
-    font-size:14px;font-weight:600;
-    padding:14px 28px;border-radius:var(--radius);border:1px solid var(--navy);
-    background:transparent;color:var(--navy);cursor:pointer;
-    transition:all .15s ease;
+    display:inline-flex;align-items:center;gap:9px;
+    font-size:13px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;
+    padding:16px 30px;border-radius:60px;border:1px solid var(--navy);
+    background:transparent;color:var(--navy);transition:all .3s var(--ease);
   }
   .btn:hover{background:var(--navy);color:#fff;}
   .btn-solid{background:var(--accent-deep);color:#fff;border-color:var(--accent-deep);}
   .btn-solid:hover{background:#1F7FCB;border-color:#1F7FCB;}
-  .btn-on-dark{border-color:rgba(255,255,255,.35);color:#fff;}
-  .btn-on-dark:hover{background:#fff;color:var(--navy);}
 
-  .text-link{
-    display:inline-flex;align-items:center;gap:6px;
-    font-size:14px;font-weight:600;color:var(--accent-deep);
-  }
-  .text-link svg{width:15px;height:15px;transition:transform .15s ease;}
-  .text-link:hover svg{transform:translateX(3px);}
-  .text-link.on-dark{color:var(--accent-on-dark);}
+  /* Generic scroll-reveal target (JS animates it in) */
+  [data-reveal]{opacity:0;}
 
   /* ===================================================================
-     HAMBURGER + FULL-SCREEN MENU — mirrors the homepage nav treatment.
-     Colors flip from white (over the dark hero) to navy once scrolled
-     onto the white body, driven by site.js's .ec-scrolled class.
+     HERO
+     =================================================================== */
+  .hero{position:sticky;top:0;height:100vh;min-height:660px;overflow:hidden;background:var(--navy-deep);z-index:0;}
+  .hero-bg{position:absolute;inset:-8% 0;z-index:0;will-change:transform;}
+  .hero-bg img{width:100%;height:116%;object-fit:cover;}
+  .hero::after{
+    content:"";position:absolute;inset:0;z-index:1;
+    background:linear-gradient(180deg,rgba(20,31,44,.62) 0%,rgba(20,31,44,.38) 40%,rgba(20,31,44,.72) 100%);
+  }
+  .hero-inner{
+    position:relative;z-index:2;height:100%;max-width:1240px;margin:0 auto;padding:110px 40px 0;
+    display:flex;flex-direction:column;justify-content:center;
+  }
+  .hero-tag{
+    font-size:12px;font-weight:700;letter-spacing:.22em;text-transform:uppercase;color:var(--accent-on-dark);
+    margin-bottom:30px;
+  }
+  .hero h1{
+    font-weight:800;font-size:clamp(2.4rem,7vw,6.3rem);line-height:.98;letter-spacing:-0.035em;
+    text-transform:uppercase;color:#fff;margin-bottom:34px;max-width:12ch;
+  }
+  .hero-sub{font-size:clamp(15px,1.4vw,17px);line-height:1.7;color:rgba(255,255,255,.82);max-width:480px;}
+
+  .hero-scroll{
+    position:absolute;left:50%;bottom:34px;z-index:3;transform:translateX(-50%);
+    display:flex;flex-direction:column;align-items:center;gap:12px;
+    font-size:10.5px;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.75);
+  }
+  .hero-scroll .line{width:1px;height:52px;background:rgba(255,255,255,.35);position:relative;overflow:hidden;}
+  .hero-scroll .line::after{content:"";position:absolute;top:-60%;left:0;width:100%;height:60%;background:var(--accent);animation:scrollLine 1.8s var(--ease) infinite;}
+  @keyframes scrollLine{0%{top:-60%;}60%,100%{top:100%;}}
+
+  .hero-index{
+    position:absolute;right:40px;top:50%;transform:translateY(-50%);z-index:3;
+    writing-mode:vertical-rl;font-size:12px;font-weight:700;letter-spacing:.2em;color:rgba(255,255,255,.6);
+  }
+
+  /* ===================================================================
+     LEADERSHIP — white panel that rises over the hero
+     =================================================================== */
+  .team{
+    background:var(--bg);padding:150px 0;
+    position:relative;z-index:1;border-radius:30px 30px 0 0;
+    box-shadow:0 -30px 70px -24px rgba(20,31,44,.5);
+  }
+  .team-head{margin-bottom:60px;}
+  .team-head h2{font-size:clamp(2rem,4.4vw,3.6rem);font-weight:500;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.02;color:var(--navy);}
+
+  /* One grid, three per row; the 6-col track lets the last row of two sit centered */
+  .team-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:24px;}
+  .member{
+    grid-column:span 2;
+    background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;
+    transition:transform .4s var(--ease),box-shadow .4s var(--ease),border-color .4s var(--ease);
+  }
+  .member:nth-child(4){grid-column:2 / span 2;}
+  .member:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 24px 50px -24px rgba(20,31,44,.35);}
+
+  .member-photo{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--navy);}
+  .member-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease);}
+  .member:hover .member-photo img,
+  .member:hover .member-ph{transform:scale(1.05);}
+
+  /* Placeholder until real headshots are supplied — swap .member-ph for an <img> */
+  .member-ph{
+    position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+    background:radial-gradient(120% 90% at 30% 20%,#24384F 0%,var(--navy) 55%,var(--navy-deep) 100%);
+    transition:transform .9s var(--ease);
+  }
+  .member-ph span{
+    font-size:clamp(3rem,7vw,5.4rem);font-weight:800;letter-spacing:-0.03em;
+    color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.4);
+  }
+  .member-ph::after{
+    content:"Photo coming soon";position:absolute;left:22px;bottom:18px;
+    font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-on-navy);
+  }
+
+  .member-body{padding:24px 26px 26px;position:relative;}
+  .member-body::before{content:"";position:absolute;left:0;top:-1px;width:0;height:2px;background:var(--accent);transition:width .4s var(--ease);}
+  .member:hover .member-body::before{width:100%;}
+  .member-idx{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--accent-deep);margin-bottom:14px;}
+  .member-name{font-size:20px;font-weight:700;color:var(--navy);line-height:1.2;}
+  .member-role{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px;}
+
+  .ec-footer{position:relative;z-index:2;}
+
+  /* ===================================================================
+     HAMBURGER + FULL-SCREEN MENU — same treatment as index.html
      =================================================================== */
   @media (min-width:901px){
     .ec-nav.ec-nav--overlay,
@@ -95,10 +203,13 @@
     .ec-nav--overlay .ec-cta-d{display:none;}
     .ec-nav--overlay .ec-links{display:none;}
 
-    .ec-nav--overlay .ec-logo{color:#fff!important;transition:color .35s var(--ease);}
-    .ec-nav--overlay .ec-toggle span{background:#fff!important;transition:background .35s var(--ease),transform .3s ease,opacity .2s ease,top .3s ease,bottom .3s ease;}
-    .ec-nav--overlay.ec-scrolled .ec-logo{color:var(--navy)!important;}
-    .ec-nav--overlay.ec-scrolled .ec-toggle span{background:var(--navy)!important;}
+    /* Per-section theming of the CLOSED bar (wordmark + hamburger lines) */
+    .ec-nav--overlay .ec-logo{transition:color .35s var(--ease);}
+    .ec-nav--overlay .ec-toggle span{transition:background .35s var(--ease),transform .3s ease,opacity .2s ease,top .3s ease,bottom .3s ease;}
+    body.nav-light .ec-nav--overlay .ec-logo{color:#fff!important;}
+    body.nav-light .ec-nav--overlay .ec-toggle span{background:#fff!important;}
+    body.nav-dark .ec-nav--overlay .ec-logo{color:var(--navy)!important;}
+    body.nav-dark .ec-nav--overlay .ec-toggle span{background:var(--navy)!important;}
 
     /* --- OPENED: full white page, links centered --- */
     .ec-nav--overlay.is-open .ec-links{
@@ -128,161 +239,280 @@
     .ec-nav--overlay.is-open .ec-cta-m:hover{display:inline-flex;margin-top:26px;color:#fff!important;}
     body .ec-nav--overlay.is-open .ec-logo{color:var(--navy)!important;}
     body .ec-nav--overlay.is-open .ec-toggle span{background:var(--navy)!important;}
+
+    /* --- ON THE HERO: hide the menu icon, show the links bottom-right --- */
+    body.on-hero .ec-nav--overlay .ec-toggle{display:none;}
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-links{
+      display:flex;flex-direction:column;align-items:flex-end;gap:14px;
+      position:fixed;right:44px;bottom:40px;top:auto;left:auto;width:auto;height:auto;
+      background:transparent;padding:0;z-index:5;
+    }
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-links a:not(.btn){
+      font-size:14px;font-weight:600;letter-spacing:.02em;color:#fff!important;padding:0;
+    }
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-links a:not(.btn):hover{color:var(--accent)!important;}
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-has-sub{align-items:flex-end;}
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-has-sub > a .ec-caret{color:#fff;}
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-sub{
+      top:auto;bottom:-8px;left:auto;right:calc(100% + 14px);
+    }
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-links .ec-sub a:not(.btn){color:var(--ink)!important;padding-left:22px;padding-right:22px;text-align:left;}
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-links .ec-sub a:not(.btn):hover{color:var(--accent-deep)!important;}
   }
 
-  /* ===== HERO — dark full-bleed, matching the homepage ===== */
-  .hero{position:relative;min-height:48vh;display:flex;align-items:center;overflow:hidden;background:var(--navy-deep);}
-  .hero-bg{position:absolute;inset:0;z-index:0;}
-  .hero-bg img{width:100%;height:100%;object-fit:cover;}
-  .hero::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(20,31,44,.7) 0%,rgba(20,31,44,.5) 50%,rgba(20,31,44,.82) 100%);}
-  .hero-inner{position:relative;z-index:2;max-width:1240px;width:100%;margin:0 auto;padding:112px 40px 56px;}
-  .hero h1{
-    font-weight:800;font-size:clamp(2.2rem,5.4vw,4.6rem);line-height:1.02;letter-spacing:-0.035em;
-    text-transform:uppercase;color:#fff;margin-bottom:24px;max-width:14ch;
+  /* ===================================================================
+     RESPONSIVE
+     =================================================================== */
+  @media (max-width:1000px){
+    .team-grid{grid-template-columns:repeat(2,1fr);}
+    .member,.member:nth-child(4){grid-column:span 1;}
   }
-  .hero-sub{font-size:16px;line-height:1.75;color:rgba(255,255,255,.82);max-width:620px;}
-  .hero-sub + .hero-sub{margin-top:16px;}
-
-  /* ===== TEAM ===== */
-  .team{padding:90px 0 120px 0;}
-  .team-head{max-width:640px;margin-bottom:56px;}
-  .team-head h2{font-size:clamp(2rem,4.6vw,3.6rem);font-weight:500;text-transform:uppercase;color:var(--navy);line-height:1.02;letter-spacing:-0.03em;margin-bottom:18px;}
-  .team-head p{font-size:15px;line-height:1.8;color:var(--ink-soft);}
-  .team-head p + p{margin-top:16px;}
-  .team-group-label{font-size:11.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--accent-deep);margin:0 0 26px;padding-bottom:14px;border-bottom:1px solid var(--line);}
-  .team-group + .team-group{margin-top:76px;}
-  .team-grid{display:grid;grid-template-columns:repeat(3,minmax(0,290px));justify-content:center;gap:24px;}
-
-  .member{
-    background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;
-    transition:border-color .4s var(--ease), transform .4s var(--ease), box-shadow .4s var(--ease);
+  @media (max-width:900px){
+    .hero{position:relative;height:auto;min-height:100vh;}
+    .team{border-radius:0;box-shadow:none;}
+    .mask{display:inline;overflow:visible;}
+    .mask > span{transform:none!important;opacity:1!important;}
   }
-  .member:hover{border-color:var(--accent);transform:translateY(-6px);box-shadow:0 24px 50px -24px rgba(20,31,44,.35);}
-  .member-photo{aspect-ratio:4/3;background:var(--bg-tint) center/cover no-repeat;border-bottom:1px solid var(--line);transition:transform .9s var(--ease);}
-  .member:hover .member-photo{transform:scale(1.05);}
-  .member-body{padding:20px 22px 22px;}
-  .member-name{font-size:16px;font-weight:700;color:var(--navy);}
-  .member-role{font-size:11.5px;font-weight:700;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-deep);margin-top:6px;}
-  .member-bio{font-size:13px;line-height:1.7;color:var(--ink-soft);margin-top:12px;}
-
-  /* ===== JOIN / CTA ===== */
-  .team-cta{background:var(--navy-deep);padding:110px 0;}
-  .team-cta .container{max-width:720px;text-align:center;}
-  .team-cta .eyebrow{color:var(--accent-on-dark);}
-  .team-cta h2{font-size:clamp(2rem,4.4vw,3.6rem);font-weight:500;text-transform:uppercase;color:#fff;line-height:1.02;letter-spacing:-0.03em;margin-bottom:16px;}
-  .team-cta p{font-size:15px;line-height:1.75;color:var(--ink-on-navy);max-width:520px;margin:0 auto 28px;}
-  .team-cta .btn-solid{margin:0 auto;}
-
-  @media (prefers-reduced-motion: reduce){
-    .member:hover{transform:none;}
-  }
-
-  @media (max-width: 900px){
-    .hero h1,.team-head h2,.team-cta h2{font-size:2.1em;}
-    .hero h1{white-space:normal;}
-    .team-grid{grid-template-columns:1fr 1fr;}
-  }
-  @media (max-width: 560px){
+  @media (max-width:640px){
+    .container{padding:0 24px;}
+    .team{padding:96px 0;}
+    .hero-index{display:none;}
     .team-grid{grid-template-columns:1fr;}
+  }
+  @media (prefers-reduced-motion:reduce){
+    .hero{position:relative;}
+    .hero-scroll .line::after{animation:none;}
+    .member:hover{transform:none;}
   }
 </style>
 </head>
 <body>
+
+<!-- ===== CUSTOM CURSOR ===== -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
 
 <!-- ===== NAV (shared component) ===== -->
 <site-header base="" active="team" overlay></site-header>
 
 <!-- ===== HERO ===== -->
 <section class="hero">
-  <div class="hero-bg"><img src="public/mountain_8.jpg" alt=""></div>
+  <div class="hero-bg" id="heroBg"><img src="public/mountain_8.jpg" alt=""></div>
   <div class="hero-inner">
-    <div class="eyebrow on-dark">Our Team</div>
-    <h1>The people behind the capital</h1>
-    <p class="hero-sub">A seasoned team with decades of experience across investing, direct lending, banking, legal, and asset management — built to support the unsponsored middle-market companies of today and tomorrow.</p>
+    <div class="hero-tag" data-hero="tag">Our Team</div>
+    <h1 data-split>The people behind the capital</h1>
+    <p class="hero-sub" data-hero="sub">A principal-led team with deep experience across commercial real estate acquisition, financing, legal, and operations.</p>
   </div>
+  <div class="hero-index">EST. 2026 — DFW, TX</div>
+  <div class="hero-scroll"><span>Scroll</span><span class="line"></span></div>
 </section>
 
-<!-- ===== TEAM ===== -->
+<!-- ===== LEADERSHIP ===== -->
 <section class="team">
   <div class="container">
-    <!-- NOTE for content editors: Bios should state real roles and real experience.
-         Confirm any dollar/deal figures attributed to a principal are supportable. -->
-    <div class="team-group">
-      <div class="team-group-label">Our Principals</div>
-      <div class="team-grid">
-
-        <div class="member">
-          <div class="member-photo" style="background-image:url('public/img1.jpg');"></div>
-          <div class="member-body">
-            <div class="member-name">[Name]</div>
-            <div class="member-role">[Title]</div>
-            <div class="member-bio">[1–2 sentences.]</div>      
-          </div>
-        </div>
-
-        <div class="member">
-          <div class="member-photo" style="background-image:url('public/img2.jpg');"></div>
-          <div class="member-body">
-            <div class="member-name">[Name]</div>
-            <div class="member-role">[Title]</div>
-            <div class="member-bio">[1–2 sentences.]</div>
-          </div>
-        </div>
-
-        <div class="member">
-          <div class="member-photo" style="background-image:url('public/img1.jpg');"></div>
-          <div class="member-body">
-            <div class="member-name">[Name]</div>
-            <div class="member-role">[Title]</div>
-            <div class="member-bio">[1–2 sentences.]</div>
-          </div>
-        </div>
-
-      </div>
+    <div class="team-head">
+      <div class="eyebrow" data-reveal>Leadership</div>
+      <h2 data-split>Meet our team</h2>
     </div>
 
-    <div class="team-group">
-      <div class="team-group-label">Investment &amp; Operations</div>
-      <div class="team-grid">
+    <!-- Photos are placeholders. To add a headshot, replace the
+         <div class="member-ph">…</div> with <img src="public/…" alt="Full Name">. -->
+    <div class="team-grid">
 
-        <div class="member">
-          <div class="member-photo" style="background-image:url('public/img2.jpg');"></div>
-          <div class="member-body">
-            <div class="member-name">Sofia Alvarez</div>
-            <div class="member-role">Director, Underwriting</div>          </div>
+      <article class="member" data-reveal data-cursor>
+        <div class="member-photo"><div class="member-ph"><span>KK</span></div></div>
+        <div class="member-body">
+          <div class="member-idx">01</div>
+          <div class="member-name">Kazim Khan</div>
+          <div class="member-role">Chief Executive Officer</div>
         </div>
+      </article>
 
-        <div class="member">
-          <div class="member-photo" style="background-image:url('public/img1.jpg');"></div>
-          <div class="member-body">
-            <div class="member-name">Daniel Okafor</div>
-            <div class="member-role">Director, Operator Relations</div>          </div>
+      <article class="member" data-reveal data-cursor>
+        <div class="member-photo"><div class="member-ph"><span>BS</span></div></div>
+        <div class="member-body">
+          <div class="member-idx">02</div>
+          <div class="member-name">Baig Sarfraz</div>
+          <div class="member-role">President</div>
         </div>
+      </article>
 
-        <div class="member">
-          <div class="member-photo" style="background-image:url('public/img2.jpg');"></div>
-          <div class="member-body">
-            <div class="member-name">Hannah Cole</div>
-            <div class="member-role">Head of Capital Markets</div>          </div>
+      <article class="member" data-reveal data-cursor>
+        <div class="member-photo"><div class="member-ph"><span>AS</span></div></div>
+        <div class="member-body">
+          <div class="member-idx">03</div>
+          <div class="member-name">Asim Shamim</div>
+          <div class="member-role">Chief Financial Officer</div>
         </div>
+      </article>
 
-      </div>
+      <article class="member" data-reveal data-cursor>
+        <div class="member-photo"><div class="member-ph"><span>JS</span></div></div>
+        <div class="member-body">
+          <div class="member-idx">04</div>
+          <div class="member-name">Jason Stancile</div>
+          <div class="member-role">General Counsel</div>
+        </div>
+      </article>
+
+      <article class="member" data-reveal data-cursor>
+        <div class="member-photo"><div class="member-ph"><span>HS</span></div></div>
+        <div class="member-body">
+          <div class="member-idx">05</div>
+          <div class="member-name">Hashir Sarfraz</div>
+          <div class="member-role">VP of Operations</div>
+        </div>
+      </article>
+
     </div>
   </div>
 </section>
-
-<!-- ===== JOIN / CTA ===== -->
-<!-- <section class="team-cta">
-  <div class="container">
-    <div class="eyebrow on-dark" style="justify-content:center;">Join Us</div>
-    <h2>Build the next deal with us.</h2>
-    <p>Placeholder copy — a short invitation for prospective team members or partners to get in touch. To be replaced with real content.</p>
-    <a href="index.html#contact" class="btn btn-solid">Get in touch</a>
-  </div>
-</section> -->
 
 <!-- ===== FOOTER (shared component) ===== -->
 <site-footer base=""></site-footer>
+
+<script>
+(function(){
+  "use strict";
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var fine   = window.matchMedia && window.matchMedia('(hover:hover) and (pointer:fine)').matches;
+
+  /* Split [data-split] elements into masked, per-word spans (desktop only —
+     on mobile the masks clip/overlap when text wraps). */
+  function splitWords(el){
+    var out = [];
+    el.textContent.split(/(\s+)/).forEach(function(tok){
+      if(tok.trim() === ''){ out.push(document.createTextNode(tok)); return; }
+      var mask = document.createElement('span'); mask.className = 'mask';
+      var inner = document.createElement('span'); inner.className = 'w';
+      inner.textContent = tok;
+      mask.appendChild(inner); out.push(mask);
+    });
+    el.innerHTML = '';
+    out.forEach(function(n){ el.appendChild(n); });
+    return el.querySelectorAll('.w');
+  }
+
+  function boot(){
+    if(!window.gsap){
+      document.querySelectorAll('[data-reveal]').forEach(function(el){ el.style.opacity = 1; });
+      return;
+    }
+    gsap.registerPlugin(ScrollTrigger);
+
+    var big = window.matchMedia('(min-width:901px)').matches;
+    var splitTargets = [];
+    if(big && !reduce){
+      document.querySelectorAll('[data-split]').forEach(function(el){
+        var words = splitWords(el);
+        gsap.set(words, {yPercent:110});
+        splitTargets.push({ el: el, words: words });
+      });
+    }
+
+    /* ---- Lenis smooth scroll, synced to ScrollTrigger ---- */
+    if(window.Lenis && !reduce){
+      var lenis = new Lenis({ lerp:0.09, wheelMultiplier:1, smoothWheel:true });
+      lenis.on('scroll', ScrollTrigger.update);
+      gsap.ticker.add(function(t){ lenis.raf(t * 1000); });
+      gsap.ticker.lagSmoothing(0);
+    }
+
+    /* ---- Hero intro ---- */
+    if(!reduce){
+      gsap.timeline({defaults:{ease:'expo.out'}, delay:.15})
+        .from('[data-hero="tag"]', {y:24, opacity:0, duration:.8})
+        .to('.hero h1 .w', {yPercent:0, duration:1.1, stagger:.045}, '-=.5')
+        .from('[data-hero="sub"]', {y:24, opacity:0, duration:.9}, '-=.7')
+        .from('.hero-scroll, .hero-index', {opacity:0, duration:.8, stagger:.1}, '-=.6');
+    }
+
+    /* ---- Hero "curtain": scale + darken as the team panel rises over it ---- */
+    if(!reduce && big){
+      gsap.timeline({scrollTrigger:{trigger:'.hero', start:'top top', end:'bottom top', scrub:true}})
+        .to('#heroBg', {yPercent:12, scale:1.14, filter:'brightness(.5)', ease:'none'}, 0)
+        .to('.hero-inner', {yPercent:-14, opacity:.15, ease:'none'}, 0)
+        .to('.hero-scroll', {opacity:0, ease:'none'}, 0);
+    }
+
+    /* ---- Scroll-reveal: [data-split] headlines (non-hero) ---- */
+    splitTargets.forEach(function(t){
+      if(t.el.closest('.hero')) return;
+      gsap.to(t.words, {
+        yPercent:0, duration:1, ease:'expo.out', stagger:.04,
+        scrollTrigger:{trigger:t.el, start:'top 85%'}
+      });
+    });
+
+    /* ---- Scroll-reveal: generic [data-reveal] blocks ---- */
+    gsap.utils.toArray('[data-reveal]').forEach(function(el){
+      if(reduce){ gsap.set(el, {opacity:1}); return; }
+      gsap.fromTo(el, {y:40, opacity:0}, {
+        y:0, opacity:1, duration:1, ease:'expo.out',
+        scrollTrigger:{trigger:el, start:'top 88%'}
+      });
+    });
+
+    ScrollTrigger.refresh();
+  }
+
+  /* Custom cursor + magnetic buttons */
+  function cursor(){
+    if(!fine || !window.gsap) return;
+    var dot = document.getElementById('cursor');
+    var ring = document.getElementById('cursorRing');
+    var xDot = gsap.quickTo(dot,'x',{duration:.15,ease:'power3'});
+    var yDot = gsap.quickTo(dot,'y',{duration:.15,ease:'power3'});
+    var xRing = gsap.quickTo(ring,'x',{duration:.45,ease:'power3'});
+    var yRing = gsap.quickTo(ring,'y',{duration:.45,ease:'power3'});
+    window.addEventListener('mousemove', function(e){
+      xDot(e.clientX); yDot(e.clientY); xRing(e.clientX); yRing(e.clientY);
+    });
+    document.querySelectorAll('a,button,[data-cursor]').forEach(function(el){
+      el.addEventListener('mouseenter', function(){ document.body.classList.add('cursor-hover'); });
+      el.addEventListener('mouseleave', function(){ document.body.classList.remove('cursor-hover'); });
+    });
+    document.querySelectorAll('.btn').forEach(function(btn){
+      btn.addEventListener('mousemove', function(e){
+        var r = btn.getBoundingClientRect();
+        gsap.to(btn, {x:(e.clientX-r.left-r.width/2)*.3, y:(e.clientY-r.top-r.height/2)*.4, duration:.4, ease:'power3'});
+      });
+      btn.addEventListener('mouseleave', function(){ gsap.to(btn,{x:0,y:0,duration:.5,ease:'elastic.out(1,.4)'}); });
+    });
+  }
+
+  /* Nav theme — light text over dark sections, dark over light ones */
+  function navTheme(){
+    var LIGHT = '.team';
+    var ticking = false;
+    function update(){
+      ticking = false;
+      var navEl = document.querySelector('.ec-nav');
+      if(navEl && navEl.classList.contains('is-open')) return;
+      var el = document.elementFromPoint(60, window.innerHeight * 0.5);
+      var sec = el ? el.closest('section, .ec-footer, footer') : null;
+      var isDark = !(sec && sec.matches(LIGHT));
+      document.body.classList.toggle('nav-light', isDark);
+      document.body.classList.toggle('nav-dark', !isDark);
+      document.body.classList.toggle('on-hero', !!(sec && sec.matches('.hero')));
+    }
+    function onScroll(){ if(!ticking){ requestAnimationFrame(update); ticking = true; } }
+    window.addEventListener('scroll', onScroll, {passive:true});
+    window.addEventListener('resize', onScroll, {passive:true});
+    update();
+  }
+
+  function ready(fn){
+    if(document.readyState !== 'loading') fn();
+    else document.addEventListener('DOMContentLoaded', fn);
+  }
+  ready(function(){
+    boot();
+    cursor();
+    navTheme();
+  });
+})();
+</script>
 
 </body>
 </html>
