@@ -240,11 +240,11 @@
     body .ec-nav--overlay.is-open .ec-logo{color:var(--navy)!important;}
     body .ec-nav--overlay.is-open .ec-toggle span{background:var(--navy)!important;}
 
-    /* --- ON THE HERO: hide the menu icon, show the links bottom-right --- */
+    /* --- ON THE HERO: hide the menu icon, show the links top-right, under the logo --- */
     body.on-hero .ec-nav--overlay .ec-toggle{display:none;}
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links{
       display:flex;flex-direction:column;align-items:flex-end;gap:14px;
-      position:fixed;right:44px;bottom:40px;top:auto;left:auto;width:auto;height:auto;
+      position:fixed;right:44px;top:84px;bottom:auto;left:auto;width:auto;height:auto;
       background:transparent;padding:0;z-index:5;
     }
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links a:not(.btn){
@@ -253,8 +253,9 @@
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links a:not(.btn):hover{color:var(--accent)!important;}
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-has-sub{align-items:flex-end;}
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-has-sub > a .ec-caret{color:#fff;}
+    /* Portfolio submenu opens to the LEFT, aligned with its row */
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-sub{
-      top:auto;bottom:-8px;left:auto;right:calc(100% + 14px);
+      top:-8px;bottom:auto;left:auto;right:calc(100% + 14px);
     }
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links .ec-sub a:not(.btn){color:var(--ink)!important;padding-left:22px;padding-right:22px;text-align:left;}
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links .ec-sub a:not(.btn):hover{color:var(--accent-deep)!important;}
