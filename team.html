@@ -145,17 +145,15 @@
   .team-head{margin-bottom:60px;}
   .team-head h2{font-size:clamp(2rem,4.4vw,3.6rem);font-weight:500;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.02;color:var(--navy);}
 
-  /* One grid, three per row; the 6-col track lets the last row of two sit centered */
-  .team-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:24px;}
+  /* Editorial rows — one person per row, mirroring the homepage principles list */
+  .team-list{border-top:1px solid var(--line);}
   .member{
-    grid-column:span 2;
-    background:#fff;border:1px solid var(--line);border-radius:6px;overflow:hidden;
-    transition:transform .4s var(--ease),box-shadow .4s var(--ease),border-color .4s var(--ease);
+    display:grid;grid-template-columns:70px 260px 1fr;gap:48px;align-items:center;
+    padding:36px 0;border-bottom:1px solid var(--line);transition:padding-left .4s var(--ease);
   }
-  .member:nth-child(4){grid-column:2 / span 2;}
-  .member:hover{transform:translateY(-6px);border-color:var(--accent);box-shadow:0 24px 50px -24px rgba(20,31,44,.35);}
+  .member:hover{padding-left:22px;}
 
-  .member-photo{position:relative;aspect-ratio:4/5;overflow:hidden;background:var(--navy);}
+  .member-photo{position:relative;aspect-ratio:4/5;overflow:hidden;border-radius:6px;background:var(--navy);}
   .member-photo img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;transition:transform .9s var(--ease);}
   .member:hover .member-photo img,
   .member:hover .member-ph{transform:scale(1.05);}
@@ -167,20 +165,21 @@
     transition:transform .9s var(--ease);
   }
   .member-ph span{
-    font-size:clamp(3rem,7vw,5.4rem);font-weight:800;letter-spacing:-0.03em;
+    font-size:4rem;font-weight:800;letter-spacing:-0.03em;
     color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.4);
   }
   .member-ph::after{
-    content:"Photo coming soon";position:absolute;left:22px;bottom:18px;
-    font-size:10.5px;font-weight:700;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-on-navy);
+    content:"Photo coming soon";position:absolute;left:14px;bottom:12px;
+    font-size:9px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-on-navy);
   }
 
-  .member-body{padding:24px 26px 26px;position:relative;}
-  .member-body::before{content:"";position:absolute;left:0;top:-1px;width:0;height:2px;background:var(--accent);transition:width .4s var(--ease);}
-  .member:hover .member-body::before{width:100%;}
-  .member-idx{font-size:12px;font-weight:700;letter-spacing:.14em;color:var(--accent-deep);margin-bottom:14px;}
-  .member-name{font-size:20px;font-weight:700;color:var(--navy);line-height:1.2;}
-  .member-role{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:8px;}
+  .member-idx{font-size:13px;font-weight:800;color:var(--accent-deep);}
+  .member-name{
+    font-size:clamp(1.5rem,3vw,2.4rem);font-weight:500;text-transform:uppercase;letter-spacing:-0.02em;
+    line-height:1;color:var(--navy);transition:color .3s var(--ease);
+  }
+  .member:hover .member-name{color:var(--accent-deep);}
+  .member-role{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-soft);margin-top:14px;}
 
   .ec-footer{position:relative;z-index:2;}
 
@@ -264,11 +263,8 @@
   /* ===================================================================
      RESPONSIVE
      =================================================================== */
-  @media (max-width:1000px){
-    .team-grid{grid-template-columns:repeat(2,1fr);}
-    .member,.member:nth-child(4){grid-column:span 1;}
-  }
   @media (max-width:900px){
+    .member{grid-template-columns:40px 200px 1fr;gap:32px;}
     .hero{position:relative;height:auto;min-height:100vh;}
     .team{border-radius:0;box-shadow:none;}
     .mask{display:inline;overflow:visible;}
@@ -278,12 +274,18 @@
     .container{padding:0 24px;}
     .team{padding:96px 0;}
     .hero-index{display:none;}
-    .team-grid{grid-template-columns:1fr;}
+    .member{grid-template-columns:130px 1fr;gap:20px;padding:24px 0;}
+    .member:hover{padding-left:0;}
+    .member-idx{display:none;}
+    .member-ph span{font-size:2.2rem;}
+    .member-ph::after{display:none;}
+    .member-name{font-size:1.35rem;}
+    .member-role{font-size:11px;margin-top:10px;}
   }
   @media (prefers-reduced-motion:reduce){
     .hero{position:relative;}
     .hero-scroll .line::after{animation:none;}
-    .member:hover{transform:none;}
+    .member:hover{padding-left:0;}
   }
 </style>
 </head>
@@ -298,7 +300,7 @@
 
 <!-- ===== HERO ===== -->
 <section class="hero">
-  <div class="hero-bg" id="heroBg"><img src="public/mountain_8.jpg" alt=""></div>
+  <div class="hero-bg" id="heroBg"><img src="public/building-4.jpg" alt=""></div>
   <div class="hero-inner">
     <div class="hero-tag" data-hero="tag">Our Team</div>
     <h1 data-split>The people behind the capital</h1>
@@ -318,48 +320,48 @@
 
     <!-- Photos are placeholders. To add a headshot, replace the
          <div class="member-ph">…</div> with <img src="public/…" alt="Full Name">. -->
-    <div class="team-grid">
+    <div class="team-list">
 
       <article class="member" data-reveal data-cursor>
+        <div class="member-idx">01</div>
         <div class="member-photo"><div class="member-ph"><span>KK</span></div></div>
-        <div class="member-body">
-          <div class="member-idx">01</div>
+        <div class="member-info">
           <div class="member-name">Kazim Khan</div>
           <div class="member-role">Chief Executive Officer</div>
         </div>
       </article>
 
       <article class="member" data-reveal data-cursor>
+        <div class="member-idx">02</div>
         <div class="member-photo"><div class="member-ph"><span>BS</span></div></div>
-        <div class="member-body">
-          <div class="member-idx">02</div>
+        <div class="member-info">
           <div class="member-name">Baig Sarfraz</div>
           <div class="member-role">President</div>
         </div>
       </article>
 
       <article class="member" data-reveal data-cursor>
+        <div class="member-idx">03</div>
         <div class="member-photo"><div class="member-ph"><span>AS</span></div></div>
-        <div class="member-body">
-          <div class="member-idx">03</div>
+        <div class="member-info">
           <div class="member-name">Asim Shamim</div>
           <div class="member-role">Chief Financial Officer</div>
         </div>
       </article>
 
       <article class="member" data-reveal data-cursor>
+        <div class="member-idx">04</div>
         <div class="member-photo"><div class="member-ph"><span>JS</span></div></div>
-        <div class="member-body">
-          <div class="member-idx">04</div>
+        <div class="member-info">
           <div class="member-name">Jason Stancile</div>
           <div class="member-role">General Counsel</div>
         </div>
       </article>
 
       <article class="member" data-reveal data-cursor>
+        <div class="member-idx">05</div>
         <div class="member-photo"><div class="member-ph"><span>HS</span></div></div>
-        <div class="member-body">
-          <div class="member-idx">05</div>
+        <div class="member-info">
           <div class="member-name">Hashir Sarfraz</div>
           <div class="member-role">VP of Operations</div>
         </div>
