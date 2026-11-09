@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <script src="site.js" defer></script>
 
 <!-- Motion stack: GSAP + ScrollTrigger + Lenis smooth scroll (the Hayler engine) -->
@@ -192,6 +193,66 @@
   }
   .marquee-item::after{content:"";width:14px;height:14px;border-radius:50%;background:var(--accent);flex-shrink:0;}
   .marquee-item.outline{color:transparent;-webkit-text-stroke:1px rgba(255,255,255,.5);}
+
+  /* Locations map section */
+  .map-sec{background:var(--navy-deep);overflow:hidden;}
+  .map-sec > .container{width:100%;max-width:1200px;}
+  .map-sec h2{font-size:clamp(1.7rem,3.1vw,2.5rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.06;color:#fff;}
+  .map-sec-head{display:flex;justify-content:space-between;align-items:flex-end;gap:24px;margin-bottom:32px;}
+  .pf-locs-count{font-size:14px;color:var(--ink-on-navy);white-space:nowrap;}
+  #pfLocsMap{height:clamp(340px,calc(100vh - 340px),620px);border-radius:var(--radius);background:var(--navy);isolation:isolate;font-family:inherit;}
+  /* Dark navy map: recolors the OpenStreetMap tiles; pins are not affected */
+  #pfLocsMap{background:var(--navy-deep);}
+  /* Neon border: a light travels around the edge, with a soft pulsing glow behind.
+     Only transform and opacity animate, so scrolling stays smooth. */
+  .map-neon{position:relative;border-radius:20px;}
+  .map-neon::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;
+    box-shadow:0 0 14px 1px rgba(81,186,255,.75),0 0 44px 6px rgba(42,147,230,.4);
+    animation:mapNeonPulse 3s ease-in-out infinite;}
+  .map-neon-ring{position:relative;z-index:1;overflow:hidden;padding:2px;border-radius:inherit;background:rgba(81,186,255,.3);}
+  .map-neon-ring::before{content:"";position:absolute;left:50%;top:50%;width:150%;aspect-ratio:1;
+    background:conic-gradient(transparent 0 62%,var(--accent-deep) 78%,#fff 90%,var(--accent) 96%,transparent 100%);
+    transform:translate(-50%,-50%);animation:mapNeonSpin 5s linear infinite;}
+  .map-neon-ring > #pfLocsMap{border-radius:18px;}
+  @keyframes mapNeonSpin{to{transform:translate(-50%,-50%) rotate(360deg);}}
+  @keyframes mapNeonPulse{0%,100%{opacity:.5;}50%{opacity:1;}}
+  @media (prefers-reduced-motion:reduce){
+    .map-neon::after{animation:none;opacity:.8;}
+    .map-neon-ring{background:var(--accent);}
+    .map-neon-ring::before{display:none;}
+  }
+  #pfLocsMap .leaflet-tile-pane{filter:grayscale(1) invert(1) brightness(.8) contrast(.92) sepia(1) hue-rotate(172deg) saturate(1.5) brightness(.8);}
+  #pfLocsMap .leaflet-bar{border:1px solid var(--line-on-dark);box-shadow:none;}
+  #pfLocsMap .leaflet-bar a{background:var(--navy);color:#fff;border-bottom-color:var(--line-on-dark);}
+  #pfLocsMap .leaflet-bar a:hover{background:var(--accent-deep);color:#fff;}
+  #pfLocsMap .leaflet-control-attribution{background:rgba(20,31,44,.8);color:var(--ink-on-navy);}
+  #pfLocsMap .leaflet-control-attribution a{color:var(--accent-on-dark);}
+  .pf-pin{background:none;border:0;}
+  .pf-pin svg{filter:drop-shadow(0 2px 2px rgba(20,31,44,.35));}
+  .pf-pop-addr{font-weight:700;color:var(--navy);font-size:14px;}
+  .pf-pop-city{color:var(--ink-soft);font-size:13px;margin-top:2px;}
+  @media (max-width:760px){
+    .map-sec-head{flex-direction:column;align-items:flex-start;gap:8px;margin-bottom:24px;}
+    #pfLocsMap{height:400px;}
+  }
+
+  /* Fuel brands section */
+  .brands-sec{background:var(--navy-deep);overflow:hidden;}
+  .brands-sec > .container{width:100%;}
+  .brands-sec h2{font-size:clamp(1.7rem,3.1vw,2.5rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.06;color:#fff;margin-bottom:16px;}
+  .brands-lead{font-size:15px;line-height:1.8;color:var(--ink-on-navy);max-width:560px;}
+  .brands-rail{margin-top:64px;overflow:hidden;
+    -webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);
+            mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);}
+  .brands-track{display:inline-flex;align-items:center;will-change:transform;}
+  .brands-item{flex:0 0 250px;padding:0 14px;}
+  .brands-card{height:128px;padding:22px 30px;background:#fff;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;}
+  .brands-card img{width:100%;height:100%;object-fit:contain;}
+  @media (max-width:760px){
+    .brands-rail{margin-top:40px;}
+    .brands-item{flex-basis:180px;padding:0 9px;}
+    .brands-card{height:100px;padding:16px 22px;}
+  }
 
   /* ===================================================================
      INTRO / STATEMENT
@@ -406,7 +467,7 @@
   }
   @media (max-width:640px){
     .container{padding:0 24px;}
-    .statement,.strategy,.track,.approach,.principles-sec,.cta{padding:96px 0;}
+    .statement,.map-sec,.strategy,.brands-sec,.track,.approach,.principles-sec,.cta{padding:96px 0;}
     .track-stats{grid-template-columns:1fr;}
     .hero-index{display:none;}
     .h-track{gap:20px;}
@@ -517,14 +578,14 @@
   /* Stacked "curtain" panels — each section is a rounded panel that
      rises over the previous one. z-index is assigned in JS by order so
      every section paints above the one before it. */
-  .statement,.showcase,.strategy,.track,.approach,.principles-sec,.cta{
+  .statement,.showcase,.map-sec,.strategy,.brands-sec,.track,.approach,.principles-sec,.cta{
     position:relative;border-radius:30px 30px 0 0;
     box-shadow:0 -30px 70px -24px rgba(20,31,44,.5);
   }
   /* Curtain content panels fill the viewport with vertically-centered
      content — this also makes the pin range exactly one screen, which
      stops taller sections from reappearing after they're covered. */
-  .statement,.strategy,.track,.approach,.principles-sec,.cta{
+  .statement,.map-sec,.strategy,.brands-sec,.track,.approach,.principles-sec,.cta{
     position:sticky;top:0;
     min-height:100vh;display:flex;flex-direction:column;justify-content:center;
     padding-top:85px;padding-bottom:110px;
@@ -533,12 +594,13 @@
      100vh — if it exceeds, the section grows past the screen and the extra
      padding just falls below the fold (and the cards get clipped). */
   .strategy,.approach{padding-bottom:150px;}
+  @media (min-width:641px){ .map-sec{padding-bottom:60px;} }
   /* Footer must paint over the last sticky panel as it scrolls up, and fill
      the whole screen so the bottom reads as a full-page footer (not a strip
      sharing the screen with the stuck Contact panel). */
   .ec-footer{position:relative;z-index:40;min-height:100vh;display:flex;flex-direction:column;justify-content:center;}
   @media (max-width:640px){
-    .statement,.strategy,.track,.approach,.principles-sec,.cta{min-height:auto;}
+    .statement,.map-sec,.strategy,.brands-sec,.track,.approach,.principles-sec,.cta{min-height:auto;}
   }
   /* Guiding Principles is taller than one screen so it "holds": the content
      stays centered in the first screen (sticky) while the extra height gives
@@ -549,7 +611,7 @@
   }
   /* No stacked motion for reduced-motion users — plain document flow */
   @media (prefers-reduced-motion:reduce){
-    .hero,.statement,.strategy,.track,.approach,.principles-sec,.cta{position:static;min-height:0;}
+    .hero,.statement,.map-sec,.strategy,.brands-sec,.track,.approach,.principles-sec,.cta{position:static;min-height:0;}
   }
 
   /* Section headings (everything except the hero h1) use weight 500 */
@@ -571,11 +633,11 @@
        (.hero-bg, .track-bg) stay clipped inside their section's overflow:hidden
        instead of bleeding over the next section. */
     .hero{position:relative;height:auto;min-height:100vh;}
-    .statement,.showcase,.strategy,.track,.approach,.principles-sec,.cta,.ec-footer{
+    .statement,.showcase,.map-sec,.strategy,.brands-sec,.track,.approach,.principles-sec,.cta,.ec-footer{
       position:relative;min-height:0;z-index:auto!important;
       border-radius:0;box-shadow:none;
     }
-    .statement,.strategy,.track,.approach,.principles-sec,.cta{
+    .statement,.map-sec,.strategy,.brands-sec,.track,.approach,.principles-sec,.cta{
       display:block;justify-content:normal;
     }
     .principles-sec,.principles-sec > .container{min-height:0;display:block;}
@@ -666,6 +728,7 @@
 </section>
 
 <!-- ===== HORIZONTAL PINNED SHOWCASE ===== -->
+<!-- What We Finance: hidden for now, replaced by the map below. Remove these comment markers to restore.
 <section class="showcase">
   <div class="showcase-head">
     <div class="eyebrow on-dark">What We Finance</div>
@@ -673,12 +736,26 @@
     <p data-reveal>Fuel and convenience-retail sites from across our portfolio. Select a property to see its details.</p>
   </div>
   <div class="h-pin" id="hPin">
-    <!-- Filled from gasstations.json (category "Gas Stations") by stations() below -->
     <div class="h-track" id="hTrack"></div>
   </div>
   <div class="h-progress">
     <div class="h-progress-bar"><span id="hBar"></span></div>
     <div class="h-hint">Drag / Scroll to explore</div>
+  </div>
+</section>
+-->
+
+<!-- ===== LOCATIONS MAP ===== -->
+<section class="map-sec" id="locations" aria-label="Property locations map">
+  <div class="container">
+    <div class="map-sec-head">
+      <div>
+        <div class="eyebrow on-dark">Our Footprint</div>
+        <h2 data-split>Property locations</h2>
+      </div>
+      <div class="pf-locs-count" id="pfLocsCount"></div>
+    </div>
+    <div class="map-neon"><div class="map-neon-ring"><div id="pfLocsMap"></div></div></div>
   </div>
 </section>
 
@@ -718,6 +795,42 @@
     </div>
   </div>
 </section>
+
+<!-- ===== FUEL BRANDS ===== -->
+<section class="brands-sec" id="brands">
+  <div class="container">
+    <div class="eyebrow on-dark">Fuel Brands</div>
+    <h2 data-split>The brands drivers look for</h2>
+    <p class="brands-lead" data-reveal>Gas station and convenience-store names customers recognize on corners across the country.</p>
+  </div>
+  <div class="brands-rail" id="brandsRail">
+    <div class="brands-track" id="marquee"></div>
+  </div>
+</section>
+<script>
+(function(){
+  /* To add a brand: put its logo in public/brands/ and add a line here. */
+  var BRANDS = [
+    {name:"7-Eleven",    file:"7-eleven.svg"},
+    {name:"QT",          file:"qt.svg"},
+    {name:"Circle K",    file:"Circle_K_idpgH2alr7_0.svg"},
+    {name:"Exxon",       file:"exxon-seeklogo.png"},
+    {name:"Valero",      file:"valero-seeklogo-3.svg"},
+    {name:"Phillips 66", file:"phillips-66.svg"},
+    {name:"Shell",       file:"shell.svg"}
+  ];
+  var strip = document.getElementById("brandsRail");
+  var track = document.getElementById("marquee");
+  strip.setAttribute("role", "img");
+  strip.setAttribute("aria-label", "Fuel brands: " + BRANDS.map(function(b){ return b.name; }).join(", "));
+  /* The loop slides by half the track, so each half must be wider than the widest screen. */
+  var perHalf = Math.ceil(3000 / (BRANDS.length * 170));
+  var html = BRANDS.map(function(b){
+    return '<div class="brands-item"><div class="brands-card"><img src="public/brands/' + b.file + '" alt="" draggable="false"></div></div>';
+  }).join("");
+  track.innerHTML = new Array(perHalf * 2 + 1).join(html);
+})();
+</script>
 
 <!-- ===== TRACK RECORD ===== -->
 <!--
@@ -1039,7 +1152,7 @@
        covered, and (c) reveal the Principles rows one by one while it's held.
        The horizontal showcases are skipped (they run their own pin). */
     if(!reduce){
-      var panels = ['.statement','.showcase','.strategy','.track','.approach','.principles-sec','.news-showcase','.cta'];
+      var panels = ['.statement','.map-sec','.strategy','.brands-sec','.track','.approach','.principles-sec','.news-showcase','.cta'];
       panels.forEach(function(sel, i){
         var sec = document.querySelector(sel);
         if(!sec) return;
@@ -1431,5 +1544,8 @@
 })();
 </script>
 
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="map-locations.js"></script>
+<script src="locations-map.js"></script>
 </body>
 </html>

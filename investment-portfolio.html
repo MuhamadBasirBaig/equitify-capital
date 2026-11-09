@@ -8,6 +8,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Libre+Franklin:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="site.css">
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" integrity="sha256-p4NxAoJBhIIN+hmNHrzRCf9tD/miZyoHS5obTRR9BMY=" crossorigin="">
 <script src="site.js" defer></script>
 <style>
   :root{
@@ -166,6 +167,22 @@
     .pf-facts{grid-template-columns:1fr;}
     .pf-map{height:300px;}
   }
+
+  /* Locations map */
+  .pf-locs{max-width:1240px;margin:0 auto;padding:90px 40px 0;}
+  .pf-locs-head{display:flex;justify-content:space-between;align-items:baseline;gap:20px;margin-bottom:20px;}
+  .pf-locs-head h2{font-size:28px;font-weight:700;color:var(--navy);}
+  .pf-locs-count{font-size:14px;color:var(--ink-soft);white-space:nowrap;}
+  #pfLocsMap{height:520px;border:1px solid var(--line);border-radius:var(--radius);background:var(--bg-tint);isolation:isolate;font-family:inherit;}
+  .pf-pin{background:none;border:0;}
+  .pf-pin svg{filter:drop-shadow(0 2px 2px rgba(20,31,44,.35));}
+  .pf-pop-addr{font-weight:700;color:var(--navy);font-size:14px;}
+  .pf-pop-city{color:var(--ink-soft);font-size:13px;margin-top:2px;}
+  @media (max-width:900px){
+    .pf-locs{padding:40px 24px 0;}
+    .pf-locs-head h2{font-size:22px;}
+    #pfLocsMap{height:380px;}
+  }
 </style>
 </head>
 <body>
@@ -180,6 +197,15 @@
     <h1>Assets we've financed and acquired</h1>
     <p>A view of the gas station, QSR, and commercial real estate assets EquitiFy Capital has financed and acquired.</p>
   </div>
+</section>
+
+<!-- ===== LOCATIONS MAP ===== -->
+<section class="pf-locs" aria-label="Property locations map">
+  <div class="pf-locs-head">
+    <h2>Property locations</h2>
+    <div class="pf-locs-count" id="pfLocsCount"></div>
+  </div>
+  <div id="pfLocsMap"></div>
 </section>
 
 <!-- ===== BODY ===== -->
@@ -371,6 +397,10 @@
   renderGrid();
 })();
 </script>
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" integrity="sha256-20nQCchB9co0qIjJZRGuk2/Z9VM+kNiyxNV1lvTlZBo=" crossorigin=""></script>
+<script src="map-locations.js"></script>
+<script src="locations-map.js"></script>
 
 </body>
 </html>

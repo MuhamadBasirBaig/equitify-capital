@@ -1,0 +1,31 @@
+/* Pins for the map on investment-portfolio.html.
+   Each record: {address, city, state, zip, lat, lng} */
+window.MAP_LOCATIONS = [
+  {"address": "402 West Country Club Rd", "city": "Chickasha", "state": "OK", "zip": "73018", "lat": 35.015097, "lng": -97.938746},
+  {"address": "3505 South 4th Street", "city": "Chickasha", "state": "OK", "zip": "73018", "lat": 35.013077, "lng": -97.934504},
+  {"address": "3808 Montgomery Blvd NE", "city": "Albuquerque", "state": "NM", "zip": "87109", "lat": 35.130886, "lng": -106.601977},
+  {"address": "6101 19th Street", "city": "Lubbock", "state": "TX", "zip": "79407", "lat": 33.577713, "lng": -101.948488},
+  {"address": "1811 Lamar Street", "city": "Sweetwater", "state": "TX", "zip": "79556", "lat": 32.451357, "lng": -100.398712},
+  {"address": "241 E Stamford Street", "city": "Abilene", "state": "TX", "zip": "79601", "lat": 32.489824, "lng": -99.724156},
+  {"address": "3102 Grape Street", "city": "Abilene", "state": "TX", "zip": "79601", "lat": 32.488034, "lng": -99.73949},
+  {"address": "716 N Neches Street", "city": "Coleman", "state": "TX", "zip": "76834", "lat": 31.837218, "lng": -99.427199},
+  {"address": "1458 S Treadaway Boulevard", "city": "Abilene", "state": "TX", "zip": "79602", "lat": 32.43197, "lng": -99.728695},
+  {"address": "243 S Main Street", "city": "Winters", "state": "TX", "zip": "79567", "lat": 31.956141, "lng": -99.962922},
+  {"address": "10026 Montana Avenue", "city": "El Paso", "state": "TX", "zip": "79925", "lat": 31.795722, "lng": -106.349764},
+  {"address": "4673 FM 18", "city": "Abilene", "state": "TX", "zip": "79602", "lat": 32.43062, "lng": -99.64772},
+  {"address": "1050 Treadaway Boulevard", "city": "Abilene", "state": "TX", "zip": "79602", "lat": 32.437591, "lng": -99.728645},
+  {"address": "5000 E Interstate 40 Highway", "city": "Amarillo", "state": "TX", "zip": "79103", "lat": 35.192212, "lng": -101.778701},
+  {"address": "101 E Ennis Avenue", "city": "Ennis", "state": "TX", "zip": "75119", "lat": 32.328155, "lng": -96.626346},
+  {"address": "1304 W Belt Line Road", "city": "DeSoto", "state": "TX", "zip": "75115", "lat": 32.589725, "lng": -96.891353},
+  {"address": "1301 Castle Rock St", "city": "Quinter", "state": "KS", "zip": "67752", "lat": 39.0671411, "lng": -100.2414892},
+  {"address": "501 Barclay Avenue", "city": "Wakeeney", "state": "KS", "zip": "67672", "lat": 39.021292, "lng": -99.883782},
+  {"address": "101 S Washington St", "city": "Plainville", "state": "KS", "zip": "67663", "lat": 39.234354, "lng": -99.298219},
+  {"address": "204 S Cedar St", "city": "Stockton", "state": "KS", "zip": "67669", "lat": 39.435448, "lng": -99.275048},
+  {"address": "695 State St", "city": "Phillipsburg", "state": "KS", "zip": "67661", "lat": 39.755938, "lng": -99.319025},
+  {"address": "812 N State St", "city": "Norton", "state": "KS", "zip": "67654", "lat": 39.837139, "lng": -99.888835},
+  {"address": "104 E Highway 36", "city": "Smith Center", "state": "KS", "zip": "66967", "lat": 39.785168, "lng": -98.786588},
+  {"address": "231 1st St", "city": "Osborne", "state": "KS", "zip": "67473", "lat": 39.438002, "lng": -98.694773},
+  {"address": "299 W US Highway 24", "city": "Downs", "state": "KS", "zip": "67437", "lat": 39.509197, "lng": -98.539105},
+  {"address": "500 S Burlington Ave", "city": "Hastings", "state": "NE", "zip": "68901", "lat": 40.579475, "lng": -98.392548},
+  {"address": "440 East Illinois St", "city": "Sidney", "state": "NE", "zip": "69162", "lat": 41.145103, "lng": -102.970535}
+];
