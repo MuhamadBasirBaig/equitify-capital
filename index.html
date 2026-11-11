@@ -241,17 +241,23 @@
   .brands-sec > .container{width:100%;}
   .brands-sec h2{font-size:clamp(1.7rem,3.1vw,2.5rem);font-weight:800;text-transform:uppercase;letter-spacing:-0.03em;line-height:1.06;color:#fff;margin-bottom:16px;}
   .brands-lead{font-size:15px;line-height:1.8;color:var(--ink-on-navy);max-width:560px;}
-  .brands-rail{margin-top:64px;overflow:hidden;
+  .brands-row-label{margin-top:44px;margin-bottom:16px;font-size:16px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;}
+  .brands-rail + .brands-row-label{margin-top:72px;}   /* extra gap between the two sliders */
+  .brands-rail{overflow:hidden;
     -webkit-mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);
             mask-image:linear-gradient(90deg,transparent,#000 3%,#000 97%,transparent);}
   .brands-track{display:inline-flex;align-items:center;will-change:transform;}
   .brands-item{flex:0 0 250px;padding:0 14px;}
-  .brands-card{height:128px;padding:22px 30px;background:#fff;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;}
+  .brands-card{overflow:hidden;height:112px;padding:22px 30px;background:#fff;border-radius:var(--radius);display:flex;align-items:center;justify-content:center;}
   .brands-card img{width:100%;height:100%;object-fit:contain;}
+  /* Placeholder card until a real logo file is added */
+  .brands-card--ph{background:rgba(255,255,255,.04);border:1px dashed var(--line-on-dark);}
+  .brands-card--ph span{font-size:12px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-on-navy);text-align:center;}
   @media (max-width:760px){
-    .brands-rail{margin-top:40px;}
+    .brands-row-label{margin-top:32px;margin-bottom:12px;font-size:14px;}
+    .brands-rail + .brands-row-label{margin-top:48px;}
     .brands-item{flex-basis:180px;padding:0 9px;}
-    .brands-card{height:100px;padding:16px 22px;}
+    .brands-card{height:92px;padding:16px 22px;}
   }
 
   /* ===================================================================
@@ -495,7 +501,7 @@
     }
     .ec-nav--overlay .ec-nav-inner{
       max-width:none;height:74px;padding:0 44px;
-      flex-direction:row;align-items:center;justify-content:flex-end;gap:22px;
+      flex-direction:row;align-items:center;justify-content:space-between;gap:22px;
       position:relative;z-index:60;
     }
     /* Right-aligned: wordmark then the menu icon, so from the right edge the
@@ -552,22 +558,22 @@
     body .ec-nav--overlay.is-open .ec-logo{color:var(--navy)!important;}
     body .ec-nav--overlay.is-open .ec-toggle span{background:var(--navy)!important;}
 
-    /* --- ON THE HERO: hide the menu icon, show the links top-right, under the logo --- */
+    /* --- ON THE HERO: hide the menu icon, show the links in a row on the right --- */
     body.on-hero .ec-nav--overlay .ec-toggle{display:none;}
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links{
-      display:flex;flex-direction:column;align-items:flex-end;gap:14px;
-      position:fixed;right:44px;top:84px;bottom:auto;left:auto;width:auto;height:auto;
-      background:transparent;padding:0;z-index:5;
+      display:flex;flex-direction:row;align-items:center;gap:34px;
+      position:static;width:auto;height:auto;
+      background:transparent;padding:0;
     }
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links a:not(.btn){
       font-size:14px;font-weight:600;letter-spacing:.02em;color:#fff!important;padding:0;
     }
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links a:not(.btn):hover{color:var(--accent)!important;}
-    body.on-hero .ec-nav--overlay:not(.is-open) .ec-has-sub{align-items:flex-end;}
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-has-sub{align-items:center;}
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-has-sub > a .ec-caret{color:#fff;}
-    /* Portfolio submenu opens to the LEFT, aligned with its row */
+    /* Portfolio submenu drops down below its link */
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-sub{
-      top:-8px;bottom:auto;left:auto;right:calc(100% + 14px);
+      top:100%;bottom:auto;left:-14px;right:auto;
     }
     /* The submenu is a white panel — keep its links dark (the hero link rule
        above would otherwise make them white/invisible on the panel). */
@@ -796,39 +802,60 @@
   </div>
 </section>
 
-<!-- ===== FUEL BRANDS ===== -->
+<!-- ===== BRANDS (fuel + QSR logo sliders) ===== -->
 <section class="brands-sec" id="brands">
   <div class="container">
-    <div class="eyebrow on-dark">Fuel Brands</div>
+    <div class="eyebrow on-dark">Our Brands</div>
     <h2 data-split>The brands drivers look for</h2>
-    <p class="brands-lead" data-reveal>Gas station and convenience-store names customers recognize on corners across the country.</p>
+    <p class="brands-lead" data-reveal>Fuel, convenience-store, and quick-service restaurant names customers recognize on corners across the country.</p>
   </div>
-  <div class="brands-rail" id="brandsRail">
-    <div class="brands-track" id="marquee"></div>
-  </div>
+  <div class="container brands-row-label">Fuel &amp; Convenience</div>
+  <div class="brands-rail" id="fuelRail"><div class="brands-track" data-marquee></div></div>
+  <div class="container brands-row-label">Quick-Service Restaurants</div>
+  <div class="brands-rail" id="qsrRail"><div class="brands-track" data-marquee="reverse"></div></div>
 </section>
 <script>
 (function(){
-  /* To add a brand: put its logo in public/brands/ and add a line here. */
-  var BRANDS = [
-    {name:"7-Eleven",    file:"7-eleven.svg"},
-    {name:"QT",          file:"qt.svg"},
+  /* To add a brand: put its logo in public/brands/ and add a line to its list.
+     An entry without a file shows as a dashed placeholder card. */
+  var FUEL = [
+    {name:"7-Eleven",    file:"7-eleven-seeklogo.svg"},
+    {name:"QT",          file:"QT_Logo_STACKED.jpg"},
     {name:"Circle K",    file:"Circle_K_idpgH2alr7_0.svg"},
     {name:"Exxon",       file:"exxon-seeklogo.png"},
     {name:"Valero",      file:"valero-seeklogo-3.svg"},
     {name:"Phillips 66", file:"phillips-66.svg"},
     {name:"Shell",       file:"shell.svg"}
   ];
-  var strip = document.getElementById("brandsRail");
-  var track = document.getElementById("marquee");
-  strip.setAttribute("role", "img");
-  strip.setAttribute("aria-label", "Fuel brands: " + BRANDS.map(function(b){ return b.name; }).join(", "));
-  /* The loop slides by half the track, so each half must be wider than the widest screen. */
-  var perHalf = Math.ceil(3000 / (BRANDS.length * 170));
-  var html = BRANDS.map(function(b){
-    return '<div class="brands-item"><div class="brands-card"><img src="public/brands/' + b.file + '" alt="" draggable="false"></div></div>';
-  }).join("");
-  track.innerHTML = new Array(perHalf * 2 + 1).join(html);
+  /* zoom: enlarges a logo whose file has lots of empty space around it */
+  var QSR = [
+    {name:"Whataburger",     file:"Whataburger.png", zoom:1.9},
+    {name:"Jack in the Box", file:"jack-in-box.png"},
+    {name:"Panera Bread",    file:"panera-bread.png"},
+    {name:"Subway",          file:"subway.png", zoom:1.3},
+    {name:"Cava",            file:"Cava-Logo.png"},
+    {name:"Five Guys",       file:"five-guys-logo.png", zoom:2.4},
+    {name:"Portillo's",      file:"portillos-logo.png", zoom:2.4},
+    {name:"Boundaries Coffee", file:"boundaries-coffe.png"}
+  ];
+
+  function fill(railId, list, label){
+    var rail = document.getElementById(railId);
+    var track = rail.querySelector(".brands-track");
+    var real = list.filter(function(b){ return b.file; }).map(function(b){ return b.name; });
+    if(real.length){ rail.setAttribute("role", "img"); rail.setAttribute("aria-label", label + ": " + real.join(", ")); }
+    else rail.setAttribute("aria-hidden", "true");
+    /* The loop slides by half the track, so each half must be wider than the widest screen. */
+    var perHalf = Math.ceil(3000 / (list.length * 170));
+    var html = list.map(function(b){
+      return b.file
+        ? '<div class="brands-item"><div class="brands-card"><img src="public/brands/' + b.file + '" alt="" draggable="false"' + (b.zoom ? ' style="transform:scale(' + b.zoom + ')"' : '') + '></div></div>'
+        : '<div class="brands-item"><div class="brands-card brands-card--ph"><span>' + b.name + '</span></div></div>';
+    }).join("");
+    track.innerHTML = new Array(perHalf * 2 + 1).join(html);
+  }
+  fill("fuelRail", FUEL, "Fuel brands");
+  fill("qsrRail", QSR, "Restaurant brands");
 })();
 </script>
 
@@ -996,6 +1023,10 @@
         <div class="cta-record">
           <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16v16H4z"/><path d="M4 6l8 7 8-7"/></svg></div>
           <div><div class="lab">Email</div><a class="val" href="mailto:admin@equitifycapital.net">admin@equitifycapital.net</a></div>
+        </div>
+        <div class="cta-record">
+          <div class="icon-chip"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div>
+          <div><div class="lab">Phone</div><a class="val" href="tel:+12144303002">214-430-3002</a></div>
         </div>
       </div>
     </div>
@@ -1201,6 +1232,7 @@
              this off the sticky element mis-measures and leaves it faded in view.) */
           var inner = sec.querySelector('.container') || sec;
           var next = sec.nextElementSibling;
+          while(next && next.tagName === 'SCRIPT') next = next.nextElementSibling;   // skip inline scripts between sections
           if(next){
             var cTick = false;
             var updateC = function(){
@@ -1311,16 +1343,21 @@
      -------------------------------------------------------------- */
   function marquee(){
     if(!window.gsap) return;
-    var el = document.getElementById('marquee');
-    if(!el) return;
-    var half = el.scrollWidth / 2;
-    var tween = gsap.to(el, {x:-half, duration:18, ease:'none', repeat:-1,
-      modifiers:{ x:function(x){ return (parseFloat(x)%half)+'px'; } }});
-    if(window.ScrollTrigger){
+    var tweens = [];
+    document.querySelectorAll('[data-marquee]').forEach(function(el){
+      var half = el.scrollWidth / 2;
+      if(!half) return;
+      /* Default slides left; data-marquee="reverse" slides right. */
+      var range = el.getAttribute('data-marquee') === 'reverse' ? {from:-half, to:0} : {from:0, to:-half};
+      tweens.push(gsap.fromTo(el, {x:range.from}, {x:range.to, duration:45, ease:'none', repeat:-1}));
+    });
+    if(tweens.length && window.ScrollTrigger){
       ScrollTrigger.create({ onUpdate:function(self){
         var v = 1 + Math.min(Math.abs(self.getVelocity())/300, 6);
-        gsap.to(tween, {timeScale:v, duration:.3, overwrite:true});
-        gsap.to(tween, {timeScale:1, duration:1, delay:.3, overwrite:false});
+        tweens.forEach(function(tween){
+          gsap.to(tween, {timeScale:v, duration:.3, overwrite:true});
+          gsap.to(tween, {timeScale:1, duration:1, delay:.3, overwrite:false});
+        });
       }});
     }
   }

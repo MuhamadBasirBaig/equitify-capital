@@ -21,6 +21,7 @@
       +     '<nav class="ec-links">'
       +       '<a href="' + base + 'index.html#about"' + on('about') + '>About Us</a>'
       +       '<a href="' + base + 'team.html"' + on('team') + '>Our Team</a>'
+      /* Portfolio dropdown — hidden for now; remove the // to restore.
       +       '<div class="ec-has-sub">'
       +         '<a href="#">Portfolio ' + CHEVRON + '</a>'
       +         '<div class="ec-sub">'
@@ -28,6 +29,9 @@
       // +           '<a href="#">Development Portfolio</a>'
       +         '</div>'
       +       '</div>'
+      */
+      +       '<a href="' + base + 'index.html#locations"' + on('locations') + '>Our Footprint</a>'
+      +       '<a href="' + base + 'index.html#contact"' + on('contact') + '>Contact</a>'
       // +       '<a href="' + base + 'index.html"' + on('news') + '>News &amp; Insights</a>'
       // +       '<a href="' + base + 'investor-portal.html"' + on('investor') + '>Investor Portal</a>'
       // +       '<a href="' + base + 'community.html"' + on('community') + '>Community</a>'
@@ -60,6 +64,7 @@
       +         '<li><span>555 Republic Dr, Suite #525</span></li>'
       +         '<li><span>Plano, TX 75074</span></li>'
       +         '<li><a href="mailto:admin@equitifycapital.net">admin@equitifycapital.net</a></li>'
+      +         '<li><a href="tel:+12144303002">214-430-3002</a></li>'
       +       '</ul></div>'
       +       '<div><h4>Legal</h4><ul>'
       +         '<li><a href="' + base + 'disclaimer/">Legal Disclaimer</a></li>'

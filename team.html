@@ -194,7 +194,7 @@
     }
     .ec-nav--overlay .ec-nav-inner{
       max-width:none;height:74px;padding:0 44px;
-      flex-direction:row;align-items:center;justify-content:flex-end;gap:22px;
+      flex-direction:row;align-items:center;justify-content:space-between;gap:22px;
       position:relative;z-index:60;
     }
     .ec-nav--overlay .ec-toggle{display:block;order:1;position:relative;z-index:60;}
@@ -239,22 +239,22 @@
     body .ec-nav--overlay.is-open .ec-logo{color:var(--navy)!important;}
     body .ec-nav--overlay.is-open .ec-toggle span{background:var(--navy)!important;}
 
-    /* --- ON THE HERO: hide the menu icon, show the links top-right, under the logo --- */
+    /* --- ON THE HERO: hide the menu icon, show the links in a row on the right --- */
     body.on-hero .ec-nav--overlay .ec-toggle{display:none;}
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links{
-      display:flex;flex-direction:column;align-items:flex-end;gap:14px;
-      position:fixed;right:44px;top:84px;bottom:auto;left:auto;width:auto;height:auto;
-      background:transparent;padding:0;z-index:5;
+      display:flex;flex-direction:row;align-items:center;gap:34px;
+      position:static;width:auto;height:auto;
+      background:transparent;padding:0;
     }
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links a:not(.btn){
       font-size:14px;font-weight:600;letter-spacing:.02em;color:#fff!important;padding:0;
     }
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links a:not(.btn):hover{color:var(--accent)!important;}
-    body.on-hero .ec-nav--overlay:not(.is-open) .ec-has-sub{align-items:flex-end;}
+    body.on-hero .ec-nav--overlay:not(.is-open) .ec-has-sub{align-items:center;}
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-has-sub > a .ec-caret{color:#fff;}
-    /* Portfolio submenu opens to the LEFT, aligned with its row */
+    /* Portfolio submenu drops down below its link */
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-sub{
-      top:-8px;bottom:auto;left:auto;right:calc(100% + 14px);
+      top:100%;bottom:auto;left:-14px;right:auto;
     }
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links .ec-sub a:not(.btn){color:var(--ink)!important;padding-left:22px;padding-right:22px;text-align:left;}
     body.on-hero .ec-nav--overlay:not(.is-open) .ec-links .ec-sub a:not(.btn):hover{color:var(--accent-deep)!important;}
@@ -324,7 +324,7 @@
 
       <article class="member" data-reveal data-cursor>
         <div class="member-idx">01</div>
-        <div class="member-photo"><div class="member-ph"><span>KK</span></div></div>
+        <div class="member-photo"><img src="public/team/kazim.jpg" alt="Kazim Khan" loading="lazy"></div>
         <div class="member-info">
           <div class="member-name">Kazim Khan</div>
           <div class="member-role">Chief Executive Officer</div>
@@ -333,7 +333,7 @@
 
       <article class="member" data-reveal data-cursor>
         <div class="member-idx">02</div>
-        <div class="member-photo"><div class="member-ph"><span>BS</span></div></div>
+        <div class="member-photo"><img src="public/team/sarfraz.jpg" alt="Baig Sarfraz" loading="lazy"></div>
         <div class="member-info">
           <div class="member-name">Baig Sarfraz</div>
           <div class="member-role">President</div>
@@ -351,7 +351,7 @@
 
       <article class="member" data-reveal data-cursor>
         <div class="member-idx">04</div>
-        <div class="member-photo"><div class="member-ph"><span>JS</span></div></div>
+        <div class="member-photo"><img src="public/team/jason.jpg" alt="Jason Stancile" loading="lazy"></div>
         <div class="member-info">
           <div class="member-name">Jason Stancile</div>
           <div class="member-role">General Counsel</div>
@@ -360,7 +360,7 @@
 
       <article class="member" data-reveal data-cursor>
         <div class="member-idx">05</div>
-        <div class="member-photo"><div class="member-ph"><span>HS</span></div></div>
+        <div class="member-photo"><img src="public/team/hashir.jpg" alt="Hashir Sarfraz" loading="lazy"></div>
         <div class="member-info">
           <div class="member-name">Hashir Sarfraz</div>
           <div class="member-role">VP of Operations</div>
