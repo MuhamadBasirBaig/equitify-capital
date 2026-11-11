@@ -89,6 +89,7 @@ site-header,site-footer{display:block;}
   .ec-nav.is-open .ec-links .ec-has-sub.is-open .ec-sub{display:flex;}
   .ec-nav.is-open .ec-links .ec-sub a{padding:9px 0;font-size:15px;}
   .ec-nav .ec-cta-m{display:inline-flex;}
+  .ec-nav .ec-contact-d{display:none;}   /* mobile menu already has the Get in touch button */
   .ec-nav.is-open .ec-links .ec-cta-m{margin-top:20px;padding:14px 28px;color:#fff;align-self:flex-start;}
   .ec-footer-grid{grid-template-columns:1fr;gap:32px;}
   .ec-footer-bottom{flex-direction:column;gap:16px;align-items:flex-start;}
