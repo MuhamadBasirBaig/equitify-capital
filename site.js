@@ -31,10 +31,10 @@
       +       '</div>'
       */
       +       '<a href="' + base + 'index.html#locations"' + on('locations') + '>Portfolio</a>'
+      +       '<a href="' + base + 'community.html"' + on('community') + '>Community</a>'
+      +       '<a href="' + base + 'investor-portal.html"' + on('investor') + '>Investor Portal</a>'
       +       '<a href="' + base + 'index.html#contact" class="ec-contact-d' + (active === 'contact' ? ' ec-active' : '') + '">Contact</a>'
       // +       '<a href="' + base + 'index.html"' + on('news') + '>News &amp; Insights</a>'
-      // +       '<a href="' + base + 'investor-portal.html"' + on('investor') + '>Investor Portal</a>'
-      // +       '<a href="' + base + 'community.html"' + on('community') + '>Community</a>'
       // +       '<a href="' + base + 'media.html"' + on('media') + '>Media</a>'
       +       '<a href="' + base + 'index.html#contact" class="btn btn-solid ec-cta-m">Get in touch</a>'
       +     '</nav>'
